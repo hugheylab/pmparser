@@ -1,24 +1,40 @@
 #' @importFrom data.table data.table := setcolorder
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom xml2 xml_find_all xml_find_first xml_text xml_attr xml_length
+#' @importFrom xml2 xml_find_all xml_find_first xml_text xml_attr xml_length xml_integer
 NULL
 
 
-globalVariables(c('.', '.N', 'd', 'V1', 'affiliation', 'author_pos', 'filename',
+globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filename',
                   'filenameNow', 'i', 'id_type', 'm', 'pmid', 'pub_date',
-                  'pubmed', 'split_list', 'step', 'y', 'orcid', 'source'))
+                  'pubmed', 'step', 'y', 'orcid', 'source', 'xml_file',
+                  'status', 'getFunc'))
 
 
-#' @export
-writeLogFile = function(logPath, txt = NULL, append = TRUE) {
+writeLogFile = function(logPath, x = NULL, append = TRUE, logical01 = TRUE, ...) {
   if (is.null(logPath)) {
-    invisible(NULL)
-  } else {
-    data.table::fwrite(list(txt), logPath, append = append, quote = FALSE)}}
+    return(NULL)}
+  y = data.table(datetime = Sys.time(), x)
+  data.table::fwrite(y, logPath, append = append, logical01 = logical01, ...)}
+
+
+appendTable = function(con, tableName, d) {
+  if (is.null(con) || nrow(d) == 0L) {
+    return(NULL)}
+  DBI::dbAppendTable(con, tableName, d)}
 
 
 #' @export
-getArticleIds = function(pmXml, filename, con, tableName = 'article_ids') {
+getDeleted = function(xmlRaw, filename, con, tableSuffix = '',
+                      tableName = 'deleted') {
+  x1 = xml_find_all(xml_find_all(xmlRaw, './/DeleteCitation'), './/PMID')
+  x2 = data.table(filename = filename, pmid = xml_integer(x1))
+  appendTable(con, paste0(tableName, tableSuffix), x2)
+  return(x2)}
+
+
+#' @export
+getArticleIds = function(pmXml, filename, con, tableSuffix = '',
+                         tableName = 'article_ids') {
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assuming this comes before refs
   n_ids = xml_length(x1)
 
@@ -35,17 +51,26 @@ getArticleIds = function(pmXml, filename, con, tableName = 'article_ids') {
 
   x6[, pmid := as.integer(pubmed)]
   x6[, pubmed := NULL]
-  x6[, filename := filename]
-  setcolorder(x6, 'filename')
+  x6[, xml_file := filename]
 
   # beware a pmid may have multiple doi versions
-  if (!is.null(con)) {
-    DBI::dbAppendTable(con, tableName, x6)}
+  appendTable(con, paste0(tableName, tableSuffix), x6)
   return(x6)}
 
 
 #' @export
-getPubDates = function(pmXml, pmids, con, tableName = 'pub_dates') {
+getMedlineStatus = function(pmXml, pmids, con, tableSuffix = '',
+                            tableName = 'medline') {
+  x1 = data.table(
+    pmid = pmids,
+    status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
+  appendTable(con, paste0(tableName, tableSuffix), x1)
+  return(x1)}
+
+
+#' @export
+getPubDates = function(pmXml, pmids, con, tableSuffix = '',
+                       tableName = 'pub_dates') {
   x1 = xml_find_first(pmXml, './/History')
   n_hist = xml_length(x1)
   x2 = xml_find_all(x1, './/PubMedPubDate')
@@ -61,13 +86,13 @@ getPubDates = function(pmXml, pmids, con, tableName = 'pub_dates') {
   x4[, c('y', 'm', 'd') := NULL]
 
   x4 = unique(x4)
-  if (!is.null(con)) {
-    DBI::dbAppendTable(con, tableName, x4)}
+  appendTable(con, tableName, x4)
   return(x4)}
 
 
 #' @export
-getTitlesJournals = function(pmXml, pmids, con, tableName = 'titles_journals') {
+getTitlesJournals = function(pmXml, pmids, con, tableSuffix = '',
+                             tableName = 'titles_journals') {
   x1 = xml_find_first(pmXml, './/Journal')
   x2 = data.table(
     pmid = pmids,
@@ -75,13 +100,13 @@ getTitlesJournals = function(pmXml, pmids, con, tableName = 'titles_journals') {
     journal_full = xml_text(xml_find_first(x1, './/Title')),
     journal_abbrev = xml_text(xml_find_first(x1, './/ISOAbbreviation')))
   x2 = unique(x2)
-  if (!is.null(con)) {
-    DBI::dbAppendTable(con, tableName, x2)}
+  appendTable(con, paste0(tableName, tableSuffix), x2)
   return(x2)}
 
 
 #' @export
-getPubTypes = function(pmXml, pmids, con, tableName = 'pub_types') {
+getPubTypes = function(pmXml, pmids, con, tableSuffix = '',
+                       tableName = 'pub_types') {
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   x2 = xml_find_all(x1, './/PublicationType')
   x3 = data.table(
@@ -89,13 +114,13 @@ getPubTypes = function(pmXml, pmids, con, tableName = 'pub_types') {
     pub_type = xml_text(x2),
     pub_type_id = xml_attr(x2, 'UI'))
   x3 = unique(x3)
-  if (!is.null(con)) {
-    DBI::dbAppendTable(con, tableName, x3)}
+  appendTable(con, paste0(tableName, tableSuffix), x3)
   return(x3)}
 
 
 #' @export
-getMeshTerms = function(pmXml, pmids, con, tableName = 'mesh_terms') {
+getMeshTerms = function(pmXml, pmids, con, tableSuffix = '',
+                        tableName = 'mesh_terms') {
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n > 0], './/DescriptorName')
@@ -105,13 +130,28 @@ getMeshTerms = function(pmXml, pmids, con, tableName = 'mesh_terms') {
     term_id = xml_attr(x2, 'UI'),
     major_topic = xml_attr(x2, 'MajorTopicYN'))
   x3 = unique(x3)
-  if (nrow(x3) > 0 & !is.null(con)) {
-    DBI::dbAppendTable(con, tableName, x3)}
+  appendTable(con, paste0(tableName, tableSuffix), x3)
   return(x3)}
 
 
 #' @export
-getAbstracts = function(pmXml, pmids, con, tableName = 'abstracts') {
+getComments = function(pmXml, pmids, con, tableSuffix = '',
+                       tableName = 'comments') {
+  x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
+  n = xml_length(x1)
+  x2 = xml_find_all(x1[n >0], './/CommentsCorrections')
+  x3 = data.table(
+    pmid = rep.int(pmids, n),
+    ref_type = xml_attr(x2, 'RefType'),
+    ref_pmid = xml_integer(xml_find_first(x2, './/PMID')))
+  x3 = unique(x3)
+  appendTable(con, paste0(tableName, tableSuffix), x3)
+  return(x3)}
+
+
+#' @export
+getAbstracts = function(pmXml, pmids, con, tableSuffix = '',
+                        tableName = 'abstracts') {
   if (is.null(idx)) {
     idx = 1:length(pmXml)}
 
@@ -132,26 +172,22 @@ getAbstracts = function(pmXml, pmids, con, tableName = 'abstracts') {
 
   x6 = merge(x5, x2, by = 'pmid')
   x6 = unique(x6)
-  if (nrow(x6) > 0 & !is.null(con)) {
-    DBI::dbAppendTable(con, tableName, x6)}
+  appendTable(con, paste0(tableName, tableSuffix), x6)
   return(x6)}
 
 
 #' @export
-getAuthorsAffiliations = function(pmXml, pmids, con, idx = NULL,
+getAuthorsAffiliations = function(pmXml, pmids, con, tableSuffix = '',
                                   tableNames = c('authors', 'affiliations')) {
-  if (is.null(idx)) {
-    idx = 1:length(pmXml)}
-
-  x2 = xml_find_all(pmXml[idx], './/Author')
-  n_authors = xml_length(xml_find_first(pmXml[idx], './/AuthorList'))
+  x2 = xml_find_all(pmXml, './/Author')
+  n_authors = xml_length(xml_find_first(pmXml, './/AuthorList'))
 
   # will miss orcid ids that aren't first, but way faster than the alternative,
   # and ISNI and GRID ids refer to institutions not authors anyway
   x3 = xml_find_first(x2, './/Identifier')
 
   dAuthors = data.table(
-    pmid = rep.int(pmids[idx], n_authors),
+    pmid = rep.int(pmids, n_authors),
     last_name = xml_text(xml_find_first(x2, './/LastName')),
     fore_name = xml_text(xml_find_first(x2, './/ForeName')),
     initials = xml_text(xml_find_first(x2, './/Initials')),
@@ -166,19 +202,15 @@ getAuthorsAffiliations = function(pmXml, pmids, con, idx = NULL,
   dAuthors[, author_pos := 1:.N, by = pmid]
   setcolorder(dAuthors, c('pmid', 'author_pos'))
 
-  affiliations = xml_text(xml_find_all(x2, './/AffiliationInfo'))
-  # because affiliations are not in their own list, I can't see a way around the
-  # slow foreach loop to know how many affiliations per author
-  n_affiliations = foreach(i = 1:length(x2), .combine = c) %do% {
-    length(xml_find_all(x2[i], './/AffiliationInfo'))}
+  x4 = xml_find_all(x2, './/AffiliationInfo', flatten = FALSE) # new xml2 syntax
+  n_affiliations = sapply(x4, length)
 
-  dAffils = dAuthors[rep.int(1:nrow(dAuthors), n_affiliations), .(pmid, author_pos)]
-  dAffils[, affiliation := affiliations]
+  dAffils = dAuthors[rep.int(1:nrow(dAuthors), n_affiliations),
+                     .(pmid, author_pos)]
+  dAffils[, affiliation := unlist(lapply(x4, xml_text))]
 
-  # TODO: should I call unique on these?
-  if (!is.null(con)) {
-    DBI::dbAppendTable(con, tableNames[1L], dAuthors)
-    DBI::dbAppendTable(con, tableNames[2L], dAffils)}
+  appendTable(con, paste0(tableNames[1L], tableSuffix), dAuthors)
+  appendTable(con, paste0(tableNames[2L], tableSuffix), dAffils)
   return(list(dAuthors, dAffils))}
 
 
@@ -188,8 +220,10 @@ getEmptyDt = function(tableName) {
   ai = as.integer()
   d = switch(
     tableName,
+    deleted = data.table(filename = ac, pmid = ai),
     article_ids = data.table(filename = ac, index = ai, doi = ac, pmc = ac,
                              pmid = ai),
+    medline = data.table(pmid = ai, status = ac),
     titles_journals = data.table(pmid = ai, title = ac, journal_full = ac,
                                  journal_abbrev = ac),
     pub_types = data.table(pmid = ai, pub_type = ac, pub_type_id = ac),
@@ -197,6 +231,7 @@ getEmptyDt = function(tableName) {
                            pub_date = data.table::as.IDate(ai)),
     mesh_terms = data.table(pmid = ai, term = ac, term_id = ac,
                             major_topic = ac),
+    comments = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
     abstracts = data.table(pmid = ai, text = ac, label = ac, nlm_category = ac,
                            copyright = ac),
     authors = data.table(pmid = ai, author_pos = ai, last_name = ac,
@@ -206,141 +241,111 @@ getEmptyDt = function(tableName) {
 
 
 #' @export
-processPubmedXml = function(inputDir, dbName, logPath = NULL, idx = NULL,
-                            overwrite = TRUE) {
-  filenames = list.files(inputDir, '.xml.gz$')
-
-  if (!is.null(dbName) && isTRUE(overwrite)) {
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbName)
-    tableNames = c('article_ids', 'titles_journals', 'pub_types', 'pub_dates',
-                   'mesh_terms', 'abstracts', 'authors', 'affiliations')
-    for (tableName in tableNames) {
-      DBI::dbWriteTable(con, tableName, getEmptyDt(tableName), overwrite = TRUE)}}
-
-  exitNames = c('finished', 'failed')
-  writeLogFile(logPath, sprintf('%s started', Sys.time()), append = FALSE)
-
-  r = foreach(filename = filenames) %dopar% {
-    # create separate connection for each process
-    if (is.null(dbName)) {
-      con = NULL
-    } else {
-      con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbName)}
-
-    x0 = xml2::read_xml(file.path(inputDir, filename))
-    pmXml = xml_find_all(x0, './/PubmedArticle')
-
-    ex = tryCatch({getArticleIds(pmXml, filename, con)}, error = function(e) NULL)
-    writeLogFile(logPath, sprintf('%s %s article_ids for %s',
-                                  Sys.time(), exitNames[is.null(ex) + 1L], filename))
-
-    if (!is.null(ex)) {
-      pmids = ex$pmid
-
-      ex = tryCatch({getTitlesJournals(pmXml, pmids, con)}, error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s titles_journals for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))
-
-      ex = tryCatch({getPubTypes(pmXml, pmids, con)}, error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s pub_types for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))
-
-      ex = tryCatch({getPubDates(pmXml, pmids, con)}, error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s pub_dates for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))
-
-      ex = tryCatch({getMeshTerms(pmXml, pmids, con)}, error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s mesh_terms for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))
-
-      ex = tryCatch({getAbstracts(pmXml, pmids, con)}, error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s abstracts for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))
-
-      ex = tryCatch({getAuthorsAffiliations(pmXml, pmids, con, idx)}, error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s authors and affiliations for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))
-    }
-  }
-
-  writeLogFile(logPath, sprintf('%s finished', Sys.time()))
-  invisible(0)}
-
-
-#' @export
 getFailed = function(logPath) {
-  d = data.table::fread(logPath, sep = NULL, header = FALSE)[2:(.N - 1)]
-  d = d[stringr::str_detect(V1, ' failed ')]
-  d[, split_list := stringr::str_split(V1, ' ')]
-  d[, `:=`(step = sapply(split_list, function(x) x[4]),
-           filename = sapply(split_list, function(x) x[length(x)]))]
-  d = d[order(filename), .(step, filename)]
+  d = data.table::fread(logPath, na.strings = '', logical01 = TRUE)
+  d = d[(status), .(filename, step)][order(filename)]
   return(d)}
 
 
-#' @export
-reprocessPubmedSingle = function(inputDir, filename, steps, dbName,
-                                 logPath, idx, tableNames) {
-  exitNames = c('finished', 'failed')
-  if (is.null(dbName)) {
+processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
+                                tableSuffix = '', dbname = NULL, ...) {
+
+  if ('all' %in% steps) {
+    stepsKeep = c('deleted', 'article_ids', 'medline', 'titles_journals',
+                  'pub_types', 'pub_dates', 'mesh_terms', 'comments',
+                  'abstracts', 'authors_affiliations')
+  } else {
+    stepsKeep = steps}
+
+  writeLogFile(logPath, data.table(filename = filename, step = 'start', status = 0))
+  # create separate connection for each parallel process
+  if (is.null(dbname)) {
     con = NULL
   } else {
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbName)}
+    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)}
 
-  x0 = xml2::read_xml(file.path(inputDir, filename))
+  x0 = xml2::read_xml(file.path(xmlDir, filename))
   pmXml = xml_find_all(x0, './/PubmedArticle')
+  writeLogFile(logPath, data.table(filename, 'read_xml', 0))
 
-  ex = tryCatch({getArticleIds(pmXml, filename, NULL)}, error = function(e) NULL)
-  writeLogFile(logPath, sprintf('%s %s article_ids for %s',
-                                Sys.time(), exitNames[is.null(ex) + 1L], filename))
+  if ('deleted' %in% stepsKeep) {
+    ex = tryCatch({getDeleted(x0, filename, con, tableSuffix)},
+                  error = function(e) NULL)
+    writeLogFile(logPath, data.table(filename, 'deleted', is.null(ex)))}
+
+  conNow = if ('article_ids' %in% stepsKeep) con else NULL
+  ex = tryCatch({getArticleIds(pmXml, filename, conNow, tableSuffix)},
+                error = function(e) NULL)
+  writeLogFile(logPath, data.table(filename, 'article_ids', is.null(ex)))
 
   if (!is.null(ex)) {
     pmids = ex$pmid
+    getFuncs = c(medline = getMedlineStatus,
+                 titles_journals = getTitlesJournals,
+                 pub_types = getPubTypes,
+                 pub_dates = getPubDates,
+                 mesh_terms = getMeshTerms,
+                 comments = getComments,
+                 abstracts = getAbstracts,
+                 authors_affiliations = getAuthorsAffiliations)
+    getFuncs = getFuncs[names(getFuncs) %in% stepsKeep]
 
-    if ('abstracts' %in% steps) {
-      ex = tryCatch({getAbstracts(pmXml, pmids, con, tableNames['abstracts'])},
+    r = foreach(getFunc = getFuncs, step = names(getFuncs)) %do% {
+      ex = tryCatch({getFunc(pmXml, pmids, con, tableSuffix)},
                     error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s abstracts for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))}
+      writeLogFile(logPath, data.table(filename, step, is.null(ex)))}}
 
-    if ('authors' %in% steps) {
-      ex = tryCatch({getAuthorsAffiliations(pmXml, pmids, con, idx,
-                                            tableNames[c('authors', 'affiliations')])},
-                    error = function(e) NULL)
-      writeLogFile(logPath, sprintf('%s %s authors and affiliations for %s',
-                                    Sys.time(), exitNames[is.null(ex) + 1L], filename))}
-  }
-
+  writeLogFile(logPath, data.table(filename, 'finish', 0))
   invisible(0)}
 
 
 #' @export
-reprocessPubmedXml = function(inputDir, dbName, logPath, idx, dFailed) {
-  steps = c('abstracts', 'authors', 'affiliations')
-  tableNames = paste0(steps, '_2')
-  names(tableNames) = steps
+processPubmedXml = function(xmlDir, xmlFiles, logPath = NULL, tableSuffix = '',
+                            overwrite = FALSE, dbname = NULL, ...) {
 
-  if (!is.null(dbName)) {
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbName)
-    ac = as.character()
-    ai = as.integer()
+  xmlFiles = unique(xmlFiles)
 
-    abstracts = data.table(pmid = ai, text = ac, label = ac, nlm_category = ac,
-                           copyright = ac)
-    authors = data.table(pmid = ai, author_pos = ai, last_name = ac,
-                         fore_name = ac, initials = ac, collective_name = ac)
-    affiliations = data.table(pmid = ai, author_pos = ai, affiliation = ac)
+  if (is.character(xmlFiles)) {
+    xmlInfo = data.table(filename = xmlFiles, step = 'all')
 
-    DBI::dbWriteTable(con, tableNames['abstracts'], abstracts, overwrite = TRUE)
-    DBI::dbWriteTable(con, tableNames['authors'], authors, overwrite = TRUE)
-    DBI::dbWriteTable(con, tableNames['affiliations'], affiliations, overwrite = TRUE)
-  }
+  } else if (is.data.frame(xmlFiles)) {
+    stopifnot(sort(colnames(xmlFiles)) == c('filename', 'step'),
+              tableSuffix != '')
+    xmlInfo = data.table(xmlFiles)
 
-  writeLogFile(logPath, sprintf('%s started', Sys.time()), append = FALSE)
-  r = foreach(filenameNow = unique(dFailed$filename)) %dopar% {
-    steps = dFailed[filename == filenameNow]$step
-    reprocessPubmedSingle(inputDir, filenameNow, steps, dbName,
-                          logPath, idx, tableNames)}
+  } else {
+    stop(paste('xmlFiles must be a character vector of filenames',
+               'or a data.frame with columns filename and step.'))}
 
-  writeLogFile(logPath, sprintf('%s finished', Sys.time()))
+  stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
+
+  if (!is.null(dbname)) {
+    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+    tableNames = c('deleted', 'article_ids', 'medline', 'titles_journals',
+                   'pub_types', 'pub_dates', 'mesh_terms', 'comments',
+                   'abstracts', 'authors', 'affiliations')
+
+    tablesExist = sapply(tableNames, function(x) DBI::dbExistsTable(con, tableName))
+    stopifnot(!any(tablesExist) || isTRUE(overwrite))
+
+    for (tableName in tableNames) {
+      DBI::dbWriteTable(con, paste0(tableName, tableSuffix),
+                        getEmptyDt(tableName), overwrite = TRUE)}}
+
+  writeLogFile(logPath, data.table(filename = 'all', step = 'start', status = 0),
+               append = FALSE)
+
+  r = foreach(filenameNow = unique(xmlInfo$filename)) %dopar% {
+    steps = xmlInfo[filename == filenameNow]$step
+    processPubmedXmlCore(xmlDir, filenameNow, steps, logPath, tableSuffix,
+                         dbname, ...)}
+
+  if (!is.null(con)) {
+    d = data.table(xml_file = unique(xmlInfo$filename),
+                   datetime_processed = Sys.time())
+    DBI::dbWriteTable(con, paste0('xml_processed', tableSuffix), d,
+                      overwrite = TRUE)}
+
+  writeLogFile(logPath, data.table('all', 'finish', 0))
   invisible(0)}
+
