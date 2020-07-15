@@ -6,8 +6,8 @@ NULL
 
 globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filename',
                   'filenameNow', 'i', 'id_type', 'm', 'pmid', 'pub_date',
-                  'pubmed', 'step', 'y', 'orcid', 'source', 'xml_file',
-                  'status', 'getFunc'))
+                  'pubmed', 'step', 'y', 'source', 'identifier',
+                  'xml_file', 'status', 'getFunc'))
 
 
 writeLogFile = function(logPath, x = NULL, append = TRUE, logical01 = TRUE, ...) {
@@ -178,40 +178,101 @@ getAbstracts = function(pmXml, pmids, con, tableSuffix = '',
 
 #' @export
 getAuthorsAffiliations = function(pmXml, pmids, con, tableSuffix = '',
-                                  tableNames = c('authors', 'affiliations')) {
+                                  tableNames = c('authors', 'affiliations',
+                                                 'author_identifiers',
+                                                 'affiliation_identifiers')) {
+  timeStart = Sys.time()
   x2 = xml_find_all(pmXml, './/Author')
   n_authors = xml_length(xml_find_first(pmXml, './/AuthorList'))
 
-  # will miss orcid ids that aren't first, but way faster than the alternative,
-  # and ISNI and GRID ids refer to institutions not authors anyway
-  x3 = xml_find_first(x2, './/Identifier')
+  # orcid ids seem to always come first if they exist
+  # x3 = xml_find_first(x2, './/Identifier')
 
+  # get authors
   dAuthors = data.table(
     pmid = rep.int(pmids, n_authors),
     last_name = xml_text(xml_find_first(x2, './/LastName')),
     fore_name = xml_text(xml_find_first(x2, './/ForeName')),
     initials = xml_text(xml_find_first(x2, './/Initials')),
     suffix = xml_text(xml_find_first(x2, './/Suffix')),
-    orcid = xml_text(x3),
-    source = xml_attr(x3, 'Source'),
+    # orcid = xml_text(x3),
+    # source = xml_attr(x3, 'Source'),
     collective_name = xml_text(xml_find_first(x2, './/CollectiveName')))
 
-  dAuthors[source != 'ORCID', orcid := NA]
-  dAuthors[, source := NULL]
+  # dAuthors[source != 'ORCID', orcid := NA]
+  # dAuthors[, source := NULL]
 
   dAuthors[, author_pos := 1:.N, by = pmid]
   setcolorder(dAuthors, c('pmid', 'author_pos'))
 
-  x4 = xml_find_all(x2, './/AffiliationInfo', flatten = FALSE) # new xml2 syntax
+  # get affiliations
+  x4 = xml_find_all(x2, './/Affiliation', flatten = FALSE)
   n_affiliations = sapply(x4, length)
 
   dAffils = dAuthors[rep.int(1:nrow(dAuthors), n_affiliations),
                      .(pmid, author_pos)]
+  dAffils[, affiliation_pos := 1:.N, by = .(pmid, author_pos)]
   dAffils[, affiliation := unlist(lapply(x4, xml_text))]
 
+  # get affiliation identifiers
+  # have to know which identifier belongs to which affiliation
+  x5 = xml_find_all(x2, './/AffiliationInfo')
+  x6 = xml_find_all(x5, './/Identifier', flatten = FALSE)
+  n_affil_ids = sapply(x6, length)
+
+  dAffilIds = data.table(
+    affil_idx = rep.int(1:length(x6), n_affil_ids),
+    source = unlist(lapply(x6, function(x) xml_attr(x, 'Source'))),
+    identifier = unlist(lapply(x6, xml_text)))
+
+  dAffils[, affil_idx := 1:.N]
+  dAffilIds = merge(dAffilIds,
+                    dAffils[, .(affil_idx, pmid, author_pos, affiliation_pos)],
+                    by = 'affil_idx')
+  dAffils[, affil_idx := NULL]
+  dAffilIds[, affil_idx := NULL]
+  setcolorder(dAffilIds, c('pmid', 'author_pos', 'affiliation_pos',
+                           'source', 'identifier'))
+
+  # get author identifiers
+  # have to exclude affiliation identifiers
+  # currently just orcid, so could be much simpler, but this should be robust
+  x7 = xml_find_all(x2, './/Identifier', flatten = FALSE)
+  n_total_ids = sapply(x7, length)
+
+  dAllIds = data.table(
+    author_idx = rep.int(1:length(x7), n_total_ids),
+    source = unlist(lapply(x7, function(x) xml_attr(x, 'Source'))),
+    identifier = unlist(lapply(x7, xml_text)))
+
+  dAuthors[, author_idx := 1:.N]
+  dAllIds = merge(dAllIds, dAuthors[, .(author_idx, pmid, author_pos)],
+                  by = 'author_idx')
+
+  dAuthors[, author_idx := NULL]
+  dAllIds[, author_idx := NULL]
+
+  x8 = dAffilIds[, .(n_affil_ids = .N), by = .(pmid, author_pos)]
+  x9 = dAllIds[, .(n_total_ids = .N), by = .(pmid, author_pos)]
+  x10 = merge(x9, x8, by = c('pmid', 'author_pos'), all.x = TRUE)
+  x10[is.na(n_affil_ids), n_affil_ids := 0]
+  x10[, n_author_ids := n_total_ids - n_affil_ids]
+  x11 = x10[n_author_ids > 0,
+            .(id_pos = 1:n_author_ids),
+            by = .(pmid, author_pos)]
+
+  dAllIds[, id_pos := 1:.N, by = .(pmid, author_pos)]
+  dAuthorIds = merge(dAllIds, x11, by = c('pmid', 'author_pos', 'id_pos'))
+  dAuthorIds[, id_pos := NULL]
+
+  # append to db
   appendTable(con, paste0(tableNames[1L], tableSuffix), dAuthors)
   appendTable(con, paste0(tableNames[2L], tableSuffix), dAffils)
-  return(list(dAuthors, dAffils))}
+  appendTable(con, paste0(tableNames[3L], tableSuffix), dAuthorIds)
+  appendTable(con, paste0(tableNames[4L], tableSuffix), dAffilIds)
+  r = list(authors = dAuthors, affiliations = dAffils,
+           author_identifiers = dAuthorIds, affiliations = dAffilIds)
+  return(r)}
 
 
 #' @export
@@ -236,7 +297,12 @@ getEmptyDt = function(tableName) {
                            copyright = ac),
     authors = data.table(pmid = ai, author_pos = ai, last_name = ac,
                          fore_name = ac, initials = ac, collective_name = ac),
-    affiliations = data.table(pmid = ai, author_pos = ai, affiliation = ac))
+    affiliations = data.table(pmid = ai, author_pos = ai, affiliation = ac),
+    author_identifiers = data.table(pmid = ai, author_pos = ai, source = ac,
+                                    identifier = ac),
+    affiliation_identifiers = data.table(pmid = ai, author_pos = ai,
+                                         affiliation_pos = ai, source = ac,
+                                         identifier = ac))
   return(d)}
 
 
@@ -245,107 +311,3 @@ getFailed = function(logPath) {
   d = data.table::fread(logPath, na.strings = '', logical01 = TRUE)
   d = d[(status), .(filename, step)][order(filename)]
   return(d)}
-
-
-processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
-                                tableSuffix = '', dbname = NULL, ...) {
-
-  if ('all' %in% steps) {
-    stepsKeep = c('deleted', 'article_ids', 'medline', 'titles_journals',
-                  'pub_types', 'pub_dates', 'mesh_terms', 'comments',
-                  'abstracts', 'authors_affiliations')
-  } else {
-    stepsKeep = steps}
-
-  writeLogFile(logPath, data.table(filename = filename, step = 'start', status = 0))
-  # create separate connection for each parallel process
-  if (is.null(dbname)) {
-    con = NULL
-  } else {
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)}
-
-  x0 = xml2::read_xml(file.path(xmlDir, filename))
-  pmXml = xml_find_all(x0, './/PubmedArticle')
-  writeLogFile(logPath, data.table(filename, 'read_xml', 0))
-
-  if ('deleted' %in% stepsKeep) {
-    ex = tryCatch({getDeleted(x0, filename, con, tableSuffix)},
-                  error = function(e) NULL)
-    writeLogFile(logPath, data.table(filename, 'deleted', is.null(ex)))}
-
-  conNow = if ('article_ids' %in% stepsKeep) con else NULL
-  ex = tryCatch({getArticleIds(pmXml, filename, conNow, tableSuffix)},
-                error = function(e) NULL)
-  writeLogFile(logPath, data.table(filename, 'article_ids', is.null(ex)))
-
-  if (!is.null(ex)) {
-    pmids = ex$pmid
-    getFuncs = c(medline = getMedlineStatus,
-                 titles_journals = getTitlesJournals,
-                 pub_types = getPubTypes,
-                 pub_dates = getPubDates,
-                 mesh_terms = getMeshTerms,
-                 comments = getComments,
-                 abstracts = getAbstracts,
-                 authors_affiliations = getAuthorsAffiliations)
-    getFuncs = getFuncs[names(getFuncs) %in% stepsKeep]
-
-    r = foreach(getFunc = getFuncs, step = names(getFuncs)) %do% {
-      ex = tryCatch({getFunc(pmXml, pmids, con, tableSuffix)},
-                    error = function(e) NULL)
-      writeLogFile(logPath, data.table(filename, step, is.null(ex)))}}
-
-  writeLogFile(logPath, data.table(filename, 'finish', 0))
-  invisible(0)}
-
-
-#' @export
-processPubmedXml = function(xmlDir, xmlFiles, logPath = NULL, tableSuffix = '',
-                            overwrite = FALSE, dbname = NULL, ...) {
-
-  xmlFiles = unique(xmlFiles)
-
-  if (is.character(xmlFiles)) {
-    xmlInfo = data.table(filename = xmlFiles, step = 'all')
-
-  } else if (is.data.frame(xmlFiles)) {
-    stopifnot(sort(colnames(xmlFiles)) == c('filename', 'step'),
-              tableSuffix != '')
-    xmlInfo = data.table(xmlFiles)
-
-  } else {
-    stop(paste('xmlFiles must be a character vector of filenames',
-               'or a data.frame with columns filename and step.'))}
-
-  stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
-
-  if (!is.null(dbname)) {
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
-    tableNames = c('deleted', 'article_ids', 'medline', 'titles_journals',
-                   'pub_types', 'pub_dates', 'mesh_terms', 'comments',
-                   'abstracts', 'authors', 'affiliations')
-
-    tablesExist = sapply(tableNames, function(x) DBI::dbExistsTable(con, tableName))
-    stopifnot(!any(tablesExist) || isTRUE(overwrite))
-
-    for (tableName in tableNames) {
-      DBI::dbWriteTable(con, paste0(tableName, tableSuffix),
-                        getEmptyDt(tableName), overwrite = TRUE)}}
-
-  writeLogFile(logPath, data.table(filename = 'all', step = 'start', status = 0),
-               append = FALSE)
-
-  r = foreach(filenameNow = unique(xmlInfo$filename)) %dopar% {
-    steps = xmlInfo[filename == filenameNow]$step
-    processPubmedXmlCore(xmlDir, filenameNow, steps, logPath, tableSuffix,
-                         dbname, ...)}
-
-  if (!is.null(con)) {
-    d = data.table(xml_file = unique(xmlInfo$filename),
-                   datetime_processed = Sys.time())
-    DBI::dbWriteTable(con, paste0('xml_processed', tableSuffix), d,
-                      overwrite = TRUE)}
-
-  writeLogFile(logPath, data.table('all', 'finish', 0))
-  invisible(0)}
-
