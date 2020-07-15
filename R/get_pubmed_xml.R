@@ -1,5 +1,3 @@
-library(RCurl)
-library(stringr)
 
 getPubmedXml = function(startFile = 1, maxFiles = NULL, skipBaseline = FALSE, skipUpdates = FALSE){
   urlBaseline = "ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/"
