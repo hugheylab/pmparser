@@ -1,40 +1,42 @@
-library(data.table)
-library(jsonlite)
-library(tools)
+#function to read newest open citations snapshot to a data.table
 
-getCitations <- function(filePath = NULL){
+getCitations = function(filePath = NULL){
   if (is.null(filePath)) {
     #api base
-    baseUrl <- "https://api.figshare.com/v2"
+    baseUrl = 'https://api.figshare.com/v2'
 
     #getting content from iCite api
-    iCiteUrl <- paste(baseUrl, "/collections/4586573/articles", sep = "")
-    iCiteJson <- data.table(fromJSON(iCiteUrl))
+    iCiteUrl = paste(baseUrl, '/collections/4586573/articles', sep = '')
+    iCiteJson = data.table::data.table(jsonlite::fromJSON(iCiteUrl))
 
     #extracting content from most recent iCite snapshot
-    latestId <- as.character(
+    latestId = as.character(
       iCiteJson[published_date == max(published_date), id])
-    latestUrl <- paste(c(baseUrl, "/articles/", latestId, "/files"),
-                       collapse = "")
-    latestJson <- data.table(fromJSON(latestUrl))
+    latestUrl = paste(c(baseUrl, '/articles/', latestId, '/files'),
+                       collapse = '')
+    latestJson = data.table::data.table(jsonlite::fromJSON(latestUrl))
 
     #extracting download url for open_citation_collection.zip
-    downloadUrl <- latestJson[name == "open_citation_collection.zip",
-                              download_url]
+    downloadUrl = latestJson[name == 'open_citation_collection.zip',
+                               download_url]
     #downloading to temporary file
-    temp <- tempfile(fileext = ".zip")
-    download.file(downloadUrl, temp, mode = "wb")
+    downloadFile = tempfile(fileext = '.zip')
+    download.file(downloadUrl, downloadFile, mode = 'wb')
 
     #preprocessing zip file with shell and freading to table
-    citationsTbl <- fread(cmd = paste(c("unzip -p", temp), collapse = " "))
+    citationsTbl = data.table::fread(cmd = paste(c('unzip -p', downloadFile),
+                                      collapse = ' '))
+
+    #deleting temp file
+    unlink(downloadFile)
 
   } else { #in case we want to use a local file
-    citationsTbl <- ifelse(file_ext(filePath) == "zip",
-                           fread(cmd = paste(c("unzip -p", filePath),
-                                             collapse = " ")),
-                           fread(filePath))}
+    citationsTbl = ifelse(tools::file_ext(filePath) == 'zip',
+                           data.table::fread(cmd = paste(c('unzip -p', filePath),
+                                       collapse = ' ')),
+                           data.table::fread(filePath))}
 
   setnames(citationsTbl, c('citing_pmid', 'cited_pmid'))
 
-  return(citationsTbl)
-}
+  return(citationsTbl)}
+
