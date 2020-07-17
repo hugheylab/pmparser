@@ -20,6 +20,7 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
   # Extracts a string list of file names via regex
   baselineFileList = stringr::str_extract_all(baseline, pattern = 'pubmed20n.*\\.gz(?=\n)')
   updateFileList = stringr::str_extract_all(updates, pattern = 'pubmed20n.*\\.gz(?=\n)')
+  i = 1
 
   # Iterates over baseline files and checks to decide to download or not
   for (baselineFile in baselineFileList[[1]]){
