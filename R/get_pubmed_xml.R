@@ -26,13 +26,13 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
   for (baselineFile in baselineFileList[[1]]){
     if ((is.null(startFile) || i >= startFile) && (is.null(lastFile) || i <= lastFile) && !skipBaseline){
       if (!file.exists(file.path(dataDir, baselineFile))){
-        download.file(str_c(urlBaseline, baselineFile), file.path(dataDir, baselineFile))}}
+        download.file(stringr::str_c(urlBaseline, baselineFile), file.path(dataDir, baselineFile))}}
     i = i + 1}
 
   # Iterates over update files and checks to decide to download or not
   for (updateFile in updateFileList[[1]]){
     if ((is.null(startFile) || i >= startFile) && (is.null(lastFile) || i <= lastFile) && !skipUpdates){
       if (!file.exists(file.path(dataDir, updateFile))){
-        download.file(str_c(urlUpdates, updateFile), file.path(dataDir, updateFile))}}
+        download.file(stringr::str_c(urlUpdates, updateFile), file.path(dataDir, updateFile))}}
     i = i + 1}
 }
