@@ -1,5 +1,5 @@
 # This function grabs and downloads all files from the FTP server to the data subfolder.
-
+#' @export
 getPubmedXml = function(startFile = 1, # Which indexed file number to start with downloading (compared against i)
                         lastFile = NULL, # Which indexed file number to stop downloading at
                         skipBaseline = FALSE, # Indicates if you wish to skip the baseline downloads all together
