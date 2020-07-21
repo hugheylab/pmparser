@@ -54,8 +54,13 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 
 
 #' @export
-processPubmedXml = function(xmlDir, xmlFiles, logPath = NULL, tableSuffix = '',
+processPubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL, tableSuffix = '',
                             overwrite = FALSE, dbname = NULL, ...) {
+
+  if(is.null(xmlFiles)){
+    xmlFiles = list.files(file.path(xmlDir))
+    xmlFiles = xmlFiles[endsWith(xmlFiles, '.xml.gz')]
+  }
 
   xmlInfo = getXmlInfo(xmlFiles, tableSuffix)
   stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
