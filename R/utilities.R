@@ -22,7 +22,6 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   if(is.null(xmlFiles)){
     xmlFiles = list.files(xmlDir, pattern = '.*.xml.gz')
-    xmlFiles = xmlFiles[endsWith(xmlFiles, '.xml.gz')]
     xmlInfo = data.table(filename = unique(xmlFiles), step = 'all')}
 
   else if (is.character(xmlFiles)) {
