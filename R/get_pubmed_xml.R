@@ -23,7 +23,8 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
                         lastFile = NULL, # Which indexed file number to stop downloading at
                         skipBaseline = FALSE, # Indicates if you wish to skip the baseline downloads all together
                         skipUpdates = FALSE, # Indicates if you wish to skip the update downloads all together
-                        dataDir = 'data' #Directory to save the results into
+                        dataDir = 'data', # Directory to save the results into
+                        dbname = NULL # Database name to update, if null skips database step
                         ){
 
   # Set the url variables to the FTP server folder links
@@ -41,6 +42,8 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
   updateFileList = stringr::str_extract_all(updates, pattern = 'pubmed20n.*\\.gz.*(?=\n)')
   i = 1
 
+  downloadedFiles = c()
+
   # Iterates over baseline files and checks to decide to download or not
   for (baselineFile in baselineFileList[[1]]){
     if ((is.null(startFile) || i >= startFile) && (is.null(lastFile) || i <= lastFile) && !skipBaseline){
@@ -49,7 +52,9 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
         if(!endsWith(baselineFile, '.xml.gz')){
           compare = checkSumCompare(dataDir, baselineFile)
           if(!compare){
-            stringr::str_c('COMPARE NOT TRUE FOR MD5 SUM: ', baselineFile)}}}
+            View(stringr::str_c('COMPARE NOT TRUE FOR MD5 SUM: ', baselineFile))}
+          else {
+            downloadedFiles = c(downloadedFiles, sub('.md5','', baselineFile))}}}
     if(!endsWith(baselineFile, '.xml.gz')){
       i = i + 1}}
 
@@ -61,8 +66,26 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
       if(!endsWith(updateFile, '.xml.gz')){
         compare = checkSumCompare(dataDir, updateFile)
         if(!compare){
-          stringr::str_c('COMPARE NOT TRUE FOR MD5 SUM: ', updateFile)}}}
+          View(stringr::str_c('COMPARE NOT TRUE FOR MD5 SUM: ', updateFile))}
+        else {
+          downloadedFiles = c(downloadedFiles, sub('.md5','', updateFile))}}}
     if(!endsWith(updateFile, '.xml.gz')){
       i = i + 1}}
 
+  if(!is.null(dbname)){
+
+    # Sys.setenv(PGHOST = "pubmed-parsing-test.choxmvghdfxg.us-east-2.rds.amazonaws.com")
+    # Sys.setenv(PGPORT = "5432")
+    # Sys.setenv(PGUSER = "postgres")
+    # Sys.setenv(PGPASSWORD = "password")
+    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname)
+    d = data.table::data.table(xml_file = unique(downloadedFiles),
+                   processed = FALSE,
+                   datetime_download = Sys.time(),
+                   datetime_processed = NULL)
+    d = d[!endsWith(xml_file, 'md5')]
+    DBI::dbWriteTable(con, 'xml_processed', d,
+                      overwrite = FALSE, append = TRUE)}
+
 }
+
