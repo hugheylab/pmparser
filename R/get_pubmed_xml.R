@@ -49,7 +49,7 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
         if(!endsWith(baselineFile, '.xml.gz')){
           compare = checkSumCompare(dataDir, baselineFile)
           if(!compare){
-            'COMPARE NOT TRUE FOR MD5 SUM'}}}
+            stringr::str_c('COMPARE NOT TRUE FOR MD5 SUM: ', baselineFile)}}}
     if(!endsWith(baselineFile, '.xml.gz')){
       i = i + 1}}
 
@@ -57,8 +57,12 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
   for (updateFile in updateFileList[[1]]){
     if ((is.null(startFile) || i >= startFile) && (is.null(lastFile) || i <= lastFile) && !skipUpdates){
       if (!file.exists(file.path(dataDir, updateFile))){
-        download.file(stringr::str_c(urlUpdates, updateFile), file.path(dataDir, updateFile))}}
-    if(endsWith(updateFile, '.xml.gz')){
+        download.file(stringr::str_c(urlBaseline, updateFile), file.path(dataDir, updateFile))}
+      if(!endsWith(updateFile, '.xml.gz')){
+        compare = checkSumCompare(dataDir, updateFile)
+        if(!compare){
+          stringr::str_c('COMPARE NOT TRUE FOR MD5 SUM: ', updateFile)}}}
+    if(!endsWith(updateFile, '.xml.gz')){
       i = i + 1}}
 
 }
