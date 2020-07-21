@@ -18,7 +18,13 @@ appendTable = function(con, tableName, d) {
   DBI::dbAppendTable(con, tableName, d)}
 
 
-getXmlInfo = function(xmlFiles, tableSuffix) {
+getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
+
+  if(is.null(xmlFiles)){
+    xmlFiles = list.files(file.path(xmlDir))
+    xmlFiles = xmlFiles[endsWith(xmlFiles, '.xml.gz')]
+  }
+
   if (is.character(xmlFiles)) {
     xmlInfo = data.table(filename = unique(xmlFiles), step = 'all')
 
@@ -31,6 +37,7 @@ getXmlInfo = function(xmlFiles, tableSuffix) {
     stop(paste('xmlFiles must be a character vector of filenames',
                'or a data.frame with columns filename and step.'))}
 
+  stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
   return(xmlInfo)}
 
 
