@@ -21,11 +21,11 @@ appendTable = function(con, tableName, d) {
 getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   if(is.null(xmlFiles)){
-    xmlFiles = list.files(file.path(xmlDir))
+    xmlFiles = list.files(xmlDir, pattern = '.*.xml.gz')
     xmlFiles = xmlFiles[endsWith(xmlFiles, '.xml.gz')]
-  }
+    xmlInfo = data.table(filename = unique(xmlFiles), step = 'all')}
 
-  if (is.character(xmlFiles)) {
+  else if (is.character(xmlFiles)) {
     xmlInfo = data.table(filename = unique(xmlFiles), step = 'all')
 
   } else if (is.data.frame(xmlFiles)) {
@@ -34,7 +34,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
     xmlInfo = unique(data.table(xmlFiles)[, .(filename, step)])
 
   } else {
-    stop(paste('xmlFiles must be a character vector of filenames',
+    stop(paste('xmlFiles must be null, a character vector of filenames, ',
                'or a data.frame with columns filename and step.'))}
 
   stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
