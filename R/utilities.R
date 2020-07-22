@@ -1,7 +1,7 @@
 #' @export
 getFailed = function(logPath) {
   d = data.table::fread(logPath, na.strings = '', logical01 = TRUE)
-  d = d[(status), .(filename, step)][order(filename)]
+  d = d[(status), .(xml_filename, step)][order(xml_filename)]
   return(d)}
 
 
@@ -20,23 +20,23 @@ appendTable = function(con, tableName, d) {
 
 getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
-  if(is.null(xmlFiles)){
+  if (is.null(xmlFiles)) {
     xmlFiles = list.files(xmlDir, pattern = '.*.xml.gz')
-    xmlInfo = data.table(filename = unique(xmlFiles), step = 'all')}
+    xmlInfo = data.table(xml_filename = unique(xmlFiles), step = 'all')
 
-  else if (is.character(xmlFiles)) {
-    xmlInfo = data.table(filename = unique(xmlFiles), step = 'all')
+  } else if (is.character(xmlFiles)) {
+    xmlInfo = data.table(xml_filename = unique(xmlFiles), step = 'all')
 
   } else if (is.data.frame(xmlFiles)) {
     stopifnot(all(c('filename', 'step') %in% colnames(xmlFiles)),
               tableSuffix != '')
-    xmlInfo = unique(data.table(xmlFiles)[, .(filename, step)])
+    xmlInfo = unique(data.table(xmlFiles)[, .(xml_filename, step)])
 
   } else {
-    stop(paste('xmlFiles must be null, a character vector of filenames, ',
-               'or a data.frame with columns filename and step.'))}
+    stop(paste('xmlFiles must be NULL, a character vector of filenames,',
+               'or a data.frame with columns xml_filename and step.'))}
 
-  stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
+  stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$xml_filename))))
   return(xmlInfo)}
 
 
