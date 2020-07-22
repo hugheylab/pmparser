@@ -19,6 +19,7 @@ Imports:
   DBI (>= 1.1.0),
   foreach (>= 1.5.0),
   iterators (>= 1.0.12),
+  jsonlite (>= 1.7.0),
   RCurl (>= 1.98),
   RPostgres (>= 1.2.0),
   stringr (>= 1.4.0),

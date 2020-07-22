@@ -11,7 +11,8 @@ globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow',
                   'affil_idx', 'person_idx', 'n_affil_ids', 'n_person_ids',
                   'n_total_ids', 'id_pos', 'md5_calculated', 'md5_provided',
                   'md5_match', 'subDir', 'group', 'f', 'nem', 'xml_filename',
-                  'md5_filename', 'xml_download', 'md5_download'))
+                  'md5_filename', 'xml_download', 'md5_download', 'name',
+                  'published_date'))
 
 
 processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
