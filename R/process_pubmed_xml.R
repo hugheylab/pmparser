@@ -19,21 +19,19 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
                                 tableSuffix = '', dbname = NULL, ...) {
 
   stepFuncs = getStepFuncs(steps)
-  writeLogFile(logPath, data.table(xml_filename = filename, step = 'start',
-                                   status = 0))
+  writeLogFile(logPath,
+               data.table(xml_filename = filename, step = 'start', status = 0))
 
-  if (is.null(dbname)) {
-    con = NULL
-  } else {
-    # create separate connection for each parallel process
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)}
+  # create separate connection for each parallel process
+  con = if (is.null(dbname)) NULL else
+    DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
 
   rawXml = xml2::read_xml(file.path(xmlDir, filename))
   writeLogFile(logPath, data.table(filename, 'read_xml', 0))
 
   step = 'pmid_status'
   conNow = if (step %in% names(stepFuncs)) con else NULL
-  ex = tryCatch({stepFuncs[[step]](rawXml, conNow, tableSuffix)},
+  ex = tryCatch({stepFuncs[[step]](rawXml, filename, conNow, tableSuffix)},
                 error = function(e) NULL)
   writeLogFile(logPath, data.table(filename, step, is.null(ex)))
 
@@ -45,6 +43,9 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
     ex = tryCatch({stepFunc(pmXml, pmids, con, tableSuffix)},
                   error = function(e) NULL)
     writeLogFile(logPath, data.table(filename, step, is.null(ex)))}
+
+  d = data.table(xml_filename = filename, datetime_processed = Sys.time())
+  appendTable(con, paste0('xml_processed', tableSuffix), d)
 
   writeLogFile(logPath, data.table(filename, 'finish', 0))
   invisible()}
@@ -58,22 +59,14 @@ processPubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
   xmlInfo = getXmlInfo(xmlFiles, tableSuffix)
 
   writeEmptyTables(tableSuffix, overwrite, dbname, ...)
-  writeLogFile(logPath, data.table(xml_filename = 'all', step = 'start',
-                                   status = 0),
+  writeLogFile(logPath,
+               data.table(xml_filename = 'all', step = 'start', status = 0),
                append = FALSE)
 
   r = foreach(filenameNow = unique(xmlInfo$xml_filename)) %dopar% {
     steps = xmlInfo[xml_filename == filenameNow]$step
     processPubmedXmlCore(xmlDir, filenameNow, steps, logPath, tableSuffix,
                          dbname, ...)}
-
-  if (!is.null(dbname)) {
-    # TODO: move this into the core function? currently ignores overwrite
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
-    d = data.table(xml_filename = unique(xmlInfo$xml_filename),
-                   datetime_processed = Sys.time())
-    DBI::dbWriteTable(con, paste0('xml_processed', tableSuffix), d,
-                      overwrite = TRUE)}
 
   writeLogFile(logPath, data.table('all', 'finish', 0))
   invisible()}

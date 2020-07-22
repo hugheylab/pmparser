@@ -1,6 +1,6 @@
 #' @export
-getPmidStatus = function(rawXml, con, tableSuffix = '',
-                         tableName = 'pmid_status'){#, filename = NULL) {
+getPmidStatus = function(rawXml, filename, con, tableSuffix = '',
+                         tableName = 'pmid_status'){
 
   x1 = xml_find_all(xml_find_all(rawXml, './/DeleteCitation'), './/PMID')
   x2 = data.table(pmid = xml_integer(x1))
@@ -12,8 +12,7 @@ getPmidStatus = function(rawXml, con, tableSuffix = '',
     status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
 
   x4 = rbind(x2, x3)
-  # if (!is.null(filename)) {
-  #   x4[, xml_filename := filename]}
+  x4[, xml_filename := filename]
 
   appendTable(con, paste0(tableName, tableSuffix), x4)
   return(list(pmXml, x4))}
@@ -22,7 +21,7 @@ getPmidStatus = function(rawXml, con, tableSuffix = '',
 #' @export
 getArticleId = function(pmXml, pmids, con, tableSuffix = '',
                         tableName = 'article_id') {
-  x1 = xml_find_first(pmXml, './/ArticleIdList') # assuming this comes before refs
+  x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
 
   x2 = xml_find_all(x1, './/ArticleId')

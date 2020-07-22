@@ -5,7 +5,8 @@ getFailed = function(logPath) {
   return(d)}
 
 
-writeLogFile = function(logPath, x = NULL, append = TRUE, logical01 = TRUE, ...) {
+writeLogFile = function(logPath, x = NULL, append = TRUE, logical01 = TRUE,
+                        ...) {
   if (is.null(logPath)) {
     return(invisible())}
   y = data.table(datetime = Sys.time(), x)

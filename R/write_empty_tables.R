@@ -1,10 +1,10 @@
-#' @export
+# #' @export
 getEmptyTables = function() {
   ac = as.character()
   ai = as.integer()
 
   r = list(
-    pmid_status = data.table(pmid = ai, status = ac),
+    pmid_status = data.table(pmid = ai, status = ac, xml_filename = ac),
 
     article_id = data.table(pmid = ai, id_type = ac, id_value = ac),
 
@@ -50,12 +50,15 @@ getEmptyTables = function() {
 
     investigator_affiliation_identifier = data.table(
       pmid = ai, investigator_pos = ai, affiliation_pos = ai, source = ac,
-      identifier = ac))
+      identifier = ac),
+
+    xml_processed = data.table(
+      xml_filename = ac, datetime_processed = as.POSIXct(ac)))
 
   return(r)}
 
 
-#' @export
+# #' @export
 writeEmptyTables = function(tableSuffix = '', overwrite = FALSE, dbname = NULL,
                             ...) {
   if (is.null(dbname)) {
@@ -63,7 +66,8 @@ writeEmptyTables = function(tableSuffix = '', overwrite = FALSE, dbname = NULL,
 
   con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
   emptyTables = getEmptyTables()
-  tablesExist = sapply(names(emptyTables), function(x) DBI::dbExistsTable(con, x))
+  tablesExist = sapply(names(emptyTables),
+                       function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
   for (i in 1:length(emptyTables)) {
