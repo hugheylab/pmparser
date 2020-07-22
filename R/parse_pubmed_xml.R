@@ -1,54 +1,44 @@
 #' @export
-getDeleted = function(xmlRaw, filename, con, tableSuffix = '',
-                      tableName = 'deleted') {
-  x1 = xml_find_all(xml_find_all(xmlRaw, './/DeleteCitation'), './/PMID')
-  if (length(x1) == 0) {
-    x2 = data.table(filename = as.character(), pmid = as.integer())
-  } else {
-    x2 = data.table(filename = filename, pmid = xml_integer(x1))
-    appendTable(con, paste0(tableName, tableSuffix), x2)}
-  return(x2)}
+getPmidStatus = function(rawXml, con, tableSuffix = '',
+                         tableName = 'pmid_status'){#, filename = NULL) {
+
+  x1 = xml_find_all(xml_find_all(rawXml, './/DeleteCitation'), './/PMID')
+  x2 = data.table(pmid = xml_integer(x1))
+  x2[, status := 'Deleted']
+
+  pmXml = xml_find_all(rawXml, './/PubmedArticle')
+  x3 = data.table(
+    pmid = xml_integer(xml_find_first(pmXml, './/PMID')),
+    status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
+
+  x4 = rbind(x2, x3)
+  # if (!is.null(filename)) {
+  #   x4[, xml_filename := filename]}
+
+  appendTable(con, paste0(tableName, tableSuffix), x4)
+  return(list(pmXml, x4))}
 
 
 #' @export
-getArticleIds = function(pmXml, filename, con, tableSuffix = '',
-                         tableName = 'article_ids') {
+getArticleId = function(pmXml, pmids, con, tableSuffix = '',
+                        tableName = 'article_id') {
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assuming this comes before refs
   nIds = xml_length(x1)
 
   x2 = xml_find_all(x1, './/ArticleId')
   x3 = data.table(
-    index = rep.int(1:length(pmXml), nIds),
-    id = xml_text(x2),
-    id_type = xml_attr(x2, 'IdType'))
+    pmid = rep.int(pmids, nIds),
+    id_type = xml_attr(x2, 'IdType'),
+    id_value = xml_text(x2))
+  x4 = x3[id_type %in% c('doi', 'pmc')]
 
-  x6 = data.table::dcast(
-    x3[id_type %in% c('pubmed', 'doi', 'pmc')],
-    index ~ id_type, value.var = 'id', fill = NA,
-    fun.aggregate = function(x) x[1L]) # 1 out of 30e6 articles
-
-  x6[, pmid := as.integer(pubmed)]
-  x6[, pubmed := NULL]
-  x6[, xml_file := filename]
-
-  # beware a pmid may have multiple doi versions
-  appendTable(con, paste0(tableName, tableSuffix), x6)
-  return(x6)}
+  appendTable(con, paste0(tableName, tableSuffix), x4)
+  return(x4)}
 
 
 #' @export
-getMedlineStatus = function(pmXml, pmids, con, tableSuffix = '',
-                            tableName = 'medline') {
-  x1 = data.table(
-    pmid = pmids,
-    status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
-  appendTable(con, paste0(tableName, tableSuffix), x1)
-  return(x1)}
-
-
-#' @export
-getPubDates = function(pmXml, pmids, con, tableSuffix = '',
-                       tableName = 'pub_dates') {
+getPubDate = function(pmXml, pmids, con, tableSuffix = '',
+                      tableName = 'pub_date') {
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
   x2 = xml_find_all(x1, './/PubMedPubDate')
@@ -69,8 +59,8 @@ getPubDates = function(pmXml, pmids, con, tableSuffix = '',
 
 
 #' @export
-getTitlesJournals = function(pmXml, pmids, con, tableSuffix = '',
-                             tableName = 'titles_journals') {
+getTitleJournal = function(pmXml, pmids, con, tableSuffix = '',
+                           tableName = 'title_journal') {
   x1 = xml_find_first(pmXml, './/Journal')
   x2 = data.table(
     pmid = pmids,
@@ -83,28 +73,28 @@ getTitlesJournals = function(pmXml, pmids, con, tableSuffix = '',
 
 
 #' @export
-getPubTypes = function(pmXml, pmids, con, tableSuffix = '',
-                       tableName = 'pub_types') {
+getPubType = function(pmXml, pmids, con, tableSuffix = '',
+                      tableName = 'pub_type') {
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   x2 = xml_find_all(x1, './/PublicationType')
   x3 = data.table(
     pmid = rep.int(pmids, xml_length(x1)),
-    pub_type = xml_text(x2),
-    pub_type_id = xml_attr(x2, 'UI'))
+    type_name = xml_text(x2),
+    type_id = xml_attr(x2, 'UI'))
   x3 = unique(x3)
   appendTable(con, paste0(tableName, tableSuffix), x3)
   return(x3)}
 
 
 #' @export
-getMeshTerms = function(pmXml, pmids, con, tableSuffix = '',
-                        tableName = 'mesh_terms') {
+getMeshTerm = function(pmXml, pmids, con, tableSuffix = '',
+                       tableName = 'mesh_term') {
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n > 0], './/DescriptorName')
   x3 = data.table(
     pmid = rep.int(pmids, n),
-    term = xml_text(x2),
+    term_name = xml_text(x2),
     term_id = xml_attr(x2, 'UI'),
     major_topic = xml_attr(x2, 'MajorTopicYN'))
   x3 = unique(x3)
@@ -113,8 +103,8 @@ getMeshTerms = function(pmXml, pmids, con, tableSuffix = '',
 
 
 #' @export
-getComments = function(pmXml, pmids, con, tableSuffix = '',
-                       tableName = 'comments') {
+getComment = function(pmXml, pmids, con, tableSuffix = '',
+                      tableName = 'comment') {
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n >0], './/CommentsCorrections')
@@ -128,8 +118,8 @@ getComments = function(pmXml, pmids, con, tableSuffix = '',
 
 
 #' @export
-getAbstracts = function(pmXml, pmids, con, tableSuffix = '',
-                        tableName = 'abstracts') {
+getAbstract = function(pmXml, pmids, con, tableSuffix = '',
+                       tableName = 'abstract') {
   x1 = xml_find_first(pmXml, './/Abstract')
 
   x2 = data.table(

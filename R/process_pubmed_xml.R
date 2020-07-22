@@ -1,4 +1,4 @@
-#' @importFrom data.table data.table := setcolorder setnames
+#' @importFrom data.table data.table := setcolorder setnames setattr
 #' @importFrom foreach foreach %do% %dopar%
 #' @importFrom xml2 xml_find_all xml_find_first xml_text xml_attr xml_length xml_integer
 NULL
@@ -9,7 +9,10 @@ globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filename',
                   'pubmed', 'step', 'y', 'source', 'identifier', 'xml_file',
                   'status', 'stepFunc', 'collective_name', 'person_pos',
                   'affiliation_pos', 'affil_idx', 'person_idx', 'n_affil_ids',
-                  'n_person_ids', 'n_total_ids', 'id_pos'))
+                  'n_person_ids', 'n_total_ids', 'id_pos', 'md5_calculated',
+                  'md5_provided', 'md5_match', 'subDir', 'group', 'f', 'nem',
+                  'xml_filename', 'md5_filename', 'xml_download',
+                  'md5_download'))
 
 
 processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
@@ -24,30 +27,23 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   } else {
     con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)}
 
-  x0 = xml2::read_xml(file.path(xmlDir, filename))
-  pmXml = xml_find_all(x0, './/PubmedArticle')
+  rawXml = xml2::read_xml(file.path(xmlDir, filename))
   writeLogFile(logPath, data.table(filename, 'read_xml', 0))
 
-  step = 'deleted'
-  if (step %in% names(stepFuncs)) {
-    ex = tryCatch({stepFuncs[[step]](x0, filename, con, tableSuffix)},
-                  error = function(e) NULL)
-    writeLogFile(logPath, data.table(filename, step, is.null(ex)))}
-
-  step = 'article_ids'
+  step = 'pmid_status'
   conNow = if (step %in% names(stepFuncs)) con else NULL
-  ex = tryCatch({stepFuncs[[step]](pmXml, filename, conNow, tableSuffix)},
+  ex = tryCatch({stepFuncs[[step]](rawXml, conNow, tableSuffix)},
                 error = function(e) NULL)
   writeLogFile(logPath, data.table(filename, step, is.null(ex)))
 
-  if (!is.null(ex)) {
-    pmids = ex$pmid
-    idx = !(names(stepFuncs) %in% c('deleted', 'article_ids'))
+  pmXml = ex[[1L]]
+  pmids = ex[[2L]][status != 'Deleted']$pmid
+  idx = !(names(stepFuncs) %in% step)
 
-    r = foreach(stepFunc = stepFuncs[idx], step = names(stepFuncs)[idx]) %do% {
-      ex = tryCatch({stepFunc(pmXml, pmids, con, tableSuffix)},
-                    error = function(e) NULL)
-      writeLogFile(logPath, data.table(filename, step, is.null(ex)))}}
+  r = foreach(stepFunc = stepFuncs[idx], step = names(stepFuncs)[idx]) %do% {
+    ex = tryCatch({stepFunc(pmXml, pmids, con, tableSuffix)},
+                  error = function(e) NULL)
+    writeLogFile(logPath, data.table(filename, step, is.null(ex)))}
 
   writeLogFile(logPath, data.table(filename, 'finish', 0))
   invisible()}
@@ -72,7 +68,7 @@ processPubmedXml = function(xmlDir, xmlFiles, logPath = NULL, tableSuffix = '',
   if (!is.null(dbname)) {
     # TODO: move this into the core function? currently ignores overwrite
     con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
-    d = data.table(xml_file = unique(xmlInfo$filename),
+    d = data.table(xml_filename = unique(xmlInfo$filename),
                    datetime_processed = Sys.time())
     DBI::dbWriteTable(con, paste0('xml_processed', tableSuffix), d,
                       overwrite = TRUE)}

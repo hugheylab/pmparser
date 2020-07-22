@@ -36,17 +36,16 @@ getXmlInfo = function(xmlFiles, tableSuffix) {
 
 getStepFuncs = function(steps = 'all') {
   stepFuncs = c(
-    deleted = getDeleted,
-    article_ids = getArticleIds,
-    medline = getMedlineStatus,
-    titles_journals = getTitlesJournals,
-    pub_types = getPubTypes,
-    pub_dates = getPubDates,
-    mesh_terms = getMeshTerms,
-    comments = getComments,
-    abstracts = getAbstracts,
-    authors = getAuthorsAffiliations,
-    investigators = getInvestigatorsAffiliations)
+    pmid_status = getPmidStatus,
+    article_id = getArticleId,
+    title_journal = getTitleJournal,
+    pub_type = getPubType,
+    pub_date = getPubDate,
+    mesh_term = getMeshTerm,
+    comment = getComment,
+    abstract = getAbstract,
+    author = getAuthorAffiliation,
+    investigator = getInvestigatorAffiliation)
 
   if ('all' %in% steps) {
     x = stepFuncs

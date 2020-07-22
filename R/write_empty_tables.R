@@ -4,54 +4,51 @@ getEmptyTables = function() {
   ai = as.integer()
 
   r = list(
-    deleted = data.table(filename = ac, pmid = ai),
+    pmid_status = data.table(pmid = ai, status = ac),
 
-    article_ids = data.table(
-      filename = ac, index = ai, doi = ac, pmc = ac, pmid = ai),
+    article_id = data.table(pmid = ai, id_type = ac, id_value = ac),
 
-    medline = data.table(pmid = ai, status = ac),
-
-    titles_journals = data.table(
+    title_journal = data.table(
       pmid = ai, title = ac, journal_full = ac, journal_abbrev = ac),
 
-    pub_types = data.table(pmid = ai, pub_type = ac, pub_type_id = ac),
+    pub_type = data.table(pmid = ai, type_name = ac, type_id = ac),
 
-    pub_dates = data.table(
+    pub_date = data.table(
       pmid = ai, pub_status = ac, pub_date = data.table::as.IDate(ai)),
 
-    mesh_terms = data.table(
-      pmid = ai, term = ac, term_id = ac, major_topic = ac),
+    mesh_term = data.table(
+      pmid = ai, term_name = ac, term_id = ac, major_topic = ac),
 
-    comments = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
+    comment = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
 
-    abstracts = data.table(
+    abstract = data.table(
       pmid = ai, text = ac, label = ac, nlm_category = ac, copyright = ac),
 
-    authors = data.table(
+    author = data.table(
       pmid = ai, author_pos = ai, last_name = ac, fore_name = ac, initials = ac,
       suffix = ac, collective_name = ac),
 
-    author_affiliations = data.table(
+    author_affiliation = data.table(
       pmid = ai, author_pos = ai, affiliation_pos = ai, affiliation = ac),
 
-    author_identifiers = data.table(
+    author_identifier = data.table(
       pmid = ai, author_pos = ai, source = ac, identifier = ac),
 
-    author_affiliation_identifiers = data.table(
+    author_affiliation_identifier = data.table(
       pmid = ai, author_pos = ai, affiliation_pos = ai, source = ac,
       identifier = ac),
 
-    investigators = data.table(
+    investigator = data.table(
       pmid = ai, investigator_pos = ai, last_name = ac, fore_name = ac,
       initials = ac, suffix = ac),
 
-    investigator_affiliations = data.table(
+    investigator_affiliation = data.table(
       pmid = ai, investigator_pos = ai, affiliation_pos = ai, affiliation = ac),
 
-    investigator_identifiers = data.table(
+    investigator_identifier = data.table(
       pmid = ai, investigator_pos = ai, source = ac, identifier = ac),
 
-    investigator_affiliation_identifiers = data.table(
+    investigator_affiliation_identifier = data.table(
       pmid = ai, investigator_pos = ai, affiliation_pos = ai, source = ac,
       identifier = ac))
 
@@ -59,7 +56,8 @@ getEmptyTables = function() {
 
 
 #' @export
-writeEmptyTables = function(tableSuffix = '', overwrite = FALSE, dbname = NULL, ...) {
+writeEmptyTables = function(tableSuffix = '', overwrite = FALSE, dbname = NULL,
+                            ...) {
   if (is.null(dbname)) {
     return(invisible())}
 

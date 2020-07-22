@@ -18,9 +18,10 @@ Imports:
   data.table (>= 1.12.2),
   DBI (>= 1.1.0),
   foreach (>= 1.5.0),
+  iterators (>= 1.0.12),
+  RCurl (>= 1.98),
   RPostgres (>= 1.2.0),
   stringr (>= 1.4.0),
-  xml2 (>= 1.3.2),
-  RCurl (>= 1.98)
+  xml2 (>= 1.3.2)
 Suggests:
   doParallel (>= 1.0.15)
