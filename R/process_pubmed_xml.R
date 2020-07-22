@@ -50,11 +50,10 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 
 
 #' @export
-processPubmedXml = function(xmlDir, xmlFiles, logPath = NULL, tableSuffix = '',
+processPubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL, tableSuffix = '',
                             overwrite = FALSE, dbname = NULL, ...) {
 
   xmlInfo = getXmlInfo(xmlFiles, tableSuffix)
-  stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$filename))))
 
   writeEmptyTables(tableSuffix, overwrite, dbname, ...)
   writeLogFile(logPath, data.table(filename = 'all', step = 'start', status = 0),
