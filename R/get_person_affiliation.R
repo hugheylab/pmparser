@@ -6,10 +6,10 @@ getPersonAffiliation = function(pmXml, pmids, con, tableSuffix = '',
                      substring(personType, 2))
   personPos = sprintf('%s_pos', personType)
 
-  tableNames = c(sprintf('%ss', personType),
-                 sprintf('%s_affiliations', personType),
-                 sprintf('%s_identifiers', personType),
-                 sprintf('%s_affiliation_identifiers', personType))
+  tableNames = c(sprintf('%s', personType),
+                 sprintf('%s_affiliation', personType),
+                 sprintf('%s_identifier', personType),
+                 sprintf('%s_affiliation_identifier', personType))
 
   # get persons
   x2 = xml_find_all(pmXml, sprintf('.//%s', personPre))
