@@ -1,5 +1,4 @@
-# #' @export
-getEmptyTables = function() {
+getEmptyTables = function(tableSuffix) {
   ac = as.character()
   ai = as.integer()
 
@@ -55,23 +54,31 @@ getEmptyTables = function() {
     xml_processed = data.table(
       xml_filename = ac, datetime_processed = as.POSIXct(ac)))
 
+  names(r) = paste_(names(r), tableSuffix)
+
+  if (!is.null(tableSuffix) && tableSuffix != '') {
+    tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
+    for (tableName in tableNames) {
+      r[[tableName]][, xml_filename := ac]}}
+
   return(r)}
 
 
-# #' @export
-writeEmptyTables = function(tableSuffix = '', overwrite = FALSE, dbname = NULL,
-                            ...) {
+#' @export
+writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
+                            dbname = NULL, ...) {
   if (is.null(dbname)) {
     return(invisible())}
 
   con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
-  emptyTables = getEmptyTables()
+  emptyTables = getEmptyTables(tableSuffix)
+
   tablesExist = sapply(names(emptyTables),
                        function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
   for (i in 1:length(emptyTables)) {
-    DBI::dbWriteTable(con, paste0(names(emptyTables)[i], tableSuffix),
+    DBI::dbWriteTable(con, paste_(names(emptyTables)[i], tableSuffix),
                       emptyTables[[i]], overwrite = TRUE)}
 
   invisible()}

@@ -16,7 +16,7 @@ globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow',
 
 
 processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
-                                tableSuffix = '', dbname = NULL, ...) {
+                                tableSuffix = NULL, dbname = NULL, ...) {
 
   stepFuncs = getStepFuncs(steps)
   writeLogFile(logPath,
@@ -37,15 +37,16 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 
   pmXml = ex[[1L]]
   pmids = ex[[2L]][status != 'Deleted']$pmid
+  filenameNow = if (is.null(tableSuffix) || tableSuffix == '') NULL else filename
   idx = !(names(stepFuncs) %in% step)
 
   r = foreach(stepFunc = stepFuncs[idx], step = names(stepFuncs)[idx]) %do% {
-    ex = tryCatch({stepFunc(pmXml, pmids, con, tableSuffix)},
+    ex = tryCatch({stepFunc(pmXml, pmids, filenameNow, con, tableSuffix)},
                   error = function(e) NULL)
     writeLogFile(logPath, data.table(filename, step, is.null(ex)))}
 
   d = data.table(xml_filename = filename, datetime_processed = Sys.time())
-  appendTable(con, paste0('xml_processed', tableSuffix), d)
+  appendTable(con, paste_('xml_processed', tableSuffix), d)
 
   writeLogFile(logPath, data.table(filename, 'finish', 0))
   invisible()}
@@ -53,8 +54,8 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 
 #' @export
 processPubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
-                            tableSuffix = '', overwrite = FALSE, dbname = NULL,
-                            ...) {
+                            tableSuffix = NULL, overwrite = FALSE,
+                            dbname = NULL, ...) {
 
   xmlInfo = getXmlInfo(xmlFiles, tableSuffix)
 

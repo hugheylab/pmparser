@@ -30,7 +30,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   } else if (is.data.frame(xmlFiles)) {
     stopifnot(all(c('filename', 'step') %in% colnames(xmlFiles)),
-              tableSuffix != '')
+              !is.null(tableSuffix) && tableSuffix != '')
     xmlInfo = unique(data.table(xmlFiles)[, .(xml_filename, step)])
 
   } else {
@@ -59,3 +59,17 @@ getStepFuncs = function(steps = 'all') {
   } else {
     x = stepFuncs[names(stepFuncs) %in% steps]}
   return(x)}
+
+
+setXmlFilename = function(d, filename) {
+  if (!is.null(filename)) {
+    d[, xml_filename := filename]}}
+
+
+paste_ = function(...) {
+  x = list(...)
+  if (is.null(x[[length(x)]]) || x[[length(x)]] == '') {
+    y = do.call(paste, c(x[-length(x)], list(sep = '_')))
+  } else {
+    y = paste(..., sep = '_')}
+  return(y)}

@@ -1,15 +1,11 @@
 #' @export
-getPersonAffiliation = function(pmXml, pmids, con, tableSuffix = '',
+getPersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
+                                tableSuffix = NULL,
                                 personType = c('author', 'investigator')) {
   personType = match.arg(personType)
   personPre = paste0(toupper(substring(personType, 1, 1)),
                      substring(personType, 2))
   personPos = sprintf('%s_pos', personType)
-
-  tableNames = c(sprintf('%s', personType),
-                 sprintf('%s_affiliation', personType),
-                 sprintf('%s_identifier', personType),
-                 sprintf('%s_affiliation_identifier', personType))
 
   # get persons
   x2 = xml_find_all(pmXml, sprintf('.//%s', personPre))
@@ -24,7 +20,8 @@ getPersonAffiliation = function(pmXml, pmids, con, tableSuffix = '',
     suffix = xml_text(xml_find_first(x2, './/Suffix')))
 
   if (personType == 'author') {
-    dPerson[, collective_name := xml_text(xml_find_first(x2, './/CollectiveName'))]}
+    dPerson[, collective_name :=
+              xml_text(xml_find_first(x2, './/CollectiveName'))]}
 
   dPerson[, person_pos := 1:.N, by = pmid]
   setcolorder(dPerson, c('pmid', 'person_pos'))
@@ -106,22 +103,36 @@ getPersonAffiliation = function(pmXml, pmids, con, tableSuffix = '',
   setnames(dAffil, 'person_pos', personPos, skip_absent = TRUE)
   setnames(dAffilId, 'person_pos', personPos, skip_absent = TRUE)
 
+  # possibly add column for xml_filename
+  setXmlFilename(dPerson, filename)
+  setXmlFilename(dPersonId, filename)
+  setXmlFilename(dAffil, filename)
+  setXmlFilename(dAffilId, filename)
+
   # append to db
-  appendTable(con, paste0(tableNames[1L], tableSuffix), dPerson)
-  appendTable(con, paste0(tableNames[2L], tableSuffix), dAffil)
-  appendTable(con, paste0(tableNames[3L], tableSuffix), dPersonId)
-  appendTable(con, paste0(tableNames[4L], tableSuffix), dAffilId)
+  tableNames = c(paste_(personType, tableSuffix),
+                 paste_(personType, 'affiliation', tableSuffix),
+                 paste_(personType, 'identifier', tableSuffix),
+                 paste_(personType, 'affiliation_identifier', tableSuffix))
+
+  appendTable(con, tableNames[1L], dPerson)
+  appendTable(con, tableNames[2L], dAffil)
+  appendTable(con, tableNames[3L], dPersonId)
+  appendTable(con, tableNames[4L], dAffilId)
   r = list(dPerson, dAffil, dPersonId, dAffilId)
   names(r) = tableNames
   return(r)}
 
 
 #' @export
-getAuthorAffiliation = function(pmXml, pmids, con, tableSuffix = '') {
-  getPersonAffiliation(pmXml, pmids, con, tableSuffix, personType = 'author')}
+getAuthorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
+                                tableSuffix = NULL) {
+  getPersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
+                       personType = 'author')}
 
 
 #' @export
-getInvestigatorAffiliation = function(pmXml, pmids, con, tableSuffix = '') {
-  getPersonAffiliation(pmXml, pmids, con, tableSuffix,
+getInvestigatorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
+                                      tableSuffix = NULL) {
+  getPersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
                        personType = 'investigator')}

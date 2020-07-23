@@ -16,8 +16,8 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 
 
 #' @export
-getCitation = function(path, tableSuffix = '', tableName = 'citation',
-                       overwrite = FALSE, dbname = NULL, ...) {
+getCitation = function(path, tableSuffix = NULL overwrite = FALSE,
+                       dbname = NULL, ...) {
 
   # figure out where to get the file
   defaultFilename = 'open_citation_collection.zip'
@@ -52,8 +52,9 @@ getCitation = function(path, tableSuffix = '', tableName = 'citation',
 
   # send to db
   if (!is.null(dbname)) {
+    tableBase = 'citation'
     con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
-    DBI::dbWriteTable(con, paste0(tableName, tableSuffix), dCitation,
+    DBI::dbWriteTable(con, paste_(tableBase, tableSuffix), dCitation,
                       overwrite = overwrite)
 
     if (!exists('md5Computed')) {
@@ -63,7 +64,7 @@ getCitation = function(path, tableSuffix = '', tableName = 'citation',
       md5_computed = md5Computed, datetime_processed = Sys.time())
 
     # if we make it to this point, set overwrite to TRUE
-    DBI::dbWriteTable(con, paste0(tableName, '_version', tableSuffix),
+    DBI::dbWriteTable(con, paste_(tableBase, 'version', tableSuffix),
                       dCitationVersion, overwrite = TRUE)}
 
   return(dCitation)}
