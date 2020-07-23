@@ -16,7 +16,7 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 
 
 #' @export
-getCitation = function(path, tableSuffix = NULL overwrite = FALSE,
+getCitation = function(path, tableSuffix = NULL, overwrite = FALSE,
                        dbname = NULL, ...) {
 
   # figure out where to get the file

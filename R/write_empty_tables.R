@@ -1,3 +1,4 @@
+#' @export
 getEmptyTables = function(tableSuffix) {
   ac = as.character()
   ai = as.integer()
