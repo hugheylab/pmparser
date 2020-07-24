@@ -35,7 +35,7 @@ getPubmedFileInfo = function(
     dProcessed = data.table(xml_filename = as.character())
   } else {
     con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
-    dProcessed = DBI::dbReadTable(con, paste0('xml_processed', tableSuffix))
+    dProcessed = DBI::dbReadTable(con, paste_('xml_processed', tableSuffix))
     dProcessed = data.table::setDT(dProcessed)[, .(xml_filename)]}
 
   dKeep = dRemote[!dLocal, on = c('sub_dir', 'xml_filename')]
