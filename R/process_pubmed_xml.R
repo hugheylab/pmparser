@@ -57,7 +57,7 @@ processPubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
                             tableSuffix = NULL, overwrite = FALSE,
                             dbname = NULL, ...) {
 
-  xmlInfo = getXmlInfo(xmlFiles, tableSuffix)
+  xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
   writeEmptyTables(tableSuffix, overwrite, dbname, ...)
   writeLogFile(logPath,
