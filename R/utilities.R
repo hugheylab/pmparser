@@ -22,7 +22,7 @@ appendTable = function(con, tableName, d) {
 getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   if (is.null(xmlFiles)) {
-    xmlFiles = list.files(xmlDir, pattern = '.*\\.xml\\.gz')
+    xmlFiles = list.files(xmlDir, pattern = '.*\\.xml\\.gz$')
     xmlInfo = data.table(xml_filename = unique(xmlFiles), step = 'all')
 
   } else if (is.character(xmlFiles)) {
