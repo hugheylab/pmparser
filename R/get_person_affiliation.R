@@ -111,30 +111,21 @@ getPersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
   } else {
     dPersonId = dEmpty}
 
-  # change colnames based on personType
-  setnames(dPerson, 'person_pos', personPos, skip_absent = TRUE)
-  setnames(dPersonId, 'person_pos', personPos, skip_absent = TRUE)
-  setnames(dAffil, 'person_pos', personPos, skip_absent = TRUE)
-  setnames(dAffilId, 'person_pos', personPos, skip_absent = TRUE)
-
-  # possibly add column for xml_filename
-  setXmlFilename(dPerson, filename)
-  setXmlFilename(dPersonId, filename)
-  setXmlFilename(dAffil, filename)
-  setXmlFilename(dAffilId, filename)
-
-  # append to db
-  tableNames = c(paste_(personType, tableSuffix),
-                 paste_(personType, 'affiliation', tableSuffix),
-                 paste_(personType, 'identifier', tableSuffix),
-                 paste_(personType, 'affiliation_identifier', tableSuffix))
-
-  appendTable(con, tableNames[1L], dPerson)
-  appendTable(con, tableNames[2L], dAffil)
-  appendTable(con, tableNames[3L], dPersonId)
-  appendTable(con, tableNames[4L], dAffilId)
+  # possibly add xml_filename and append to db
   r = list(dPerson, dAffil, dPersonId, dAffilId)
-  names(r) = tableNames
+  names(r) = c(paste_(personType, tableSuffix),
+               paste_(personType, 'affiliation', tableSuffix),
+               paste_(personType, 'identifier', tableSuffix),
+               paste_(personType, 'affiliation_identifier', tableSuffix))
+
+  for (i in 1:length(r)) {
+    # change colnames based on personType
+    setnames(r[[i]], 'person_pos', personPos, skip_absent = TRUE)
+    # possibly add xml_filename as column
+    setXmlFilename(r[[i]], filename)
+    # possibly append to db
+    appendTable(con, names(r)[i], r[[i]])}
+
   return(r)}
 
 

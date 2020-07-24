@@ -105,6 +105,84 @@ getMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
+getKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
+                      tableSuffix = NULL) {
+  x1 = xml_find_first(pmXml, './/KeywordList')
+  n = xml_length(x1)
+
+  x2 = data.table(
+    pmid = pmids[n > 0],
+    list_owner = xml_attr(x1[n > 0], 'Owner'))
+
+  x3 = xml_find_all(x1[n > 0], './/Keyword')
+
+  x4 = data.table(
+    pmid = rep.int(pmids, n),
+    keyword_name = xml_text(x3),
+    major_topic = xml_attr(x3, 'MajorTopicYN'))
+
+  r = list(x2, x4)
+  names(r) = c(paste_('keyword_list', tableSuffix),
+               paste_('keyword', tableSuffix))
+
+  for (i in 1:length(r)) {
+    setXmlFilename(r[[i]], filename)
+    appendTable(con, names(r)[i], r[[i]])}
+
+  return(r)}
+
+
+#' @export
+getGrant = function(pmXml, pmids, filename = NULL, con = NULL,
+                    tableSuffix = NULL) {
+  x1 = xml_find_first(pmXml, './/GrantList')
+  n = xml_length(x1)
+
+  x2 = data.table(
+    pmid = pmids[n > 0],
+    complete = xml_attr(x1[n > 0], 'CompleteYN'))
+
+  x3 = xml_find_all(x1[n > 0], './/Grant')
+
+  x4 = data.table(
+    pmid = rep.int(pmids, n),
+    grant_id = xml_text(xml_find_first(x3, './/GrantID')),
+    acronym = xml_text(xml_find_first(x3, './/Acronym')),
+    agency = xml_text(xml_find_first(x3, './/Agency')),
+    country = xml_text(xml_find_first(x3, './/Country')))
+
+  r = list(x2, x4)
+  names(r) = c(paste_('grant_list', tableSuffix),
+               paste_('grant', tableSuffix))
+
+  for (i in 1:length(r)) {
+    setXmlFilename(r[[i]], filename)
+    appendTable(con, names(r)[i], r[[i]])}
+
+  return(r)}
+
+
+#' @export
+getChemical = function(pmXml, pmids, filename = NULL, con = NULL,
+                       tableSuffix = NULL) {
+  x1 = xml_find_first(pmXml, './/ChemicalList')
+  n = xml_length(x1)
+
+  x2 = xml_find_all(x1[n > 0], './/Chemical')
+  x3 = xml_find_first(x2, './/NameOfSubstance')
+
+  x4 = data.table(
+    pmid = rep.int(pmids, n),
+    registry_number = xml_text(xml_find_first(x2, './/RegistryNumber')),
+    substance_name = xml_text(x3),
+    substance_ui = xml_attr(x3, 'UI'))
+
+  setXmlFilename(x4, filename)
+  appendTable(con, paste_('chemical', tableSuffix), x4)
+  return(r)}
+
+
+#' @export
 getComment = function(pmXml, pmids, filename = NULL, con = NULL,
                       tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')

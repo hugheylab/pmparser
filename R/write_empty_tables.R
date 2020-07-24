@@ -19,6 +19,20 @@ getEmptyTables = function(tableSuffix) {
     mesh_term = data.table(
       pmid = ai, term_name = ac, term_id = ac, major_topic = ac),
 
+    keyword_list = data.table(
+      pmid = ai, list_owner = ac),
+
+    keyword = data.table(
+      pmid = ai, keyword_name = ac, major_topic = ac),
+
+    grant_list = data.table(pmid = ai, complete = ac),
+
+    grant = data.table(
+      pmid = ai, grant_id = ac, acronym = ac, agency = ac, country = ac),
+
+    chemical = data.table(
+      pmid = ai, registry_number = ac, substance_name = ac, substance_ui = ac),
+
     comment = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
 
     abstract = data.table(
