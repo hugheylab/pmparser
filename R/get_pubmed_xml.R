@@ -70,7 +70,8 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
                         skipUpdates = FALSE, # Indicates if you wish to skip the update downloads all together
                         dataDir = 'data', # Directory to save the results into
                         dbname = NULL, # Database name to update, if null skips database step
-                        getDownloaded = FALSE
+                        getDownloaded = FALSE,
+                        overwriteExisting = FALSE
                         ){
 
   fileTable = getFileList(dataDir = dataDir)
@@ -91,6 +92,10 @@ getPubmedXml = function(startFile = 1, # Which indexed file number to start with
     fileTable = fileTable[type != 'update']}
 
   downloadedFiles = c()
+
+  if(overwriteExisting){
+    existFiles = fileTable[file.exists(file.path(dataDir, xml_file))]
+    file.remove(file.path(dataDir, existFiles[,xml_file]))}
 
   # Iterates over baseline files and checks to decide to download or not
   for (i in 1:nrow(fileTable)){
