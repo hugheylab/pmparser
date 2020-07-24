@@ -9,8 +9,8 @@ globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow',
                   'source', 'identifier', 'status', 'y', 'stepFunc',
                   'collective_name', 'person_pos', 'affiliation_pos',
                   'affil_idx', 'person_idx', 'n_affil_ids', 'n_person_ids',
-                  'n_total_ids', 'id_pos', 'md5_calculated', 'md5_provided',
-                  'md5_match', 'subDir', 'group', 'f', 'nem', 'xml_filename',
+                  'n_total_ids', 'id_pos', 'md5_computed', 'md5_provided',
+                  'md5_match', 'subDir', 'group', 'f', 'col', 'xml_filename',
                   'md5_filename', 'xml_download', 'md5_download', 'name',
                   'published_date'))
 
