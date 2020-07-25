@@ -179,7 +179,7 @@ getChemical = function(pmXml, pmids, filename = NULL, con = NULL,
 
   setXmlFilename(x4, filename)
   appendTable(con, paste_('chemical', tableSuffix), x4)
-  return(r)}
+  return(x4)}
 
 
 #' @export

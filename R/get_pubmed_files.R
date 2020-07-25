@@ -9,7 +9,7 @@ getRemoteFilenames = function(url, pattern) {
 #' @export
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
-  subDirs = c('baseline', 'updatefiles'), tableSuffix = '',
+  subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL,
   dbname = NULL, ...) {
 
   # if localDir is not NULL, skip files already downloaded
