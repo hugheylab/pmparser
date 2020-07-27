@@ -16,28 +16,19 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 
 
 #' @export
-getCitation = function(path, tableSuffix = NULL, overwrite = FALSE,
-                       dbname = NULL, ...) {
+getCitation = function(localDir, filename = 'open_citation_collection.zip',
+                       tableSuffix = NULL, overwrite = FALSE, dbname = NULL,
+                        ...) {
 
-  # figure out where to get the file
-  defaultFilename = 'open_citation_collection.zip'
+  filepath = file.path(localDir, filename)
 
-  if (dir.exists(path)) {
-    filepath = file.path(path, defaultFilename)
+  if (!file.exists(filepath) || isTRUE(overwrite)) {
+    citationInfo = getCitationInfo()
+    utils::download.file(citationInfo$download_url, filepath, mode = 'wb')
+    md5Computed = tools::md5sum(filepath)
 
-    if (!file.exists(filepath)) {
-      citationInfo = getCitationInfo()
-      utils::download.file(citationInfo$download_url, filepath, mode = 'wb')
-      md5Computed = tools::md5sum(filepath)
-
-      if (md5Computed != citationInfo$supplied_md5) {
-        stop('Supplied and computed MD5 checksums do not match.')}}
-
-  } else if (file.exists(path)) {
-    filepath = path
-
-  } else {
-    stop('File does not exist.')}
+    if (md5Computed != citationInfo$supplied_md5) {
+      stop('Supplied and computed MD5 checksums do not match.')}}
 
   # read the file
   if (tools::file_ext(filepath) == 'zip') {
