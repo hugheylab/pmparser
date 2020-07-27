@@ -40,7 +40,7 @@ getPubmedFileInfo = function(
 
   dKeep = dRemote[!dLocal, on = c('sub_dir', 'xml_filename')]
   dKeep = dKeep[!dProcessed, on = 'xml_filename']
-  setattr(dKeep, 'remoteDir', remoteDir)
+  # setattr(dKeep, 'remoteDir', remoteDir) # isn't preserved upon subsetting
   return(dKeep)}
 
 
@@ -58,8 +58,13 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
 
 
 #' @export
-getPubmedFiles = function(fileInfo, localDir, checkMd5 = TRUE) {
-  remoteDir = attr(fileInfo, 'remoteDir')
+getPubmedFiles = function(fileInfo, localDir,
+                          remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
+                          checkMd5 = TRUE) {
+
+  for (subDir in unique(fileInfo$sub_dir)) {
+    if (!dir.exists(file.path(localDir, subDir)))
+      dir.create(file.path(localDir, subDir))}
 
   cols = c('xml_filename', 'md5_filename')
   d = foreach(f = iterators::iter(fileInfo, by = 'row'), .combine = rbind) %dopar% {

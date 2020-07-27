@@ -118,12 +118,12 @@ getKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
 
   x4 = data.table(
     pmid = rep.int(pmids, n),
-    keyword_name = xml_text(x3),
+    keyword_name = trimws(xml_text(x3)),
     major_topic = xml_attr(x3, 'MajorTopicYN'))
 
   r = list(x2, x4)
   names(r) = c(paste_('keyword_list', tableSuffix),
-               paste_('keyword', tableSuffix))
+               paste_('keyword_item', tableSuffix)) # consistent with grant_item
 
   for (i in 1:length(r)) {
     setXmlFilename(r[[i]], filename)
@@ -153,7 +153,7 @@ getGrant = function(pmXml, pmids, filename = NULL, con = NULL,
 
   r = list(x2, x4)
   names(r) = c(paste_('grant_list', tableSuffix),
-               paste_('grant', tableSuffix))
+               paste_('grant_item', tableSuffix)) # avoid reserved word
 
   for (i in 1:length(r)) {
     setXmlFilename(r[[i]], filename)

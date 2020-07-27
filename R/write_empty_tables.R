@@ -22,12 +22,12 @@ getEmptyTables = function(tableSuffix) {
     keyword_list = data.table(
       pmid = ai, list_owner = ac),
 
-    keyword = data.table(
+    keyword_item = data.table(
       pmid = ai, keyword_name = ac, major_topic = ac),
 
     grant_list = data.table(pmid = ai, complete = ac),
 
-    grant = data.table(
+    grant_item = data.table(
       pmid = ai, grant_id = ac, acronym = ac, agency = ac, country = ac),
 
     chemical = data.table(
