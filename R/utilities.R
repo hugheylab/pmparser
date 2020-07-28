@@ -1,16 +1,16 @@
 #' @export
 getFailed = function(logPath) {
-  d = data.table::fread(logPath, na.strings = '', logical01 = TRUE)
+  d = data.table::fread(logPath, sep = '\t', na.strings = '', logical01 = TRUE)
   d = d[(status), .(xml_filename, step)][order(xml_filename)]
   return(d)}
 
 
-writeLogFile = function(logPath, x = NULL, append = TRUE, logical01 = TRUE,
-                        ...) {
+writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
   if (is.null(logPath)) {
     return(invisible())}
   y = data.table(datetime = Sys.time(), x)
-  data.table::fwrite(y, logPath, append = append, logical01 = logical01, ...)}
+  data.table::fwrite(y, logPath, append = append, sep = '\t', logical01 = TRUE,
+                     ...)}
 
 
 appendTable = function(con, tableName, d) {
