@@ -93,7 +93,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
   for (i in 1:length(emptyTables)) {
-    DBI::dbWriteTable(con, paste_(names(emptyTables)[i], tableSuffix),
+    DBI::dbWriteTable(con, names(emptyTables)[i],
                       emptyTables[[i]], overwrite = TRUE)}
 
   invisible()}

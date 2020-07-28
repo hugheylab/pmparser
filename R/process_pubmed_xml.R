@@ -12,7 +12,7 @@ globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow',
                   'n_total_ids', 'id_pos', 'md5_computed', 'md5_provided',
                   'md5_match', 'subDir', 'group', 'f', 'col', 'xml_filename',
                   'md5_filename', 'xml_download', 'md5_download', 'name',
-                  'published_date'))
+                  'published_date', 'sub_dir', 'sourceName', 'targetName'))
 
 
 processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
@@ -31,7 +31,7 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 
   step = 'pmid_status'
   conNow = if (step %in% names(stepFuncs)) con else NULL
-  ex = tryCatch({stepFuncs[[step]](rawXml, filename, conNow, tableSuffix)},
+  ex = tryCatch({getPmidStatus(rawXml, filename, conNow, tableSuffix)},
                 error = function(e) NULL)
   writeLogFile(logPath, data.table(filename, step, is.null(ex)))
 
