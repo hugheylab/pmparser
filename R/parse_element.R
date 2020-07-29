@@ -1,5 +1,5 @@
 #' @export
-getPmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
+parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_all(xml_find_all(rawXml, './/DeleteCitation'), './/PMID')
   x2 = data.table(pmid = xml_integer(x1)) # could have zero rows
   x2[, status := 'Deleted']
@@ -17,7 +17,7 @@ getPmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
 
 
 #' @export
-getArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
+parseArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
                         tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
@@ -35,7 +35,7 @@ getArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getPubDate = function(pmXml, pmids, filename = NULL, con = NULL,
+parsePubDate = function(pmXml, pmids, filename = NULL, con = NULL,
                       tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
@@ -57,7 +57,7 @@ getPubDate = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
+parseTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
                            tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/Journal')
   x2 = data.table(
@@ -72,7 +72,7 @@ getTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getPubType = function(pmXml, pmids, filename = NULL, con = NULL,
+parsePubType = function(pmXml, pmids, filename = NULL, con = NULL,
                       tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   x2 = xml_find_all(x1, './/PublicationType')
@@ -87,7 +87,7 @@ getPubType = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
+parseMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
   n = xml_length(x1)
@@ -105,7 +105,7 @@ getMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
+parseKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
                       tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/KeywordList')
   n = xml_length(x1)
@@ -133,7 +133,7 @@ getKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getGrant = function(pmXml, pmids, filename = NULL, con = NULL,
+parseGrant = function(pmXml, pmids, filename = NULL, con = NULL,
                     tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/GrantList')
   n = xml_length(x1)
@@ -163,7 +163,7 @@ getGrant = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getChemical = function(pmXml, pmids, filename = NULL, con = NULL,
+parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ChemicalList')
   n = xml_length(x1)
@@ -183,7 +183,7 @@ getChemical = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getComment = function(pmXml, pmids, filename = NULL, con = NULL,
+parseComment = function(pmXml, pmids, filename = NULL, con = NULL,
                       tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
@@ -200,7 +200,7 @@ getComment = function(pmXml, pmids, filename = NULL, con = NULL,
 
 
 #' @export
-getAbstract = function(pmXml, pmids, filename = NULL, con = NULL,
+parseAbstract = function(pmXml, pmids, filename = NULL, con = NULL,
                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(

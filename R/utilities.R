@@ -41,26 +41,26 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
   return(xmlInfo)}
 
 
-getStepFuncs = function(steps = 'all') {
-  stepFuncs = c(
-    pmid_status = getPmidStatus,
-    article_id = getArticleId,
-    title_journal = getTitleJournal,
-    pub_type = getPubType,
-    pub_date = getPubDate,
-    mesh_term = getMeshTerm,
-    keyword = getKeyword,
-    grant = getGrant,
-    chemical = getChemical,
-    comment = getComment,
-    abstract = getAbstract,
-    author = getAuthorAffiliation,
-    investigator = getInvestigatorAffiliation)
+getParseFuncs = function(steps = 'all') {
+  parseFuncs = c(
+    pmid_status = parsePmidStatus,
+    article_id = parseArticleId,
+    title_journal = parseTitleJournal,
+    pub_type = parsePubType,
+    pub_date = parsePubDate,
+    mesh_term = parseMeshTerm,
+    keyword = parseKeyword,
+    grant = parseGrant,
+    chemical = parseChemical,
+    comment = parseComment,
+    abstract = parseAbstract,
+    author = parseAuthorAffiliation,
+    investigator = parseInvestigatorAffiliation)
 
   if ('all' %in% steps) {
-    x = stepFuncs
+    x = parseFuncs
   } else {
-    x = stepFuncs[names(stepFuncs) %in% steps]}
+    x = parseFuncs[names(parseFuncs) %in% steps]}
   return(x)}
 
 
