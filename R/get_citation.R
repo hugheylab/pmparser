@@ -17,13 +17,26 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 
 #' @export
 getCitation = function(localDir, filename = 'open_citation_collection.zip',
-                       tableSuffix = NULL, overwrite = FALSE, dbname = NULL,
-                        ...) {
+                       nrows = Inf, tableSuffix = NULL, overwrite = FALSE,
+                       dbname = NULL, ...) {
 
   filepath = file.path(localDir, filename)
+  tableBase = 'citation'
 
   if (!file.exists(filepath) || isTRUE(overwrite)) {
     citationInfo = getCitationInfo()
+
+    if (!is.null(dbname)) {
+      con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+      tableName = paste_(tableBase, 'version', tableSuffix)
+
+      if (DBI::dbExistsTable(con, tableName)) {
+        dVersion = DBI::dbReadTable(con, tableName)
+
+        if (dVersion$md5_computed == citationInfo$supplied_md5) {
+          cat('Citation table is already up-to-date.\n')
+          return()}}}
+
     utils::download.file(citationInfo$download_url, filepath, mode = 'wb')
     md5Computed = tools::md5sum(filepath)
 
@@ -32,9 +45,10 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
 
   # read the file
   if (tools::file_ext(filepath) == 'zip') {
-    dCitation = data.table::fread(cmd = paste('unzip -p', filepath))
+    dCitation = data.table::fread(cmd = paste('unzip -p', filepath),
+                                  nrows = nrows)
   } else {
-    dCitation = data.table::fread(filepath)}
+    dCitation = data.table::fread(filepath, nrows = nrows)}
 
   # check the file
   stopifnot(all.equal(colnames(dCitation), c('citing', 'referenced')),
@@ -43,7 +57,6 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
 
   # send to db
   if (!is.null(dbname)) {
-    tableBase = 'citation'
     con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
     DBI::dbWriteTable(con, paste_(tableBase, tableSuffix), dCitation,
                       overwrite = overwrite)
@@ -51,11 +64,11 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     if (!exists('md5Computed')) {
       md5Computed = tools::md5sum(filepath)}
 
-    dCitationVersion = data.table(
+    dVersion = data.table(
       md5_computed = md5Computed, datetime_processed = Sys.time())
 
     # if we make it to this point, set overwrite to TRUE
     DBI::dbWriteTable(con, paste_(tableBase, 'version', tableSuffix),
-                      dCitationVersion, overwrite = TRUE)}
+                      dVersion, overwrite = TRUE)}
 
   return(dCitation)}
