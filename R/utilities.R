@@ -76,3 +76,16 @@ paste_ = function(...) {
   } else {
     y = paste(..., sep = '_')}
   return(y)}
+
+
+runStatement = function(con, q) {
+  q = trimws(q)
+  if (startsWith(q, 'select count')) { # dry run
+    res = DBI::dbSendQuery(con, q)
+    n = DBI::dbFetch(res)[[1L]]
+    DBI::dbClearResult(res)
+  } else if (grepl('^(delete|insert)', q)) { # for reals
+    n = DBI::dbExecute(con, q)
+  } else {
+    stop('Statement must start with "select count", "delete", or "insert".')}
+  return(n)}
