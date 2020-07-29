@@ -34,7 +34,7 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
         dVersion = DBI::dbReadTable(con, tableName)
 
         if (dVersion$md5_computed == citationInfo$supplied_md5) {
-          cat('Citation table is already up-to-date.\n')
+          message('Citation table is already up-to-date.')
           return()}}}
 
     utils::download.file(citationInfo$download_url, filepath, mode = 'wb')

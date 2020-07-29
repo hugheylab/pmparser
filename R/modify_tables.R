@@ -15,7 +15,7 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
   # download files
   fileInfo = getPubmedFileInfo(subDirs = subDir, dbname = dbnameTmp, ...)
   if (nrow(fileInfo) == 0) {
-    cat('Database is already up-to-date.\n')
+    message('Database is already up-to-date.')
     return(invisible())}
 
   fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take most recent
@@ -24,7 +24,7 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
   # process files
   logName1 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
 
-  processPubmedXml(
+  parsePubmedXml(
     xmlDir = file.path(localDir, subDir), xmlFiles = fileInfo$xml_filename,
     logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
     overwrite = TRUE, dbname = dbname, ...)
@@ -37,7 +37,7 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
     retrySuffix = paste_(tableSuffix, 'retry')
 
     # retry failed steps
-    processPubmedXml(
+    parsePubmedXml(
       xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
       logPath = file.path(localDir, logName2), tableSuffix = retrySuffix,
       overwrite = TRUE, dbname = dbname, ...)
@@ -63,7 +63,7 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
 
 #' @export
 addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, dbname, ...) {
-  stopifnot(!is.null(sourceSuffix) || sourceSuffix != '')
+  stopifnot(!isEmpty(sourceSuffix))
 
   con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
   targetEmpty = getEmptyTables(targetSuffix)

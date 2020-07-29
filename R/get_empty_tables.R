@@ -71,7 +71,7 @@ getEmptyTables = function(tableSuffix) {
 
   names(r) = paste_(names(r), tableSuffix)
 
-  if (!is.null(tableSuffix) && tableSuffix != '') {
+  if (!isEmpty(tableSuffix)) {
     tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
     for (tableName in tableNames) {
       r[[tableName]][, xml_filename := ac]}}

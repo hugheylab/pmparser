@@ -1,7 +1,7 @@
 #' @export
 getFailed = function(logPath) {
   d = data.table::fread(logPath, sep = '\t', na.strings = '', logical01 = TRUE)
-  d = d[(status), .(xml_filename, step)][order(xml_filename)]
+  d = d[(status), .(xml_filename, step, message)][order(xml_filename)]
   return(d)}
 
 
@@ -30,7 +30,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   } else if (is.data.frame(xmlFiles)) {
     stopifnot(all(c('filename', 'step') %in% colnames(xmlFiles)),
-              !is.null(tableSuffix) && tableSuffix != '')
+              !isEmpty(tableSuffix))
     xmlInfo = unique(data.table(xmlFiles)[, .(xml_filename, step)])
 
   } else {
@@ -69,9 +69,13 @@ setXmlFilename = function(d, filename) {
     d[, xml_filename := filename]}}
 
 
+isEmpty = function(x) {
+  return(is.null(x) || all(x == ''))}
+
+
 paste_ = function(...) {
   x = list(...)
-  if (is.null(x[[length(x)]]) || x[[length(x)]] == '') {
+  if (isEmpty(x[[length(x)]])) {
     y = do.call(paste, c(x[-length(x)], list(sep = '_')))
   } else {
     y = paste(..., sep = '_')}
