@@ -19,36 +19,39 @@ processPubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
                                 tableSuffix = NULL, dbname = NULL, ...) {
 
   stepFuncs = getStepFuncs(steps)
-  writeLogFile(logPath,
-               data.table(xml_filename = filename, step = 'start', status = 0))
+  dLog = data.table(xml_filename = filename, step = 'start', status = 0, messsage = NA)
+  writeLogFile(logPath, dLog)
 
   # create separate connection for each parallel process
   con = if (is.null(dbname)) NULL else
     DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
 
   rawXml = xml2::read_xml(file.path(xmlDir, filename))
-  writeLogFile(logPath, data.table(filename, 'read_xml', 0))
+  writeLogFile(logPath, data.table(filename, 'read_xml', 0, NA))
 
   step = 'pmid_status'
   conNow = if (step %in% names(stepFuncs)) con else NULL
-  ex = tryCatch({getPmidStatus(rawXml, filename, conNow, tableSuffix)},
-                error = function(e) NULL)
-  writeLogFile(logPath, data.table(filename, step, is.null(ex)))
+  res = tryCatch({getPmidStatus(rawXml, filename, conNow, tableSuffix)},
+                error = function(e) e)
+  msg = if (is.character(res)) res else NA
+  writeLogFile(logPath, data.table(filename, step, is.character(res), msg))
 
-  pmXml = ex[[1L]]
-  pmids = ex[[2L]][status != 'Deleted']$pmid
+  # assuming pmid_status never fails
+  pmXml = res[[1L]]
+  pmids = res[[2L]][status != 'Deleted']$pmid
   filenameNow = if (is.null(tableSuffix) || tableSuffix == '') NULL else filename
   idx = !(names(stepFuncs) %in% step)
 
   r = foreach(stepFunc = stepFuncs[idx], step = names(stepFuncs)[idx]) %do% {
-    ex = tryCatch({stepFunc(pmXml, pmids, filenameNow, con, tableSuffix)},
-                  error = function(e) NULL)
-    writeLogFile(logPath, data.table(filename, step, is.null(ex)))}
+    res = tryCatch({stepFunc(pmXml, pmids, filenameNow, con, tableSuffix)},
+                   error = function(e) e)
+    msg = if (is.character(res)) res else NA
+    writeLogFile(logPath, data.table(filename, step, is.character(res), msg))}
 
   d = data.table(xml_filename = filename, datetime_processed = Sys.time())
   appendTable(con, paste_('xml_processed', tableSuffix), d)
 
-  writeLogFile(logPath, data.table(filename, 'finish', 0))
+  writeLogFile(logPath, data.table(filename, 'finish', 0, NA))
   invisible()}
 
 
@@ -60,14 +63,13 @@ processPubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
   writeEmptyTables(tableSuffix, overwrite, dbname, ...)
-  writeLogFile(logPath,
-               data.table(xml_filename = 'all', step = 'start', status = 0),
-               append = FALSE)
+  dLog = data.table(xml_filename = 'all', step = 'start', status = 0, message = NA)
+  writeLogFile(logPath, dLog, append = FALSE)
 
   r = foreach(filenameNow = unique(xmlInfo$xml_filename)) %dopar% {
     steps = xmlInfo[xml_filename == filenameNow]$step
     processPubmedXmlCore(xmlDir, filenameNow, steps, logPath, tableSuffix,
                          dbname, ...)}
 
-  writeLogFile(logPath, data.table('all', 'finish', 0))
+  writeLogFile(logPath, data.table('all', 'finish', 0, NA))
   invisible()}
