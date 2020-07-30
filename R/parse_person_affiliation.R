@@ -1,4 +1,3 @@
-#' @export
 parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
                                   tableSuffix = NULL,
                                   personType = c('author', 'investigator')) {
@@ -129,6 +128,7 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
   return(r)}
 
 
+#' @rdname parseElement
 #' @export
 parseAuthorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
                                   tableSuffix = NULL) {
@@ -136,6 +136,7 @@ parseAuthorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
                          personType = 'author')}
 
 
+#' @rdname parseElement
 #' @export
 parseInvestigatorAffiliation = function(pmXml, pmids, filename = NULL,
                                         con = NULL, tableSuffix = NULL) {

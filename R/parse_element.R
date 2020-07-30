@@ -1,3 +1,83 @@
+#' Parse information from PubMed XML files
+#'
+#' Elements are parsed according to the MEDLINE®PubMed® XML Element
+#' Descriptions and their Attributes
+#' [here](https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html).
+#'
+#' @param rawXml An xml document obtained by loading a PubMed XML file using
+#'   [xml2::read_xml()].
+#' @param filename A string or NULL. If not NULL, a column `xml_filename` is
+#'   added to the generated table(s).
+#' @param pmXml An xml nodeset derived from `rawXml`, such as that returned by
+#'   `parsePmidStatus()`, where each node corresponds to a PMID.
+#' @param pmids An integer vector of PMIDs for `pmXml`.
+#' @param con A connection to a Postgres database, created using
+#'   [DBI::dbConnect()], containing the table(s) that should be appended.
+#' @param tableSuffix A string specifying the suffix of the name of the table(s)
+#'   to which the generated table(s) should be appended.
+#'
+#' @return `parsePmidStatus()` returns a list of two objects: the first is an xml
+#'   nodeset in which each node corresponds to a PMID, the second is a
+#'   data.table with columns `pmid` and `status`. The latter is parsed from the
+#'   DeleteCitation and MedlineCitation sections.
+#'
+#'   `parseArticleId()` returns a data.table with columns `pmid`, `id_type`, and
+#'   `id_value`, parsed from the ArticleIdList section. Only `id_type`s "doi"
+#'   and "pmc" are retained.
+#'
+#'   `parsePubDate()` returns a data.table with columns `pmid`, `pub_status`,
+#'   and `pub_date`, parsed from the History section.
+#'
+#'   `parseTitleJournal()` returns a data.table with columns `pmid`, `title`,
+#'   `journal_full`, and `journal_abbrev`, parsed from the Journal section.
+#'
+#'   `parsePubType()` returns a data.table with columns `pmid`, `type_name`, and
+#'   `type_id`, parsed from the PublicationTypeList section.
+#'
+#'   `parseMeshTerm()` returns a data.table with columns `pmid`, `term_name`,
+#'   `term_id`, and `major_topic`, parsed from the MeshHeadingList section.
+#'
+#'   `parseKeyword()` returns a list of two data.tables: the first has columns
+#'   `pmid` and `list_owner`, the second has columns `pmid`, `keyword_name`,
+#'   and `major_topic`. Both data.tables are parsed from the KeywordList
+#'   section.
+#'
+#'   `parseGrant()` returns a list of two data.tables: the first has columns
+#'   `pmid` and `complete`, the second has columns `pmid`, `grant_id`,
+#'   `acronym`, `agency`, and `country`. Both data.tables are parsed from the
+#'   GrantList section.
+#'
+#'   `parseChemical()` returns a data.table with columns `pmid`,
+#'   `registry_number`, `substance_name`, and `substance_ui`, parsed from the
+#'   ChemicalList section.
+#'
+#'   `parseComment()` returns a data.table with columns `pmid`, `ref_type`, and
+#'   `ref_pmid`, parsed from the CommentsCorrectionsList section.
+#'
+#'   `parseAbstract()` returns a data.table with columns `pmid`, `text`, `label`,
+#'   `nlm_category`, and `copyright`, parsed from the Abstract section.
+#'
+#'   `parseAuthorAffiliation()` returns a list of data.tables parsed from the
+#'   AuthorList section. The first data.table is for authors and has columns
+#'   `pmid`, `author_pos`, `last_name`, `fore_name`, `initials`, `suffix`,
+#'   and `collective_name`. The second data.table is for affiliations and has
+#'   columns `pmid`, `author_pos`, `affiliation_pos`, and `affiliation`. The
+#'   third data.table is for author identifiers and has columns `pmid`,
+#'   `author_pos`, `source`, and `identifier`. The fourth data.table is for
+#'   author affiliation identifiers and has columns `pmid`, `author_pos`,
+#'   `affiliation_pos`, `source`, and `identifier`.
+#'
+#'   `parseInvestigatorAffiliation()` returns a list of data.tables identical to
+#'   those returned by `parseAuthorAffiliation()`, except parsed from the
+#'   InvestigatorList section, with column names containing "investigator"
+#'   instead of "author", and lacking a column in the first data.table for
+#'   `collective_name`.
+#'
+#' @name parseElement
+NULL
+
+
+#' @rdname parseElement
 #' @export
 parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_all(xml_find_all(rawXml, './/DeleteCitation'), './/PMID')
@@ -16,9 +96,10 @@ parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
   return(list(pmXml, x4))}
 
 
+#' @rdname parseElement
 #' @export
 parseArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
-                        tableSuffix = NULL) {
+                          tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
 
@@ -34,9 +115,10 @@ parseArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x4)}
 
 
+#' @rdname parseElement
 #' @export
 parsePubDate = function(pmXml, pmids, filename = NULL, con = NULL,
-                      tableSuffix = NULL) {
+                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
   x2 = xml_find_all(x1, './/PubMedPubDate')
@@ -56,9 +138,10 @@ parsePubDate = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x4)}
 
 
+#' @rdname parseElement
 #' @export
 parseTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
-                           tableSuffix = NULL) {
+                             tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/Journal')
   x2 = data.table(
     pmid = pmids,
@@ -71,9 +154,10 @@ parseTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x2)}
 
 
+#' @rdname parseElement
 #' @export
 parsePubType = function(pmXml, pmids, filename = NULL, con = NULL,
-                      tableSuffix = NULL) {
+                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   x2 = xml_find_all(x1, './/PublicationType')
   x3 = data.table(
@@ -86,9 +170,10 @@ parsePubType = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x3)}
 
 
+#' @rdname parseElement
 #' @export
 parseMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
-                       tableSuffix = NULL) {
+                         tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n > 0], './/DescriptorName')
@@ -104,9 +189,10 @@ parseMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x3)}
 
 
+#' @rdname parseElement
 #' @export
 parseKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
-                      tableSuffix = NULL) {
+                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/KeywordList')
   n = xml_length(x1)
 
@@ -132,9 +218,10 @@ parseKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
   return(r)}
 
 
+#' @rdname parseElement
 #' @export
 parseGrant = function(pmXml, pmids, filename = NULL, con = NULL,
-                    tableSuffix = NULL) {
+                      tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/GrantList')
   n = xml_length(x1)
 
@@ -162,9 +249,10 @@ parseGrant = function(pmXml, pmids, filename = NULL, con = NULL,
   return(r)}
 
 
+#' @rdname parseElement
 #' @export
 parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
-                       tableSuffix = NULL) {
+                         tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ChemicalList')
   n = xml_length(x1)
 
@@ -182,9 +270,10 @@ parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x4)}
 
 
+#' @rdname parseElement
 #' @export
 parseComment = function(pmXml, pmids, filename = NULL, con = NULL,
-                      tableSuffix = NULL) {
+                        tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n >0], './/CommentsCorrections')
@@ -199,9 +288,10 @@ parseComment = function(pmXml, pmids, filename = NULL, con = NULL,
   return(x3)}
 
 
+#' @rdname parseElement
 #' @export
 parseAbstract = function(pmXml, pmids, filename = NULL, con = NULL,
-                       tableSuffix = NULL) {
+                         tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(
     pmid = pmids,

@@ -5,14 +5,14 @@ NULL
 
 
 globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow',
-                  'i', 'id_type', 'm', 'pmid', 'pub_date', 'pubmed', 'step',
-                  'source', 'identifier', 'status', 'y', 'parseFunc',
-                  'collective_name', 'person_pos', 'affiliation_pos',
-                  'affil_idx', 'person_idx', 'n_affil_ids', 'n_person_ids',
-                  'n_total_ids', 'id_pos', 'md5_computed', 'md5_provided',
-                  'md5_match', 'subDir', 'group', 'f', 'col', 'xml_filename',
-                  'md5_filename', 'xml_download', 'md5_download', 'name',
-                  'published_date', 'sub_dir', 'sourceName', 'targetName'))
+                  'i', 'id_type', 'm', 'pmid', 'pub_date', 'step', 'source',
+                  'identifier', 'status', 'y', 'parseFunc', 'collective_name',
+                  'person_pos', 'affiliation_pos', 'affil_idx', 'person_idx',
+                  'n_affil_ids', 'n_person_ids', 'n_total_ids', 'id_pos', 'f',
+                  'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col',
+                  'group', 'xml_filename', 'md5_filename', 'xml_download',
+                  'md5_download', 'name', 'published_date', 'sub_dir',
+                  'sourceName', 'targetName'))
 
 
 parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,

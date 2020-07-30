@@ -1,4 +1,3 @@
-#' @export
 getEmptyTables = function(tableSuffix) {
   ac = as.character()
   ai = as.integer()
@@ -79,7 +78,6 @@ getEmptyTables = function(tableSuffix) {
   return(r)}
 
 
-#' @export
 writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                             dbname = NULL, ...) {
   if (is.null(dbname)) {

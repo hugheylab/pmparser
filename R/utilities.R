@@ -1,7 +1,6 @@
-#' @export
 getFailed = function(logPath) {
   d = data.table::fread(logPath, sep = '\t', na.strings = '', logical01 = TRUE)
-  d = d[(status), .(xml_filename, step, message)][order(xml_filename)]
+  d = d[(status)][order(xml_filename)]
   return(d)}
 
 
