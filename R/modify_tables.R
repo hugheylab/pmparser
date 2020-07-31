@@ -1,6 +1,7 @@
 #' @export
-modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
-                        nCitations = Inf, mode = c('create', 'update'), ...) {
+modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
+                        retry = TRUE, nCitations = Inf,
+                        mode = c('create', 'update'), ...) {
 
   mode = match.arg(mode)
   if (mode == 'create') { # run on Jan 1
@@ -13,7 +14,9 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
     dbnameTmp = dbname}
 
   # download files
-  fileInfo = getPubmedFileInfo(subDirs = subDir, dbname = dbnameTmp, ...)
+  fileInfo = getPubmedFileInfo(
+    subDirs = subDir, dbtype = dbtype, dbname = dbnameTmp, ...)
+
   if (nrow(fileInfo) == 0) {
     message('Database is already up-to-date.')
     return(invisible())}
@@ -27,7 +30,7 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
   parsePubmedXml(
     xmlDir = file.path(localDir, subDir), xmlFiles = fileInfo$xml_filename,
     logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
-    overwrite = TRUE, dbname = dbname, ...)
+    overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 
   dFailed = getFailed(file.path(localDir, logName1))
 
@@ -40,32 +43,33 @@ modifyTables = function(localDir, dbname, nFiles = Inf, retry = TRUE,
     parsePubmedXml(
       xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
       logPath = file.path(localDir, logName2), tableSuffix = retrySuffix,
-      overwrite = TRUE, dbname = dbname, ...)
+      overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 
     # add retry tables to first try tables
     addSourceToTarget(
       sourceSuffix = retrySuffix, targetSuffix = tableSuffix,
-      dryRun = FALSE, dbname = dbname, ...)}
+      dryRun = FALSE, dbtype = dbtype, dbname = dbname, ...)}
 
   if (mode == 'update') {
     # add update tables to main tables
     addSourceToTarget(
       sourceSuffix = tableSuffix, targetSuffix = '',
-      dryRun = FALSE, dbname = dbname, ...)}
+      dryRun = FALSE, dbtype = dbtype, dbname = dbname, ...)}
 
   if (nCitations > 0) {
     r = getCitation(
       localDir, nrows = nCitations, tableSuffix = '',
-      overwrite = TRUE, dbname = dbname, ...)}
+      overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)}
 
   invisible()}
 
 
 #' @export
-addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, dbname, ...) {
+addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, dbtype, dbname,
+                             ...) {
   stopifnot(!isEmpty(sourceSuffix))
 
-  con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+  con = connect(dbtype, dbname, ...)
   targetEmpty = getEmptyTables(targetSuffix)
   sourceEmpty = getEmptyTables(sourceSuffix)
 
@@ -133,4 +137,5 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, dbname, ...) {
 
   d = rbind(d1, d2)
   setattr(d, 'dryRun', dryRun)
+  disconnect(con)
   return(d)}

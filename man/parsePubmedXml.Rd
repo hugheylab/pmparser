@@ -10,6 +10,7 @@ parsePubmedXml(
   logPath = NULL,
   tableSuffix = NULL,
   overwrite = FALSE,
+  dbtype = "postgres",
   dbname = NULL,
   ...
 )
@@ -28,6 +29,9 @@ an error, in which case \code{message} contains the error message.}
 \item{tableSuffix}{String to append to the table names.}
 
 \item{overwrite}{Logical indicating whether to overwrite existing tables.}
+
+\item{dbtype}{String indicating type of database, either 'postgres',
+'mariadb', 'mysql', or 'sqlite'. Only used if \code{dbname} is not \code{NULL}.}
 
 \item{dbname}{Name of the database in which to create the tables.}
 

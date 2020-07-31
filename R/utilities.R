@@ -12,6 +12,20 @@ writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
                      ...)}
 
 
+connect = function(dbtype, dbname, ...) {
+  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite'))
+  drv = switch(dbtype,
+               postgres = RPostgres::Postgres(),
+               mariadb = RMariaDB::MariaDB(),
+               mysql = RMariaDB::MariaDB(),
+               sqlite = RSQLite::SQLite())
+  return(DBI::dbConnect(drv, dbname = dbname, ...))}
+
+
+disconnect = function(con) {
+  if (!is.null(con)) DBI::dbDisconnect(con)}
+
+
 appendTable = function(con, tableName, d) {
   if (is.null(con) || nrow(d) == 0L) {
     return(invisible())}

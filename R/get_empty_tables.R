@@ -80,11 +80,11 @@ getEmptyTables = function(tableSuffix) {
 
 
 writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
-                            dbname = NULL, ...) {
+                            dbtype = 'postgres', dbname = NULL, ...) {
   if (is.null(dbname)) {
     return(invisible())}
 
-  con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+  con = connect(dbtype, dbname, ...)
   emptyTables = getEmptyTables(tableSuffix)
 
   tablesExist = sapply(names(emptyTables),
@@ -95,4 +95,5 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
     DBI::dbWriteTable(con, names(emptyTables)[i],
                       emptyTables[[i]], overwrite = TRUE)}
 
+  disconnect(con)
   invisible()}

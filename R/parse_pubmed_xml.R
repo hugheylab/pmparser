@@ -15,14 +15,14 @@ globalVariables(c(
 
 
 parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
-                              tableSuffix = NULL, dbname = NULL, ...) {
+                              tableSuffix = NULL, dbtype = 'postgres',
+                              dbname = NULL, ...) {
 
   parseFuncs = getParseFuncs(steps)
   writeLogFile(logPath, data.table(filename, 'start', 0, NA))
 
   # create separate connection for each parallel process
-  con = if (is.null(dbname)) NULL else
-    DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+  con = if (is.null(dbname)) NULL else connect(dbtype, dbname, ...)
 
   rawXml = xml2::read_xml(file.path(xmlDir, filename))
   writeLogFile(logPath, data.table(filename, 'read_xml', 0, NA))
@@ -52,6 +52,7 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
     datetime_processed = Sys.time())
 
   appendTable(con, paste_('xml_processed', tableSuffix), d)
+  disconnect(con)
 
   writeLogFile(logPath, data.table(filename, 'finish', 0, NA))
   invisible()}
@@ -70,6 +71,8 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 #'   an error, in which case `message` contains the error message.
 #' @param tableSuffix String to append to the table names.
 #' @param overwrite Logical indicating whether to overwrite existing tables.
+#' @param dbtype String indicating type of database, either 'postgres',
+#'   'mariadb', 'mysql', or 'sqlite'. Only used if `dbname` is not `NULL`.
 #' @param dbname Name of the database in which to create the tables.
 #' @param ... Other arguments passed to [DBI::dbConnect()].
 #'
@@ -78,11 +81,11 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 #' @export
 parsePubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
                           tableSuffix = NULL, overwrite = FALSE,
-                          dbname = NULL, ...) {
+                          dbtype = 'postgres', dbname = NULL, ...) {
 
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
-  writeEmptyTables(tableSuffix, overwrite, dbname, ...)
+  writeEmptyTables(tableSuffix, overwrite, dbtype, dbname, ...)
   dLog = data.table(
     xml_filename = 'all', step = 'start', status = 0, message = NA)
   writeLogFile(logPath, dLog, append = FALSE)
@@ -90,7 +93,7 @@ parsePubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
   r = foreach(filenameNow = unique(xmlInfo$xml_filename)) %dopar% {
     steps = xmlInfo[xml_filename == filenameNow]$step
     parsePubmedXmlCore(
-      xmlDir, filenameNow, steps, logPath, tableSuffix, dbname, ...)}
+      xmlDir, filenameNow, steps, logPath, tableSuffix, dbtype, dbname, ...)}
 
   writeLogFile(logPath, data.table('all', 'finish', 0, NA))
   invisible()}

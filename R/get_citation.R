@@ -32,8 +32,9 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #'   name.
 #' @param overwrite Logical indicating whether to overwrite an existing citation
 #'   file and existing citation table in the database.
-#' @param dbname String indicating name of the database, if any, in which to
-#'   create the citation table.
+#' @param dbtype String indicating type of database, either 'postgres',
+#'   'mariadb', 'mysql', or 'sqlite'. Only used if `dbname` is not `NULL`.
+#' @param dbname Name of the database, if any, in which to create the table.
 #' @param ... Other arguments passed to [DBI::dbConnect()].
 #'
 #' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
@@ -44,7 +45,7 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #' @export
 getCitation = function(localDir, filename = 'open_citation_collection.zip',
                        nrows = Inf, tableSuffix = NULL, overwrite = FALSE,
-                       dbname = NULL, ...) {
+                       dbtype = 'postgres', dbname = NULL, ...) {
 
   filepath = file.path(localDir, filename)
   tableBase = 'citation'
@@ -55,7 +56,8 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     con = NULL
     md5Database = ''
   } else {
-    con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+    con = connect(dbtype, dbname, ...)
+
     if (DBI::dbExistsTable(con, versionName)) {
       dVersion = DBI::dbReadTable(con, versionName)
       md5Database = dVersion$md5_computed
@@ -105,4 +107,5 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     # if we make it to this point, set overwrite to TRUE
     DBI::dbWriteTable(con, versionName, dVersion, overwrite = TRUE)}
 
+  disconnect(con)
   return(dCitation)}

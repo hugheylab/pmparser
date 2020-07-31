@@ -10,6 +10,7 @@ getCitation(
   nrows = Inf,
   tableSuffix = NULL,
   overwrite = FALSE,
+  dbtype = "postgres",
   dbname = NULL,
   ...
 )
@@ -30,8 +31,10 @@ name.}
 \item{overwrite}{Logical indicating whether to overwrite an existing citation
 file and existing citation table in the database.}
 
-\item{dbname}{String indicating name of the database, if any, in which to
-create the citation table.}
+\item{dbtype}{String indicating type of database, either 'postgres',
+'mariadb', 'mysql', or 'sqlite'. Only used if \code{dbname} is not \code{NULL}.}
+
+\item{dbname}{Name of the database, if any, in which to create the table.}
 
 \item{...}{Other arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 }
