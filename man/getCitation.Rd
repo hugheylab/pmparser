@@ -28,8 +28,7 @@ This should not normally be changed from the default.}
 \item{tableSuffix}{String indicating suffix, if any, to append to the table
 name.}
 
-\item{overwrite}{Logical indicating whether to overwrite an existing citation
-file and existing citation table in the database.}
+\item{overwrite}{Logical indicating whether to overwrite an existing table.}
 
 \item{dbtype}{String indicating type of database, either 'postgres',
 'mariadb', 'mysql', or 'sqlite'. Only used if \code{dbname} is not \code{NULL}.}

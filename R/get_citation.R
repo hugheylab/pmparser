@@ -30,8 +30,7 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #'   This should not normally be changed from the default.
 #' @param tableSuffix String indicating suffix, if any, to append to the table
 #'   name.
-#' @param overwrite Logical indicating whether to overwrite an existing citation
-#'   file and existing citation table in the database.
+#' @param overwrite Logical indicating whether to overwrite an existing table.
 #' @param dbtype String indicating type of database, either 'postgres',
 #'   'mariadb', 'mysql', or 'sqlite'. Only used if `dbname` is not `NULL`.
 #' @param dbname Name of the database, if any, in which to create the table.
@@ -52,6 +51,7 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
   citationName = paste_(tableBase, tableSuffix)
   versionName = paste_(tableBase, 'version', tableSuffix)
 
+  # get md5 from database
   if (is.null(dbname)) {
     con = NULL
     md5Database = ''
@@ -64,7 +64,15 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     } else {
       md5Database = ''}}
 
-  if (!file.exists(filepath) || isTRUE(overwrite)) {
+  # get md5 of local file, download it if necessary
+  if (file.exists(filepath) && isFALSE(overwrite)) {
+    md5Computed = tools::md5sum(filepath)
+
+    if (md5Computed == md5Database) {
+      message('Citation table in database is already up-to-date.')
+      return(invisible())}
+
+  } else {
     citationInfo = getCitationInfo()
 
     if (citationInfo$supplied_md5 == md5Database) {
@@ -75,13 +83,7 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     md5Computed = tools::md5sum(filepath)
 
     if (md5Computed != citationInfo$supplied_md5) {
-      stop('Supplied and computed MD5 checksums do not match.')}
-
-  } else {
-    md5Computed = tools::md5sum(filepath)
-    if (md5Computed == md5Database) {
-      message('Citation table in database is already up-to-date.')
-      return(invisible())}}
+      stop('Supplied and computed MD5 checksums do not match.')}}
 
   # read the file
   if (tools::file_ext(filepath) == 'zip') {
