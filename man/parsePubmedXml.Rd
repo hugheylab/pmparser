@@ -2,7 +2,7 @@
 % Please edit documentation in R/parse_pubmed_xml.R
 \name{parsePubmedXml}
 \alias{parsePubmedXml}
-\title{title shit here}
+\title{Parse PubMed XML files}
 \usage{
 parsePubmedXml(
   xmlDir,
@@ -38,7 +38,7 @@ an error, in which case \code{message} contains the error message.}
 \item{...}{Other arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 }
 \value{
-stuff
+\code{NULL}, invisibly.
 }
 \description{
 describe shit here

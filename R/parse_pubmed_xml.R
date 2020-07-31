@@ -58,7 +58,7 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   invisible()}
 
 
-#' title shit here
+#' Parse PubMed XML files
 #'
 #' describe shit here
 #'
@@ -76,7 +76,7 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
 #' @param dbname Name of the database in which to create the tables.
 #' @param ... Other arguments passed to [DBI::dbConnect()].
 #'
-#' @return stuff
+#' @return `NULL`, invisibly.
 #'
 #' @export
 parsePubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,

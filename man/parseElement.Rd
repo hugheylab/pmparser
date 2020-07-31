@@ -15,7 +15,7 @@
 \alias{parseAbstract}
 \alias{parseAuthorAffiliation}
 \alias{parseInvestigatorAffiliation}
-\title{Parse information from PubMed XML files}
+\title{Parse elements from a PubMed XML file}
 \usage{
 parsePmidStatus(rawXml, filename, con = NULL, tableSuffix = NULL)
 

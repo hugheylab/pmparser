@@ -1,4 +1,4 @@
-#' Parse information from PubMed XML files
+#' Parse elements from a PubMed XML file
 #'
 #' Elements are parsed according to the MEDLINE®PubMed® XML Element
 #' Descriptions and their Attributes

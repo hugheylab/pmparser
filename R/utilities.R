@@ -54,7 +54,6 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
   return(xmlInfo)}
 
 
-#' @export
 getParseFuncs = function(steps = 'all') {
   parseFuncs = c(
     pmid_status = parsePmidStatus,

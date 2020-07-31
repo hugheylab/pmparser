@@ -1,3 +1,22 @@
+#' Create or update a PubMed database
+#'
+#' description here
+#'
+#' @param localDir Path to directory in which to download the files from PubMed.
+#' @param dbname Name of database.
+#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
+#'   'sqlite'.
+#' @param nFiles Maximum number of xml files to parse that are not already in
+#'   the database. This should not normally be changed from the default.
+#' @param retry Logical indicating whether to retry parsing steps that fail.
+#' @param nCitations Maximum number of rows of the citation file to read. This
+#'   should not normally be changed from the default.
+#' @param mode String indicating whether to create the database using the
+#'   baseline files or to update the database using the update files.
+#' @param ... Other arguments passed to [DBI::dbConnect()].
+#'
+#' @return `NULL`, invisibly. Log files will be created in `localDir`.
+#'
 #' @export
 modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
                         retry = TRUE, nCitations = Inf,
@@ -65,6 +84,24 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
   invisible()}
 
 
+#' title here
+#'
+#' description here
+#'
+#' @param sourceSuffix String for suffix of names of source tables. Cannot be
+#'   `NULL` or ''.
+#' @param targetSuffix String for suffix of names of target tables.
+#' @param dryRun Logical indicating whether to perform a dry run to determine
+#'   how many rows in each table would be deleted and inserted, without making
+#'   any changes to the database.
+#' @param con Connection to the database, created using [DBI::dbConnect()].
+#'
+#' @return A data.table with columns `source_name`, `target_name`,
+#'   `nrows_delete`, and `nrows_insert`. If `dryRun` is `FALSE`, a side effect
+#'   in the database is that some rows in the target tables will be deleted,
+#'   some rows in the source tables will be appended to the target tables, and
+#'   the source tables will be deleted.
+#'
 #' @export
 addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
   stopifnot(!isEmpty(sourceSuffix))
