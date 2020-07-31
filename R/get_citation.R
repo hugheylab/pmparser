@@ -31,10 +31,7 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #' @param tableSuffix String indicating suffix, if any, to append to the table
 #'   name.
 #' @param overwrite Logical indicating whether to overwrite an existing table.
-#' @param dbtype String indicating type of database, either 'postgres',
-#'   'mariadb', 'mysql', or 'sqlite'. Only used if `dbname` is not `NULL`.
-#' @param dbname Name of the database, if any, in which to create the table.
-#' @param ... Other arguments passed to [DBI::dbConnect()].
+#' @param con Connection to the database, created using [DBI::dbConnect()].
 #'
 #' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
 #'   Beware this is a large table and could swamp some machines' memories. If
@@ -44,7 +41,7 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #' @export
 getCitation = function(localDir, filename = 'open_citation_collection.zip',
                        nrows = Inf, tableSuffix = NULL, overwrite = FALSE,
-                       dbtype = 'postgres', dbname = NULL, ...) {
+                       con = NULL) {
 
   filepath = file.path(localDir, filename)
   tableBase = 'citation'
@@ -52,11 +49,9 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
   versionName = paste_(tableBase, 'version', tableSuffix)
 
   # get md5 from database
-  if (is.null(dbname)) {
-    con = NULL
+  if (is.null(con)) {
     md5Database = ''
   } else {
-    con = connect(dbtype, dbname, ...)
 
     if (DBI::dbExistsTable(con, versionName)) {
       dVersion = DBI::dbReadTable(con, versionName)
@@ -109,5 +104,4 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     # if we make it to this point, set overwrite to TRUE
     DBI::dbWriteTable(con, versionName, dVersion, overwrite = TRUE)}
 
-  disconnect(con)
   return(dCitation)}

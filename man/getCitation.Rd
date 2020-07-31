@@ -10,9 +10,7 @@ getCitation(
   nrows = Inf,
   tableSuffix = NULL,
   overwrite = FALSE,
-  dbtype = "postgres",
-  dbname = NULL,
-  ...
+  con = NULL
 )
 }
 \arguments{
@@ -30,12 +28,7 @@ name.}
 
 \item{overwrite}{Logical indicating whether to overwrite an existing table.}
 
-\item{dbtype}{String indicating type of database, either 'postgres',
-'mariadb', 'mysql', or 'sqlite'. Only used if \code{dbname} is not \code{NULL}.}
-
-\item{dbname}{Name of the database, if any, in which to create the table.}
-
-\item{...}{Other arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+\item{con}{Connection to the database, created using \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 }
 \value{
 Normally, a data.table with columns \code{citing_pmid} and \code{cited_pmid}.

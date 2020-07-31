@@ -9,11 +9,10 @@ getRemoteFilenames = function(url, pattern) {
 #' @export
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
-  subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL,
-  dbtype = 'postgres', dbname = NULL, ...) {
+  subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
 
   # if localDir is not NULL, skip files already downloaded
-  # if dbname is not NULL, skip files already processed
+  # if con is not NULL, skip files already processed
 
   pattern = 'pubmed.*\\.xml\\.gz'
 
@@ -31,13 +30,11 @@ getPubmedFileInfo = function(
         sub_dir = subDir,
         xml_filename = dir(file.path(localDir, subDir), paste0(pattern, '$')))}}
 
-  if (is.null(dbname)) {
+  if (is.null(con)) {
     dProcessed = data.table(xml_filename = as.character())
   } else {
-    con = connect(dbtype, dbname, ...)
     dProcessed = DBI::dbReadTable(con, paste_('xml_processed', tableSuffix))
-    dProcessed = data.table::setDT(dProcessed)[, .(xml_filename)]
-    disconnect(con)}
+    dProcessed = data.table::setDT(dProcessed)[, .(xml_filename)]}
 
   dKeep = dRemote[!dLocal, on = c('sub_dir', 'xml_filename')]
   dKeep = dKeep[!dProcessed, on = 'xml_filename']

@@ -11,8 +11,7 @@
 #' @param pmXml An xml nodeset derived from `rawXml`, such as that returned by
 #'   `parsePmidStatus()`, where each node corresponds to a PMID.
 #' @param pmids Integer vector of PMIDs for `pmXml`.
-#' @param con Connection to the Postgres database, created using
-#'   [DBI::dbConnect()].
+#' @param con Connection to the database, created using [DBI::dbConnect()].
 #' @param tableSuffix String to append to the table names.
 #'
 #' @return `parsePmidStatus()` returns a list of two objects: the first is an xml

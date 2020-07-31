@@ -68,8 +68,7 @@ parseInvestigatorAffiliation(
 \item{filename}{A string or NULL. If not NULL, a column \code{xml_filename} is
 added to the generated table(s).}
 
-\item{con}{Connection to the Postgres database, created using
-\code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+\item{con}{Connection to the database, created using \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
 \item{tableSuffix}{String to append to the table names.}
 

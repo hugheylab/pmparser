@@ -3,19 +3,20 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
                         retry = TRUE, nCitations = Inf,
                         mode = c('create', 'update'), ...) {
 
+  con = connect(dbtype, dbname, ...)
+
   mode = match.arg(mode)
   if (mode == 'create') { # run on Jan 1
     subDir = 'baseline'
     tableSuffix = ''
-    dbnameTmp = NULL
+    conTmp = NULL
   } else { # run on 10th day of each month
     subDir = 'updatefiles'
     tableSuffix = 'update'
-    dbnameTmp = dbname}
+    conTmp = con}
 
   # download files
-  fileInfo = getPubmedFileInfo(
-    subDirs = subDir, dbtype = dbtype, dbname = dbnameTmp, ...)
+  fileInfo = getPubmedFileInfo(subDirs = subDir, con = conTmp)
 
   if (nrow(fileInfo) == 0) {
     message('Database is already up-to-date.')
@@ -47,29 +48,27 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
 
     # add retry tables to first try tables
     addSourceToTarget(
-      sourceSuffix = retrySuffix, targetSuffix = tableSuffix,
-      dryRun = FALSE, dbtype = dbtype, dbname = dbname, ...)}
+      sourceSuffix = retrySuffix, targetSuffix = tableSuffix, dryRun = FALSE,
+      con = con)}
 
   if (mode == 'update') {
     # add update tables to main tables
     addSourceToTarget(
-      sourceSuffix = tableSuffix, targetSuffix = '',
-      dryRun = FALSE, dbtype = dbtype, dbname = dbname, ...)}
+      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)}
 
   if (nCitations > 0) {
     r = getCitation(
-      localDir, nrows = nCitations, tableSuffix = '',
-      overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)}
+      localDir = localDir, nrows = nCitations, tableSuffix = '',
+      overwrite = TRUE, con = con)}
 
+  disconnect(con)
   invisible()}
 
 
 #' @export
-addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, dbtype, dbname,
-                             ...) {
+addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
   stopifnot(!isEmpty(sourceSuffix))
 
-  con = connect(dbtype, dbname, ...)
   targetEmpty = getEmptyTables(targetSuffix)
   sourceEmpty = getEmptyTables(sourceSuffix)
 
@@ -137,5 +136,4 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, dbtype, dbname,
 
   d = rbind(d1, d2)
   setattr(d, 'dryRun', dryRun)
-  disconnect(con)
   return(d)}
