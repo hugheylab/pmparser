@@ -40,6 +40,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
   return(xmlInfo)}
 
 
+#' @export
 getParseFuncs = function(steps = 'all') {
   parseFuncs = c(
     pmid_status = parsePmidStatus,
@@ -63,9 +64,9 @@ getParseFuncs = function(steps = 'all') {
   return(x)}
 
 
-setXmlFilename = function(d, filename) {
-  if (!is.null(filename)) {
-    d[, xml_filename := filename]}}
+setColumn = function(d, value, colname = 'xml_filename') {
+  if (!is.null(value)) {
+    data.table::set(d, j = colname, value = value)}}
 
 
 isEmpty = function(x) {
@@ -92,3 +93,7 @@ runStatement = function(con, q) {
   } else {
     stop('Statement must start with "select count", "delete", or "insert".')}
   return(n)}
+
+
+getPkgVersion = function(pkgName = 'pmparser') {
+  as.character(utils::packageVersion(pkgName))}

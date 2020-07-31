@@ -10,11 +10,10 @@
 #'   added to the generated table(s).
 #' @param pmXml An xml nodeset derived from `rawXml`, such as that returned by
 #'   `parsePmidStatus()`, where each node corresponds to a PMID.
-#' @param pmids An integer vector of PMIDs for `pmXml`.
-#' @param con A connection to a Postgres database, created using
-#'   [DBI::dbConnect()], containing the table(s) that should be appended.
-#' @param tableSuffix A string specifying the suffix of the name of the table(s)
-#'   to which the generated table(s) should be appended.
+#' @param pmids Integer vector of PMIDs for `pmXml`.
+#' @param con Connection to the Postgres database, created using
+#'   [DBI::dbConnect()].
+#' @param tableSuffix String to append to the table names.
 #'
 #' @return `parsePmidStatus()` returns a list of two objects: the first is an xml
 #'   nodeset in which each node corresponds to a PMID, the second is a
@@ -90,7 +89,7 @@ parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
     status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
 
   x4 = rbind(x2, x3)
-  setXmlFilename(x4, filename)
+  setColumn(x4, filename)
 
   appendTable(con, paste_('pmid_status', tableSuffix), x4)
   return(list(pmXml, x4))}
@@ -110,7 +109,7 @@ parseArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
     id_value = xml_text(x2))
   x4 = x3[id_type %in% c('doi', 'pmc')]
 
-  setXmlFilename(x4, filename)
+  setColumn(x4, filename)
   appendTable(con, paste_('article_id', tableSuffix), x4)
   return(x4)}
 
@@ -133,7 +132,7 @@ parsePubDate = function(pmXml, pmids, filename = NULL, con = NULL,
   x4[, pub_date := data.table::as.IDate(sprintf('%s-%s-%s', y, m, d))]
   x4[, c('y', 'm', 'd') := NULL]
 
-  setXmlFilename(x4, filename)
+  setColumn(x4, filename)
   appendTable(con, paste_('pub_date', tableSuffix), x4)
   return(x4)}
 
@@ -149,7 +148,7 @@ parseTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
     journal_full = xml_text(xml_find_first(x1, './/Title')),
     journal_abbrev = xml_text(xml_find_first(x1, './/ISOAbbreviation')))
 
-  setXmlFilename(x2, filename)
+  setColumn(x2, filename)
   appendTable(con, paste_('title_journal', tableSuffix), x2)
   return(x2)}
 
@@ -165,7 +164,7 @@ parsePubType = function(pmXml, pmids, filename = NULL, con = NULL,
     type_name = xml_text(x2),
     type_id = xml_attr(x2, 'UI'))
 
-  setXmlFilename(x3, filename)
+  setColumn(x3, filename)
   appendTable(con, paste_('pub_type', tableSuffix), x3)
   return(x3)}
 
@@ -184,7 +183,7 @@ parseMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
     term_id = xml_attr(x2, 'UI'),
     major_topic = xml_attr(x2, 'MajorTopicYN'))
 
-  setXmlFilename(x3, filename)
+  setColumn(x3, filename)
   appendTable(con, paste_('mesh_term', tableSuffix), x3)
   return(x3)}
 
@@ -212,7 +211,7 @@ parseKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
                paste_('keyword_item', tableSuffix)) # consistent with grant_item
 
   for (i in 1:length(r)) {
-    setXmlFilename(r[[i]], filename)
+    setColumn(r[[i]], filename)
     appendTable(con, names(r)[i], r[[i]])}
 
   return(r)}
@@ -243,7 +242,7 @@ parseGrant = function(pmXml, pmids, filename = NULL, con = NULL,
                paste_('grant_item', tableSuffix)) # avoid reserved word
 
   for (i in 1:length(r)) {
-    setXmlFilename(r[[i]], filename)
+    setColumn(r[[i]], filename)
     appendTable(con, names(r)[i], r[[i]])}
 
   return(r)}
@@ -265,7 +264,7 @@ parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
     substance_name = xml_text(x3),
     substance_ui = xml_attr(x3, 'UI'))
 
-  setXmlFilename(x4, filename)
+  setColumn(x4, filename)
   appendTable(con, paste_('chemical', tableSuffix), x4)
   return(x4)}
 
@@ -276,14 +275,14 @@ parseComment = function(pmXml, pmids, filename = NULL, con = NULL,
                         tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
-  x2 = xml_find_all(x1[n >0], './/CommentsCorrections')
+  x2 = xml_find_all(x1[n > 0], './/CommentsCorrections')
 
   x3 = data.table(
     pmid = rep.int(pmids, n),
     ref_type = xml_attr(x2, 'RefType'),
     ref_pmid = xml_integer(xml_find_first(x2, './/PMID')))
 
-  setXmlFilename(x3, filename)
+  setColumn(x3, filename)
   appendTable(con, paste_('comment', tableSuffix), x3)
   return(x3)}
 
@@ -308,6 +307,6 @@ parseAbstract = function(pmXml, pmids, filename = NULL, con = NULL,
 
   x6 = merge(x5, x2, by = 'pmid')
 
-  setXmlFilename(x6, filename)
+  setColumn(x6, filename)
   appendTable(con, paste_('abstract', tableSuffix), x6)
   return(x6)}

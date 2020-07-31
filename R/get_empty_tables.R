@@ -66,7 +66,8 @@ getEmptyTables = function(tableSuffix) {
       identifier = ac),
 
     xml_processed = data.table(
-      xml_filename = ac, datetime_processed = as.POSIXct(ac)))
+      xml_filename = ac, pmparser_version = ac,
+      datetime_processed = as.POSIXct(ac)))
 
   names(r) = paste_(names(r), tableSuffix)
 

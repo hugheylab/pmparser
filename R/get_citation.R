@@ -98,7 +98,9 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     DBI::dbWriteTable(con, citationName, dCitation, overwrite = overwrite)
 
     dVersion = data.table(
-      md5_computed = md5Computed, datetime_processed = Sys.time())
+      md5_computed = md5Computed,
+      pmparser_version = getPkgVersion(),
+      datetime_processed = Sys.time())
 
     # if we make it to this point, set overwrite to TRUE
     DBI::dbWriteTable(con, versionName, dVersion, overwrite = TRUE)}

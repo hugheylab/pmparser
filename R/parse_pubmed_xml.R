@@ -4,15 +4,14 @@
 NULL
 
 
-globalVariables(c('.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow',
-                  'i', 'id_type', 'm', 'pmid', 'pub_date', 'step', 'source',
-                  'identifier', 'status', 'y', 'parseFunc', 'collective_name',
-                  'person_pos', 'affiliation_pos', 'affil_idx', 'person_idx',
-                  'n_affil_ids', 'n_person_ids', 'n_total_ids', 'id_pos', 'f',
-                  'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col',
-                  'group', 'xml_filename', 'md5_filename', 'xml_download',
-                  'md5_download', 'name', 'published_date', 'sub_dir',
-                  'sourceName', 'targetName'))
+globalVariables(c(
+  '.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow', 'i', 'id_type',
+  'm', 'pmid', 'pub_date', 'step', 'source', 'identifier', 'status', 'y',
+  'parseFunc', 'collective_name', 'person_pos', 'affiliation_pos', 'affil_idx',
+  'person_idx', 'n_affil_ids', 'n_person_ids', 'n_total_ids', 'id_pos', 'f',
+  'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col', 'group',
+  'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'name',
+  'published_date', 'sub_dir', 'sourceName', 'targetName'))
 
 
 parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
@@ -47,13 +46,35 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
     msg = if (is.character(res)) res else NA
     writeLogFile(logPath, data.table(filename, step, is.character(res), msg))}
 
-  d = data.table(xml_filename = filename, datetime_processed = Sys.time())
+  d = data.table(
+    xml_filename = filename,
+    pmparser_version = getPkgVersion(),
+    datetime_processed = Sys.time())
+
   appendTable(con, paste_('xml_processed', tableSuffix), d)
 
   writeLogFile(logPath, data.table(filename, 'finish', 0, NA))
   invisible()}
 
 
+#' title shit here
+#'
+#' describe shit here
+#'
+#' @param xmlDir Path to directory containing the xml or xml.gz files.
+#' @param xmlFiles Character vector of file names or a data.frame with columns
+#'   `xml_filename` and `step` TODO
+#' @param logPath Path to the log file to create. The log file is a
+#'   tab-delimited file with columns `datetime`, `xml_filename`, `step`,
+#'   `status`, and `message`. A `status` of 0 indicates success, 1 indicates
+#'   an error, in which case `message` contains the error message.
+#' @param tableSuffix String to append to the table names.
+#' @param overwrite Logical indicating whether to overwrite existing tables.
+#' @param dbname Name of the database in which to create the tables.
+#' @param ... Other arguments passed to [DBI::dbConnect()].
+#'
+#' @return stuff
+#'
 #' @export
 parsePubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
                           tableSuffix = NULL, overwrite = FALSE,

@@ -2,6 +2,7 @@
 
 export(addSourceToTarget)
 export(getCitation)
+export(getParseFuncs)
 export(getPubmedFileInfo)
 export(getPubmedFiles)
 export(modifyTables)

@@ -68,16 +68,15 @@ parseInvestigatorAffiliation(
 \item{filename}{A string or NULL. If not NULL, a column \code{xml_filename} is
 added to the generated table(s).}
 
-\item{con}{A connection to a Postgres database, created using
-\code{\link[DBI:dbConnect]{DBI::dbConnect()}}, containing the table(s) that should be appended.}
+\item{con}{Connection to the Postgres database, created using
+\code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
-\item{tableSuffix}{A string specifying the suffix of the name of the table(s)
-to which the generated table(s) should be appended.}
+\item{tableSuffix}{String to append to the table names.}
 
 \item{pmXml}{An xml nodeset derived from \code{rawXml}, such as that returned by
 \code{parsePmidStatus()}, where each node corresponds to a PMID.}
 
-\item{pmids}{An integer vector of PMIDs for \code{pmXml}.}
+\item{pmids}{Integer vector of PMIDs for \code{pmXml}.}
 }
 \value{
 \code{parsePmidStatus()} returns a list of two objects: the first is an xml

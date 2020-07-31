@@ -121,7 +121,7 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
     # change colnames based on personType
     setnames(r[[i]], 'person_pos', personPos, skip_absent = TRUE)
     # possibly add xml_filename as column
-    setXmlFilename(r[[i]], filename)
+    setColumn(r[[i]], filename)
     # possibly append to db
     appendTable(con, names(r)[i], r[[i]])}
 
