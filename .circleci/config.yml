@@ -1,0 +1,118 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: rocker/tidyverse:3.6.2
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Set environmental variables
+          command: |
+            Rscript --vanilla \
+              -e 'dsc = read.dcf("DESCRIPTION")' \
+              -e 'cat(sprintf("export PKG_NAME=%s\n", dsc[,"Package"]))' \
+              -e 'cat(sprintf("export PKG_VERSION=%s\n", dsc[,"Version"]))' \
+              -e 'cat(sprintf("export PKG_TARBALL=%s_%s.tar.gz\n", dsc[,"Package"], dsc[,"Version"]))' \
+              >> ${BASH_ENV}
+      - run:
+          name: Install dependencies
+          command: |
+            Rscript \
+              -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
+              -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'
+      - run:
+          name: Build package
+          command: R CMD build . --md5
+
+      - run:
+          name: Check package
+          command: R CMD check ${PKG_TARBALL} --no-manual
+
+      - run:
+          name: Check failures
+          command: |
+            Rscript \
+              -e "message(devtools::check_failures(path = '${PKG_NAME}.Rcheck'))" \
+              -e "covr::package_coverage()"
+
+      - run:
+          name: Deploy to drat
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ] && FALSE
+            then
+              echo "In master branch."
+              git clone https://github.com/hugheylab/drat
+              cd drat
+              FILE=src/contrib/${PKG_TARBALL}
+              echo "File: $FILE."
+              DEPLOYTARBALL=true
+              if test -f "$FILE"
+              then
+                echo "Package tarball of current version exists on drat repo."
+                mkdir ../tmpDir1
+                tar xvzf "../${PKG_TARBALL}" -C ../tmpDir1/
+                sed -i '/DESCRIPTION$/d' ../tmpDir1/${PKG_NAME}/MD5
+                sed -i '/Packaged:/d' ../tmpDir1/${PKG_NAME}/DESCRIPTION
+                cd ../tmpDir1/
+                SHADESC1=$(sha256sum ${PKG_NAME}/DESCRIPTION)
+                cd ../drat
+                mkdir ../tmpDir2
+                tar xvzf "../drat/src/contrib/${PKG_TARBALL}" -C ../tmpDir2/
+                echo "Checking for previous MD5 file."
+                MD5FILE="../tmpDir2/${PKG_NAME}/MD5"
+                if test -f "$MD5FILE"
+                then
+                  echo "Found previous MD5 file."
+                  sed -i '/DESCRIPTION$/d' ../tmpDir2/${PKG_NAME}/MD5
+                  sed -i '/Packaged:/d' ../tmpDir2/${PKG_NAME}/DESCRIPTION
+                  cd ../tmpDir2/
+                  SHADESC2=$(sha256sum ${PKG_NAME}/DESCRIPTION)
+                  cd ../drat
+                  echo "SHADESC1: $SHADESC1"
+                  echo "SHADESC2: $SHADESC2"
+                  cd ../tmpDir1
+                  SHATARBALLTMP=$(sha256sum ${PKG_NAME}/MD5)
+                  echo "SHATAR1: $SHATARBALLTMP"
+                  cd ../tmpDir2
+                  SHATARBALLGT=$(sha256sum ${PKG_NAME}/MD5)
+                  echo "SHATAR2: $SHATARBALLGT"
+                  cd ../drat
+                  if [ "$SHATARBALLGT" = "$SHATARBALLTMP" ] && [ "$SHADESC1" = "$SHADESC2" ]
+                  then
+                    echo "SHAs match, not deploying."
+                    DEPLOYTARBALL=false
+                  else
+                    echo "SHAs don't match, deploying."
+                  fi
+                else
+                  echo "No MD5 file found, deploying."
+                fi
+              else
+                echo "No tarball of current version exists on drat repo, deploying."
+              fi
+              if [ "$DEPLOYTARBALL" = true ]
+              then
+                echo "Deploying."
+                cd ../drat
+                git config --global user.email "jakejhughey@gmail.com"
+                git config --global user.name "Jake Hughey"
+                Rscript \
+                  -e "install.packages('drat')" \
+                  -e "drat::insertPackage('../${PKG_TARBALL}', '.')"
+                git add src/contrib/
+                git commit -m "Updated to ${PKG_NAME} ${PKG_VERSION} via CircleCI"
+                # git push -q https://jakejh:${GITHUB_TOKEN}@github.com/hugheylab/drat.git
+              fi
+            else
+              echo "Not on master, not deploying."
+            fi
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - build:
+          context: drat-deployment
