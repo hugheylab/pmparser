@@ -1,16 +1,29 @@
-#' @export
 getFailed = function(logPath) {
-  d = data.table::fread(logPath, na.strings = '', logical01 = TRUE)
-  d = d[(status), .(xml_filename, step)][order(xml_filename)]
+  d = data.table::fread(logPath, sep = '\t', na.strings = '', logical01 = TRUE)
+  d = d[(status)][order(xml_filename)]
   return(d)}
 
 
-writeLogFile = function(logPath, x = NULL, append = TRUE, logical01 = TRUE,
-                        ...) {
+writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
   if (is.null(logPath)) {
     return(invisible())}
   y = data.table(datetime = Sys.time(), x)
-  data.table::fwrite(y, logPath, append = append, logical01 = logical01, ...)}
+  data.table::fwrite(y, logPath, append = append, sep = '\t', logical01 = TRUE,
+                     ...)}
+
+
+connect = function(dbtype, dbname, ...) {
+  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite'))
+  drv = switch(dbtype,
+               postgres = RPostgres::Postgres(),
+               mariadb = RMariaDB::MariaDB(),
+               mysql = RMariaDB::MariaDB(),
+               sqlite = RSQLite::SQLite())
+  return(DBI::dbConnect(drv, dbname = dbname, ...))}
+
+
+disconnect = function(con) {
+  if (!is.null(con)) DBI::dbDisconnect(con)}
 
 
 appendTable = function(con, tableName, d) {
@@ -30,7 +43,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   } else if (is.data.frame(xmlFiles)) {
     stopifnot(all(c('filename', 'step') %in% colnames(xmlFiles)),
-              !is.null(tableSuffix) && tableSuffix != '')
+              !isEmpty(tableSuffix))
     xmlInfo = unique(data.table(xmlFiles)[, .(xml_filename, step)])
 
   } else {
@@ -41,38 +54,60 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
   return(xmlInfo)}
 
 
-getStepFuncs = function(steps = 'all') {
-  stepFuncs = c(
-    pmid_status = getPmidStatus,
-    article_id = getArticleId,
-    title_journal = getTitleJournal,
-    pub_type = getPubType,
-    pub_date = getPubDate,
-    mesh_term = getMeshTerm,
-    keyword = getKeyword,
-    grant = getGrant,
-    chemical = getChemical,
-    comment = getComment,
-    abstract = getAbstract,
-    author = getAuthorAffiliation,
-    investigator = getInvestigatorAffiliation)
+getParseFuncs = function(steps = 'all') {
+  parseFuncs = c(
+    pmid_status = parsePmidStatus,
+    article_id = parseArticleId,
+    title_journal = parseTitleJournal,
+    pub_type = parsePubType,
+    pub_date = parsePubDate,
+    mesh_term = parseMeshTerm,
+    keyword = parseKeyword,
+    grant = parseGrant,
+    chemical = parseChemical,
+    data_bank = parseDataBank,
+    comment = parseComment,
+    abstract = parseAbstract,
+    author = parseAuthorAffiliation,
+    investigator = parseInvestigatorAffiliation)
 
   if ('all' %in% steps) {
-    x = stepFuncs
+    x = parseFuncs
   } else {
-    x = stepFuncs[names(stepFuncs) %in% steps]}
+    x = parseFuncs[names(parseFuncs) %in% steps]}
   return(x)}
 
 
-setXmlFilename = function(d, filename) {
-  if (!is.null(filename)) {
-    d[, xml_filename := filename]}}
+setColumn = function(d, value, colname = 'xml_filename') {
+  if (!is.null(value)) {
+    data.table::set(d, j = colname, value = value)}}
+
+
+isEmpty = function(x) {
+  return(is.null(x) || all(x == ''))}
 
 
 paste_ = function(...) {
   x = list(...)
-  if (is.null(x[[length(x)]]) || x[[length(x)]] == '') {
+  if (isEmpty(x[[length(x)]])) {
     y = do.call(paste, c(x[-length(x)], list(sep = '_')))
   } else {
     y = paste(..., sep = '_')}
   return(y)}
+
+
+runStatement = function(con, q) {
+  q = trimws(q)
+  if (startsWith(q, 'select count')) { # dry run
+    res = DBI::dbSendQuery(con, q)
+    n = DBI::dbFetch(res)[[1L]]
+    DBI::dbClearResult(res)
+  } else if (grepl('^(delete|insert)', q)) { # for reals
+    n = DBI::dbExecute(con, q)
+  } else {
+    stop('Statement must start with "select count", "delete", or "insert".')}
+  return(n)}
+
+
+getPkgVersion = function(pkgName = 'pmparser') {
+  as.character(utils::packageVersion(pkgName))}

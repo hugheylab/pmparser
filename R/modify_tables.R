@@ -1,0 +1,176 @@
+#' Create or update a PubMed database
+#'
+#' description here
+#'
+#' @param localDir Path to directory in which to download the files from PubMed.
+#' @param dbname Name of database.
+#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
+#'   'sqlite'.
+#' @param nFiles Maximum number of xml files to parse that are not already in
+#'   the database. This should not normally be changed from the default.
+#' @param retry Logical indicating whether to retry parsing steps that fail.
+#' @param nCitations Maximum number of rows of the citation file to read. This
+#'   should not normally be changed from the default.
+#' @param mode String indicating whether to create the database using the
+#'   baseline files or to update the database using the update files.
+#' @param ... Other arguments passed to [DBI::dbConnect()].
+#'
+#' @return `NULL`, invisibly. Log files will be created in `localDir`.
+#'
+#' @export
+modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
+                        retry = TRUE, nCitations = Inf,
+                        mode = c('create', 'update'), ...) {
+
+  con = connect(dbtype, dbname, ...)
+
+  mode = match.arg(mode)
+  if (mode == 'create') { # run on Jan 1
+    subDir = 'baseline'
+    tableSuffix = ''
+    conTmp = NULL
+  } else { # run on 10th day of each month
+    subDir = 'updatefiles'
+    tableSuffix = 'update'
+    conTmp = con}
+
+  # download files
+  fileInfo = getPubmedFileInfo(subDirs = subDir, con = conTmp)
+
+  if (nrow(fileInfo) == 0) {
+    message('Database is already up-to-date.')
+    return(invisible())}
+
+  fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take most recent
+  fileInfo = getPubmedFiles(fileInfo, localDir)
+
+  # process files
+  logName1 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
+
+  parsePubmedXml(
+    xmlDir = file.path(localDir, subDir), xmlFiles = fileInfo$xml_filename,
+    logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
+    overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
+
+  dFailed = getFailed(file.path(localDir, logName1))
+
+  if (isTRUE(retry) && nrow(dFailed) > 0) {
+
+    logName2 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
+    retrySuffix = paste_(tableSuffix, 'retry')
+
+    # retry failed steps
+    parsePubmedXml(
+      xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
+      logPath = file.path(localDir, logName2), tableSuffix = retrySuffix,
+      overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
+
+    # add retry tables to first try tables
+    addSourceToTarget(
+      sourceSuffix = retrySuffix, targetSuffix = tableSuffix, dryRun = FALSE,
+      con = con)}
+
+  if (mode == 'update') {
+    # add update tables to main tables
+    addSourceToTarget(
+      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)}
+
+  if (nCitations > 0) {
+    r = getCitation(
+      localDir = localDir, nrows = nCitations, tableSuffix = '',
+      overwrite = TRUE, con = con)}
+
+  disconnect(con)
+  invisible()}
+
+
+#' title here
+#'
+#' description here
+#'
+#' @param sourceSuffix String for suffix of names of source tables. Cannot be
+#'   `NULL` or ''.
+#' @param targetSuffix String for suffix of names of target tables.
+#' @param dryRun Logical indicating whether to perform a dry run to determine
+#'   how many rows in each table would be deleted and inserted, without making
+#'   any changes to the database.
+#' @param con Connection to the database, created using [DBI::dbConnect()].
+#'
+#' @return A data.table with columns `source_name`, `target_name`,
+#'   `nrows_delete`, and `nrows_insert`. If `dryRun` is `FALSE`, a side effect
+#'   in the database is that some rows in the target tables will be deleted,
+#'   some rows in the source tables will be appended to the target tables, and
+#'   the source tables will be deleted.
+#'
+#' @export
+addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
+  stopifnot(!isEmpty(sourceSuffix))
+
+  targetEmpty = getEmptyTables(targetSuffix)
+  sourceEmpty = getEmptyTables(sourceSuffix)
+
+  # create source table of pmid, xml_filename to keep
+  sourceKeep = sprintf('pmid_status_%s_keep', sourceSuffix)
+  if (DBI::dbExistsTable(con, sourceKeep)) {
+    DBI::dbRemoveTable(con, sourceKeep)}
+
+  q = sprintf(
+    paste('create table %s as',
+          'select pmid, max(xml_filename) as xml_filename',
+          'from pmid_status_%s',
+          'group by pmid'),
+    sourceKeep, sourceSuffix)
+  n = DBI::dbExecute(con, q)
+
+  deleteStart = c('delete', 'select count(*)')
+  insertBase = c('insert into %s select %s', 'select count(*)')
+
+  # special treatment for xml_processed tables
+  targetNow = names(targetEmpty)[startsWith(names(targetEmpty), 'xml_processed')]
+  sourceNow = names(sourceEmpty)[startsWith(names(sourceEmpty), 'xml_processed')]
+
+  q = sprintf('%s from %s where xml_filename in (select xml_filename from %s)',
+              deleteStart[1 + dryRun], targetNow, sourceNow)
+  nDelete = runStatement(con, q)
+
+  insertStart = if (isTRUE(dryRun)) insertBase[2L] else
+    sprintf(insertBase[1L], targetNow,
+            paste0(colnames(targetEmpty[[targetNow]]), collapse = ', '))
+
+  q = sprintf('%s from %s', insertStart, sourceNow)
+  nInsert = runStatement(con, q)
+
+  d1 = data.table(source_name = sourceNow, target_name = targetNow,
+                  nrows_delete = nDelete, nrows_insert = nInsert)
+
+  # loop over remaining tables
+  feo = foreach(targetName = setdiff(names(targetEmpty), targetNow),
+                sourceName = setdiff(names(sourceEmpty), sourceNow),
+                .combine = rbind)
+
+  d2 = feo %do% {
+    # drop rows in target tables, use subquery to conform to sql standard
+    q = sprintf('%s from %s where pmid in (select pmid from %s)',
+                deleteStart[1 + dryRun], targetName, sourceName)
+    nDelete = runStatement(con, q)
+
+    # append source rows to target tables
+    insertStart = if (isTRUE(dryRun)) insertBase[2L] else
+      sprintf(insertBase[1L], targetName,
+              paste0('a.', colnames(targetEmpty[[targetName]]), collapse = ', '))
+
+    q = sprintf(paste('%s from %s as a inner join %s as b',
+                      'on a.pmid = b.pmid and a.xml_filename = b.xml_filename'),
+                insertStart, sourceName, sourceKeep)
+    nInsert = runStatement(con, q)
+
+    dNow = data.table(source_name = sourceName, target_name = targetName,
+                      nrows_delete = nDelete, nrows_insert = nInsert)}
+
+  if (isFALSE(dryRun)) { # with great power comes great responsibility
+    for (sourceName in c(sourceKeep, names(sourceEmpty)))
+      DBI::dbRemoveTable(con, sourceName)}
+
+  d = rbind(d1, d2)
+  setattr(d, 'dryRun', dryRun)
+  return(d)}

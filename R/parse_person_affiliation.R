@@ -1,7 +1,6 @@
-#' @export
-getPersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
-                                tableSuffix = NULL,
-                                personType = c('author', 'investigator')) {
+parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
+                                  tableSuffix = NULL,
+                                  personType = c('author', 'investigator')) {
   personType = match.arg(personType)
   personPre = paste0(toupper(substring(personType, 1, 1)),
                      substring(personType, 2))
@@ -122,22 +121,24 @@ getPersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
     # change colnames based on personType
     setnames(r[[i]], 'person_pos', personPos, skip_absent = TRUE)
     # possibly add xml_filename as column
-    setXmlFilename(r[[i]], filename)
+    setColumn(r[[i]], filename)
     # possibly append to db
     appendTable(con, names(r)[i], r[[i]])}
 
   return(r)}
 
 
+#' @rdname parseElement
 #' @export
-getAuthorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
-                                tableSuffix = NULL) {
-  getPersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
-                       personType = 'author')}
+parseAuthorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
+                                  tableSuffix = NULL) {
+  parsePersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
+                         personType = 'author')}
 
 
+#' @rdname parseElement
 #' @export
-getInvestigatorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
-                                      tableSuffix = NULL) {
-  getPersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
-                       personType = 'investigator')}
+parseInvestigatorAffiliation = function(pmXml, pmids, filename = NULL,
+                                        con = NULL, tableSuffix = NULL) {
+  parsePersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
+                         personType = 'investigator')}

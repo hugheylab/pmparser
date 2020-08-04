@@ -1,4 +1,3 @@
-#' @export
 getEmptyTables = function(tableSuffix) {
   ac = as.character()
   ai = as.integer()
@@ -22,16 +21,19 @@ getEmptyTables = function(tableSuffix) {
     keyword_list = data.table(
       pmid = ai, list_owner = ac),
 
-    keyword = data.table(
+    keyword_item = data.table(
       pmid = ai, keyword_name = ac, major_topic = ac),
 
     grant_list = data.table(pmid = ai, complete = ac),
 
-    grant = data.table(
+    grant_item = data.table(
       pmid = ai, grant_id = ac, acronym = ac, agency = ac, country = ac),
 
     chemical = data.table(
       pmid = ai, registry_number = ac, substance_name = ac, substance_ui = ac),
+
+    data_bank = data.table(
+      pmid = ai, data_bank_name = ac, accession_number = ac),
 
     comment = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
 
@@ -67,11 +69,12 @@ getEmptyTables = function(tableSuffix) {
       identifier = ac),
 
     xml_processed = data.table(
-      xml_filename = ac, datetime_processed = as.POSIXct(ac)))
+      xml_filename = ac, pmparser_version = ac,
+      datetime_processed = as.POSIXct(ac)))
 
   names(r) = paste_(names(r), tableSuffix)
 
-  if (!is.null(tableSuffix) && tableSuffix != '') {
+  if (!isEmpty(tableSuffix)) {
     tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
     for (tableName in tableNames) {
       r[[tableName]][, xml_filename := ac]}}
@@ -79,13 +82,12 @@ getEmptyTables = function(tableSuffix) {
   return(r)}
 
 
-#' @export
 writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
-                            dbname = NULL, ...) {
+                            dbtype = 'postgres', dbname = NULL, ...) {
   if (is.null(dbname)) {
     return(invisible())}
 
-  con = DBI::dbConnect(RPostgres::Postgres(), dbname = dbname, ...)
+  con = connect(dbtype, dbname, ...)
   emptyTables = getEmptyTables(tableSuffix)
 
   tablesExist = sapply(names(emptyTables),
@@ -93,7 +95,8 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
   for (i in 1:length(emptyTables)) {
-    DBI::dbWriteTable(con, paste_(names(emptyTables)[i], tableSuffix),
+    DBI::dbWriteTable(con, names(emptyTables)[i],
                       emptyTables[[i]], overwrite = TRUE)}
 
+  disconnect(con)
   invisible()}
