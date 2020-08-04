@@ -49,6 +49,10 @@
 #'   `registry_number`, `substance_name`, and `substance_ui`, parsed from the
 #'   ChemicalList section.
 #'
+#'   `parseDataBank()` returns a data.table with columns `pmid`,
+#'   `data_bank_name`, and `accession_number`, parsed from the DataBankList
+#'   section.
+#'
 #'   `parseComment()` returns a data.table with columns `pmid`, `ref_type`, and
 #'   `ref_pmid`, parsed from the CommentsCorrectionsList section.
 #'
@@ -266,6 +270,29 @@ parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
   setColumn(x4, filename)
   appendTable(con, paste_('chemical', tableSuffix), x4)
   return(x4)}
+
+
+#' @rdname parseElement
+#' @export
+parseDataBank = function(pmXml, pmids, filename = NULL, con = NULL,
+                         tableSuffix = NULL) {
+  x1 = xml_find_first(pmXml, './/DataBankList')
+  nBanksPerPmid = xml_length(x1)
+
+  x2 = xml_find_all(pmXml[nBanksPerPmid > 0], './/DataBank')
+  x3 = xml_find_all(x2, './/AccessionNumber', flatten = FALSE)
+  nAccsPerBank = sapply(x3, length)
+
+  x4 = data.table(
+    pmid = rep.int(pmids, nBanksPerPmid),
+    data_bank_name = xml_text(xml_find_first(x2, './/DataBankName')))
+
+  x5 = x4[rep.int(1:.N, nAccsPerBank)]
+  x5[, accession_number := unlist(lapply(x3, xml_text))]
+
+  setColumn(x5, filename)
+  appendTable(con, paste_('data_bank', tableSuffix), x5)
+  return(x5)}
 
 
 #' @rdname parseElement

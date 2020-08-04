@@ -11,6 +11,7 @@
 \alias{parseKeyword}
 \alias{parseGrant}
 \alias{parseChemical}
+\alias{parseDataBank}
 \alias{parseComment}
 \alias{parseAbstract}
 \alias{parseAuthorAffiliation}
@@ -40,6 +41,8 @@ parseKeyword(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
 parseGrant(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
 
 parseChemical(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+
+parseDataBank(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
 
 parseComment(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
 
@@ -112,6 +115,10 @@ GrantList section.
 \code{parseChemical()} returns a data.table with columns \code{pmid},
 \code{registry_number}, \code{substance_name}, and \code{substance_ui}, parsed from the
 ChemicalList section.
+
+\code{parseDataBank()} returns a data.table with columns \code{pmid},
+\code{data_bank_name}, and \code{accession_number}, parsed from the DataBankList
+section.
 
 \code{parseComment()} returns a data.table with columns \code{pmid}, \code{ref_type}, and
 \code{ref_pmid}, parsed from the CommentsCorrectionsList section.

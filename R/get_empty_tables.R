@@ -32,6 +32,9 @@ getEmptyTables = function(tableSuffix) {
     chemical = data.table(
       pmid = ai, registry_number = ac, substance_name = ac, substance_ui = ac),
 
+    data_bank = data.table(
+      pmid = ai, data_bank_name = ac, accession_number = ac),
+
     comment = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
 
     abstract = data.table(

@@ -65,6 +65,7 @@ getParseFuncs = function(steps = 'all') {
     keyword = parseKeyword,
     grant = parseGrant,
     chemical = parseChemical,
+    data_bank = parseDataBank,
     comment = parseComment,
     abstract = parseAbstract,
     author = parseAuthorAffiliation,
