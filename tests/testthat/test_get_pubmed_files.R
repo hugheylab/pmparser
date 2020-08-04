@@ -8,4 +8,8 @@ test_that('getPubmedFileInfo', {
   con = NULL
 
   fileInfo = getPubmedFileInfo(localDir, remoteDir, subDirs, tableSuffix, con)
+  fileInfoExpected = fread('file_info_expected.csv')
+
+  expect_true(all.equal(fileInfo, fileInfoExpected, check.attributes = FALSE))
+
 })
