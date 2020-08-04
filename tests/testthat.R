@@ -1,5 +1,5 @@
 library(testthat)
-library(pubmedparser)
+library(pmparser)
 library(data.table)
 
-test_check('pubmedparser')
+test_check('pmparser')

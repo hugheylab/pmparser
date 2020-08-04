@@ -1,4 +1,4 @@
-context('pubmedparser')
+context('pmparser')
 
 test_that('getPubmedFileInfo', {
   localDir = NULL
