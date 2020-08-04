@@ -7,7 +7,10 @@ test_that('getPubmedFileInfo', {
   tableSuffix = NULL
   con = NULL
 
-  expect_true(all.equal(getPubmedFileInfo(localDir, remoteDir, subDirs, tableSuffix, con), fileInfoExpected, check.attributes = FALSE))
+  fileInfoExpected = fread('file_info_expected.csv')[sub_dir == 'baseline']
+  fileInfo = getPubmedFileInfo(localDir, remoteDir, subDirs, tableSuffix, con)[sub_dir == 'baseline']
+
+  expect_equal(fileInfo, fileInfoExpected)
 
 })
 
@@ -17,8 +20,12 @@ test_that('getPubmedFiles', {
   remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
   checkMd5 = TRUE
 
-  fileInfoExpected = fread('file_info_downloaded.csv')
+  if(!dir.exists('data')){
+    dir.create('data')}
 
-  expect_true(all.equal(getPubmedFiles(fileInfo, localDir, remoteDir, checkMd5), fileInfoExpected, check.attributes = FALSE))
+  fileInfoExpected = fread('file_info_downloaded.csv')
+  fileInfo = getPubmedFiles(fileInfo, localDir, remoteDir, checkMd5)
+
+  expect_equal(fileInfo, fileInfoExpected)
 
 })
