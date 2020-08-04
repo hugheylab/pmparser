@@ -17,7 +17,7 @@ test_that('getPubmedFiles', {
   remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
   checkMd5 = TRUE
 
-  fileInfoExpected = fread('file_info_downloaded.c')
+  fileInfoExpected = fread('file_info_downloaded.csv')
 
   expect_true(all.equal(getPubmedFiles(fileInfo, localDir, remoteDir, checkMd5), fileInfoExpected, check.attributes = FALSE))
 
