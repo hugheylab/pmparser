@@ -279,7 +279,7 @@ parseDataBank = function(pmXml, pmids, filename = NULL, con = NULL,
   x1 = xml_find_first(pmXml, './/DataBankList')
   nBanksPerPmid = xml_length(x1)
 
-  x2 = xml_find_all(pmXml[nBanksPerPmid > 0], './/DataBank')
+  x2 = xml_find_all(x1[nBanksPerPmid > 0], './/DataBank')
   x3 = xml_find_all(x2, './/AccessionNumber', flatten = FALSE)
   nAccsPerBank = sapply(x3, length)
 
