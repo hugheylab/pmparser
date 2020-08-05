@@ -111,3 +111,12 @@ runStatement = function(con, q) {
 
 getPkgVersion = function(pkgName = 'pmparser') {
   as.character(utils::packageVersion(pkgName))}
+
+
+dropPmidVersionColumn = function(tableSuffix, con) {
+  emptyTables = getEmptyTables(tableSuffix)
+  idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
+  for (tableName in names(emptyTables)[idx]) {
+    q = sprintf('alter table %s drop column version', tableName)
+    x = DBI::dbExecute(con, q)}
+  invisible()}

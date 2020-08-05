@@ -9,9 +9,10 @@ globalVariables(c(
   'm', 'pmid', 'pub_date', 'step', 'source', 'identifier', 'status', 'y',
   'parseFunc', 'collective_name', 'person_pos', 'affiliation_pos', 'affil_idx',
   'person_idx', 'n_affil_ids', 'n_person_ids', 'n_total_ids', 'id_pos', 'f',
-  'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col', 'group',
-  'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'name',
-  'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number'))
+  'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col', 'group', 'name',
+  'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'version',
+  'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
+  '..cols', 'tableName'))
 
 
 parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
@@ -31,19 +32,20 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   conNow = if (step %in% names(parseFuncs)) con else NULL
   res = tryCatch({parsePmidStatus(rawXml, filename, conNow, tableSuffix)},
                 error = function(e) e)
-  msg = if (is.character(res)) res else NA
+  msg = if (is.character(res)) res else NA_character_
   writeLogFile(logPath, data.table(filename, step, is.character(res), msg))
 
   # assuming pmid_status never fails
   pmXml = res[[1L]]
-  pmids = res[[2L]][status != 'Deleted']$pmid
-  filenameNow = if (isEmpty(tableSuffix)) NULL else filename
+  dPmid = res[[2L]][status != 'Deleted', !'status']
+  if (isEmpty(tableSuffix)) dPmid[, xml_filename := NULL]
+
   idx = !(names(parseFuncs) %in% step)
 
   r = foreach(parseFunc = parseFuncs[idx], step = names(parseFuncs)[idx]) %do% {
-    res = tryCatch({parseFunc(pmXml, pmids, filenameNow, con, tableSuffix)},
+    res = tryCatch({parseFunc(pmXml, dPmid, con, tableSuffix)},
                    error = function(e) e)
-    msg = if (is.character(res)) res else NA
+    msg = if (is.character(res)) res else NA_character_
     writeLogFile(logPath, data.table(filename, step, is.character(res), msg))}
 
   d = data.table(

@@ -20,56 +20,37 @@
 \usage{
 parsePmidStatus(rawXml, filename, con = NULL, tableSuffix = NULL)
 
-parseArticleId(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseArticleId(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parsePubDate(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parsePubDate(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseTitleJournal(
-  pmXml,
-  pmids,
-  filename = NULL,
-  con = NULL,
-  tableSuffix = NULL
-)
+parseTitleJournal(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parsePubType(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parsePubType(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseMeshTerm(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseMeshTerm(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseKeyword(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseKeyword(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseGrant(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseGrant(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseChemical(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseChemical(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseDataBank(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseDataBank(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseComment(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseComment(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseAbstract(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseAbstract(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseAuthorAffiliation(
-  pmXml,
-  pmids,
-  filename = NULL,
-  con = NULL,
-  tableSuffix = NULL
-)
+parseAuthorAffiliation(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseInvestigatorAffiliation(
-  pmXml,
-  pmids,
-  filename = NULL,
-  con = NULL,
-  tableSuffix = NULL
-)
+parseInvestigatorAffiliation(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 }
 \arguments{
 \item{rawXml}{An xml document obtained by loading a PubMed XML file using
 \code{\link[xml2:read_xml]{xml2::read_xml()}}.}
 
-\item{filename}{A string or NULL. If not NULL, a column \code{xml_filename} is
-added to the generated table(s).}
+\item{filename}{A string that will be added to a column \code{xml_filename}.}
 
 \item{con}{Connection to the database, created using \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
@@ -78,7 +59,8 @@ added to the generated table(s).}
 \item{pmXml}{An xml nodeset derived from \code{rawXml}, such as that returned by
 \code{parsePmidStatus()}, where each node corresponds to a PMID.}
 
-\item{pmids}{Integer vector of PMIDs for \code{pmXml}.}
+\item{dPmid}{A data.table with one row for each node of \code{pmXml}, should have
+columns \code{pmid}, \code{version}, and possibly \code{xml_filename}.}
 }
 \value{
 \code{parsePmidStatus()} returns a list of two objects: the first is an xml
