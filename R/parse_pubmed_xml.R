@@ -12,7 +12,7 @@ globalVariables(c(
   'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col', 'group', 'name',
   'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'version',
   'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
-  '..cols', 'tableName'))
+  '..cols', 'tableName', 'copyright'))
 
 
 parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
@@ -48,7 +48,7 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
                    error = function(e) e)
     err = 'error' %in% class(res)
     msg = if (err) trimws(as.character(res)) else NA_character_
-    writeLogFile(logPath, data.table(filename, step, err, msg))
+    writeLogFile(logPath, data.table(filename, step, err, msg))}
 
   d = data.table(
     xml_filename = filename,
