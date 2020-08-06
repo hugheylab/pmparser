@@ -1,7 +1,6 @@
 getEmptyTables = function(tableSuffix) {
   ac = as.character()
   ai = as.integer()
-  dBase = data.table(pmid = ai, version = ai)
 
   r = list(
     pmid_status = data.table(xml_filename = ac, status = ac),
@@ -33,6 +32,8 @@ getEmptyTables = function(tableSuffix) {
       data_bank_name = ac, accession_number = ac),
 
     comment = data.table(ref_type = ac, ref_pmid = ai),
+
+    abstract_copyright = data.table(copyright = ac),
 
     abstract = data.table(
       text = ac, label = ac, nlm_category = ac, copyright = ac),
@@ -68,17 +69,18 @@ getEmptyTables = function(tableSuffix) {
       xml_filename = ac, pmparser_version = ac,
       datetime_processed = as.POSIXct(ac)))
 
+  dBase = data.table(pmid = ai, version = ai)
   for (tableName in setdiff(names(r), 'xml_processed')) {
     r[[tableName]] = cbind(dBase, r[[tableName]])}
 
-  names(r) = paste_(names(r), tableSuffix)
-
   if (!isEmpty(tableSuffix)) {
-    tableNames = names(r)[!grepl('^(pmid_status|xml_processed)', names(r))]
+    # tableNames = names(r)[!grepl('^(pmid_status|xml_processed)', names(r))]
+    tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
     for (tableName in tableNames) {
       r[[tableName]][, xml_filename := ac]
       setcolorder(r[[tableName]], c('pmid', 'version', 'xml_filename'))}}
 
+  names(r) = paste_(names(r), tableSuffix)
   return(r)}
 
 

@@ -14,62 +14,63 @@
 #' @param con Connection to the database, created using [DBI::dbConnect()].
 #' @param tableSuffix String to append to the table names.
 #'
-#' @return `parsePmidStatus()` returns a list of two objects: the first is an xml
-#'   nodeset in which each node corresponds to a PMID, the second is a
-#'   data.table with columns `pmid` and `status`. The latter is parsed from the
-#'   DeleteCitation and MedlineCitation sections.
+#' @return `parsePmidStatus()` returns a list of two objects. The first is an
+#'   xml nodeset in which each node corresponds to a PubmedArticle in the
+#'   `rawXml` object. The second is a data.table with columns `pmid`, `version`,
+#'   `xml_filename`, and `status`, in which each row corresponds to a
+#'   PubmedArticle in the `rawXml` object or a deleted pmid. The `status` column
+#'   is parsed from the DeleteCitation and MedlineCitation sections.
 #'
-#'   `parseArticleId()` returns a data.table with columns `pmid`, `id_type`, and
-#'   `id_value`, parsed from the ArticleIdList section. Only `id_type`s "doi"
+#'   The following functions return a data.table or list of data.tables with
+#'   columns from `dPmid` plus the columns specified.
+#'
+#'   `parseArticleId()`: a data.table with columns `id_type` and `id_value`,
+#'   parsed from the ArticleIdList section. Only `id_type`s "doi"
 #'   and "pmc" are retained.
 #'
-#'   `parsePubDate()` returns a data.table with columns `pmid`, `pub_status`,
-#'   and `pub_date`, parsed from the History section.
+#'   `parsePubDate()`: a data.table with columns  `pub_status` and `pub_date`,
+#'   parsed from the History section.
 #'
-#'   `parseTitleJournal()` returns a data.table with columns `pmid`, `title`,
-#'   `journal_full`, and `journal_abbrev`, parsed from the Journal section.
+#'   `parseTitleJournal()`: a data.table with columns `title`, `journal_full`,
+#'   and `journal_abbrev`, parsed from the Journal section.
 #'
-#'   `parsePubType()` returns a data.table with columns `pmid`, `type_name`, and
-#'   `type_id`, parsed from the PublicationTypeList section.
+#'   `parsePubType()`: a data.table with columns `type_name` and `type_id`,
+#'   parsed from the PublicationTypeList section.
 #'
-#'   `parseMeshTerm()` returns a data.table with columns `pmid`, `term_name`,
-#'   `term_id`, and `major_topic`, parsed from the MeshHeadingList section.
+#'   `parseMeshTerm()`: a data.table with columns `term_name`, `term_id`, and
+#'   `major_topic`, parsed from the MeshHeadingList section.
 #'
-#'   `parseKeyword()` returns a list of two data.tables: the first has columns
-#'   `pmid` and `list_owner`, the second has columns `pmid`, `keyword_name`,
-#'   and `major_topic`. Both data.tables are parsed from the KeywordList
-#'   section.
+#'   `parseKeyword()`: a list of two data.tables parsed from the KeywordList
+#'   section. The first with column `list_owner`, the second with columns
+#'   `keyword_name` and `major_topic`.
 #'
-#'   `parseGrant()` returns a list of two data.tables: the first has columns
-#'   `pmid` and `complete`, the second has columns `pmid`, `grant_id`,
-#'   `acronym`, `agency`, and `country`. Both data.tables are parsed from the
-#'   GrantList section.
+#'   `parseGrant()`: a list of two data.tables parsed from the GrantList
+#'   section. The first has column `complete`, the second has columns
+#'   `grant_id`, `acronym`, `agency`, and `country`.
 #'
-#'   `parseChemical()` returns a data.table with columns `pmid`,
-#'   `registry_number`, `substance_name`, and `substance_ui`, parsed from the
-#'   ChemicalList section.
+#'   `parseChemical()`: a data.table with columns `registry_number`,
+#'   `substance_name`, and `substance_ui`, parsed from the ChemicalList section.
 #'
-#'   `parseDataBank()` returns a data.table with columns `pmid`,
-#'   `data_bank_name`, and `accession_number`, parsed from the DataBankList
-#'   section.
+#'   `parseDataBank()`: a data.table with columns `data_bank_name` and
+#'   `accession_number`, parsed from the DataBankList section.
 #'
-#'   `parseComment()` returns a data.table with columns `pmid`, `ref_type`, and
-#'   `ref_pmid`, parsed from the CommentsCorrectionsList section.
+#'   `parseComment()`: a data.table with columns `ref_type` and `ref_pmid`,
+#'   parsed from the CommentsCorrectionsList section.
 #'
-#'   `parseAbstract()` returns a data.table with columns `pmid`, `text`, `label`,
-#'   `nlm_category`, and `copyright`, parsed from the Abstract section.
+#'   `parseAbstract()`: a list of two data.tables parsed from the Abstract
+#'   section. The first has column `copyright`. The second has columns `text`,
+#'   `label`, and `nlm_category`.
 #'
-#'   `parseAuthorAffiliation()` returns a list of data.tables parsed from the
-#'   AuthorList section. The first data.table is for authors and has columns
-#'   `pmid`, `author_pos`, `last_name`, `fore_name`, `initials`, `suffix`,
-#'   and `collective_name`. The second data.table is for affiliations and has
-#'   columns `pmid`, `author_pos`, `affiliation_pos`, and `affiliation`. The
-#'   third data.table is for author identifiers and has columns `pmid`,
-#'   `author_pos`, `source`, and `identifier`. The fourth data.table is for
-#'   author affiliation identifiers and has columns `pmid`, `author_pos`,
-#'   `affiliation_pos`, `source`, and `identifier`.
+#'   `parseAuthorAffiliation()`: a list of data.tables parsed from the
+#'   AuthorList section. The first is for authors and has columns `author_pos`,
+#'   `last_name`, `fore_name`, `initials`, `suffix`, and `collective_name`. The
+#'   second is for affiliations and has columns `author_pos`, `affiliation_pos`,
+#'   and `affiliation`. The third is for author identifiers and has columns
+#'   `author_pos`, `source`, and `identifier`. The fourth is for author
+#'   affiliation identifiers and has columns `author_pos`, `affiliation_pos`,
+#'   `source`, and `identifier`.
 #'
-#'   `parseInvestigatorAffiliation()` returns a list of data.tables identical to
+#'   `parseInvestigatorAffiliation()`: a list of data.tables identical to
 #'   those returned by `parseAuthorAffiliation()`, except parsed from the
 #'   InvestigatorList section, with column names containing "investigator"
 #'   instead of "author", and lacking a column in the first data.table for
@@ -97,7 +98,7 @@ parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
     xml_filename = filename,
     status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
 
-  x4 = rbind(x2, x3)
+  x4 = rbind(x3, x2)
   appendTable(con, paste_('pmid_status', tableSuffix), x4)
   return(list(pmXml, x4))}
 
@@ -315,6 +316,11 @@ parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     label = xml_attr(x4, 'Label'),
     nlm_category = xml_attr(x4, 'NlmCategory'))
 
-  x6 = merge(x5, x2, by = colnames(dPmid))
-  appendTable(con, paste_('abstract', tableSuffix), x6)
-  return(x6)}
+  r = list(x2[!is.na(copyright)], x5)
+  names(r) = c(paste_('abstract_copyright', tableSuffix),
+               paste_('abstract', tableSuffix))
+
+  for (i in 1:length(r)) {
+    appendTable(con, names(r)[i], r[[i]])}
+
+  return(r)}
