@@ -32,7 +32,7 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   conNow = if (step %in% names(parseFuncs)) con else NULL
   res = tryCatch({parsePmidStatus(rawXml, filename, conNow, tableSuffix)},
                 error = function(e) e)
-  msg = if (is.character(res)) res else NA_character_
+  msg = if ('error' %in% class(res)) res else NA_character_
   writeLogFile(logPath, data.table(filename, step, is.character(res), msg))
 
   # assuming pmid_status never fails
@@ -45,7 +45,7 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   r = foreach(parseFunc = parseFuncs[idx], step = names(parseFuncs)[idx]) %do% {
     res = tryCatch({parseFunc(pmXml, dPmid, con, tableSuffix)},
                    error = function(e) e)
-    msg = if (is.character(res)) res else NA_character_
+    msg = if ('error' %in% class(res)) res else NA_character_
     writeLogFile(logPath, data.table(filename, step, is.character(res), msg))}
 
   d = data.table(
