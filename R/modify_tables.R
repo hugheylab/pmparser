@@ -41,7 +41,11 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
     message('Database is already up-to-date.')
     return(invisible())}
 
-  fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take most recent
+  if (mode == 'create') {
+    fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take the last
+  } else {
+    fileInfo = fileInfo[1:max(1, min(.N, nFiles))]} # take the earliest
+
   fileInfo = getPubmedFiles(fileInfo, localDir)
 
   # process files
