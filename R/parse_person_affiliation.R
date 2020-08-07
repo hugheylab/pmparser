@@ -1,11 +1,12 @@
-parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
-                                  tableSuffix = NULL,
+parsePersonAffiliation = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
                                   personType = c('author', 'investigator')) {
   personType = match.arg(personType)
   personPre = paste0(toupper(substring(personType, 1, 1)),
                      substring(personType, 2))
   personPos = sprintf('%s_pos', personType)
 
+  dPmidNow = dPmid[, .(pmid, version)] # add filename back at the end
+  cols = c(colnames(dPmidNow), 'person_pos')
   ai = as.integer()
   ac = as.character()
 
@@ -15,7 +16,7 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
   # above line may break if InvestigatorList gets an identifier
 
   dPerson = data.table(
-    pmid = rep.int(pmids, nPersons),
+    dPmidNow[rep.int(1:.N, nPersons)],
     last_name = xml_text(xml_find_first(x2, './/LastName')),
     fore_name = xml_text(xml_find_first(x2, './/ForeName')),
     initials = xml_text(xml_find_first(x2, './/Initials')),
@@ -29,20 +30,20 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
     dPerson[, person_pos := 1:.N, by = pmid]
   } else {
     dPerson[, person_pos := ai]}
-  setcolorder(dPerson, c('pmid', 'person_pos'))
+  setcolorder(dPerson, cols)
 
   # get affiliations
   x4 = xml_find_all(x2, './/Affiliation', flatten = FALSE)
   nAffiliations = sapply(x4, length)
 
   if (length(nAffiliations) > 0 && sum(nAffiliations) > 0) {
-    dAffil = dPerson[rep.int(1:nrow(dPerson), nAffiliations),
-                     .(pmid, person_pos)]
-    dAffil[, affiliation_pos := 1:.N, by = .(pmid, person_pos)]
+    dAffil = dPerson[rep.int(1:nrow(dPerson), nAffiliations), ..cols]
+    dAffil[, affiliation_pos := 1:.N, by = cols]
     dAffil[, affiliation := unlist(lapply(x4, xml_text))]
   } else {
     dAffil = data.table(
-      pmid = ai, person_pos = ai, affiliation_pos = ai, affiliation = ac)}
+      pmid = ai, version = ai, person_pos = ai, affiliation_pos = ac,
+      affiliation = ac)}
 
   # get affiliation identifiers
   # have to know which identifier belongs to which affiliation
@@ -57,16 +58,18 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
       identifier = unlist(lapply(x6, xml_text)))
 
     dAffil[, affil_idx := 1:.N]
-    dAffilId = merge(dAffilId,
-                     dAffil[, .(affil_idx, pmid, person_pos, affiliation_pos)],
-                     by = 'affil_idx')
+    dAffilId = merge(
+      dAffilId, dAffil[, c('affil_idx', ..cols, 'affiliation_pos')],
+      by = 'affil_idx')
+
     dAffil[, affil_idx := NULL]
     dAffilId[, affil_idx := NULL]
-    setcolorder(dAffilId, c('pmid', 'person_pos', 'affiliation_pos',
+    setcolorder(dAffilId, c(colnames(dPmidNow), 'person_pos', 'affiliation_pos',
                             'source', 'identifier'))
   } else {
-    dAffilId = data.table(pmid = ai, person_pos = ai, affiliation_pos = ai,
-                          source = ac, identifier = ac)}
+    dAffilId = data.table(
+      pmid = ai, version = ai, person_pos = ai, affiliation_pos = ai,
+      source = ac, identifier = ac)}
 
   # get person identifiers
   # have to exclude affiliation identifiers
@@ -74,7 +77,8 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
   x7 = xml_find_all(x2, './/Identifier', flatten = FALSE)
   nTotalIds = sapply(x7, length)
 
-  dEmpty = data.table(pmid = ai, person_pos = ai, source = ac, identifier = ac)
+  dEmpty = data.table(
+    pmid = ai, version = ai, person_pos = ai, source = ac, identifier = ac)
 
   if (length(nTotalIds) > 0 && sum(nTotalIds) > 0) {
     dAllId = data.table(
@@ -83,25 +87,23 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
       identifier = unlist(lapply(x7, xml_text)))
 
     dPerson[, person_idx := 1:.N]
-    dAllId = merge(dAllId, dPerson[, .(person_idx, pmid, person_pos)],
-                   by = 'person_idx')
+    dAllId = merge(
+      dAllId, dPerson[, c('person_idx', ..cols)], by = 'person_idx')
 
     dPerson[, person_idx := NULL]
     dAllId[, person_idx := NULL]
 
-    x8 = dAffilId[, .(n_affil_ids = .N), by = .(pmid, person_pos)]
-    x9 = dAllId[, .(n_total_ids = .N), by = .(pmid, person_pos)]
-    x10 = merge(x9, x8, by = c('pmid', 'person_pos'), all.x = TRUE)
+    x8 = dAffilId[, .(n_affil_ids = .N), by = cols]
+    x9 = dAllId[, .(n_total_ids = .N), by = cols]
+    x10 = merge(x9, x8, by = cols, all.x = TRUE)
     x10[is.na(n_affil_ids), n_affil_ids := 0]
     x10[, n_person_ids := n_total_ids - n_affil_ids]
 
     if (nrow(x10) > 0) {
-      x11 = x10[n_person_ids > 0,
-                .(id_pos = 1:n_person_ids),
-                by = .(pmid, person_pos)]
+      x11 = x10[n_person_ids > 0, .(id_pos = 1:n_person_ids), by = cols]
 
-      dAllId[, id_pos := 1:.N, by = .(pmid, person_pos)]
-      dPersonId = merge(dAllId, x11, by = c('pmid', 'person_pos', 'id_pos'))
+      dAllId[, id_pos := 1:.N, by = cols]
+      dPersonId = merge(dAllId, x11, by = c(cols, 'id_pos'))
       dPersonId[, id_pos := NULL]
 
     } else {
@@ -121,7 +123,8 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
     # change colnames based on personType
     setnames(r[[i]], 'person_pos', personPos, skip_absent = TRUE)
     # possibly add xml_filename as column
-    setColumn(r[[i]], filename)
+    setColumn(r[[i]], dPmid$xml_filename[1L])
+    setcolorder(r[[i]], colnames(dPmid))
     # possibly append to db
     appendTable(con, names(r)[i], r[[i]])}
 
@@ -130,15 +133,14 @@ parsePersonAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
 
 #' @rdname parseElement
 #' @export
-parseAuthorAffiliation = function(pmXml, pmids, filename = NULL, con = NULL,
+parseAuthorAffiliation = function(pmXml, dPmid, con = NULL,
                                   tableSuffix = NULL) {
-  parsePersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
-                         personType = 'author')}
+  parsePersonAffiliation(pmXml, dPmid, con, tableSuffix, personType = 'author')}
 
 
 #' @rdname parseElement
 #' @export
-parseInvestigatorAffiliation = function(pmXml, pmids, filename = NULL,
-                                        con = NULL, tableSuffix = NULL) {
-  parsePersonAffiliation(pmXml, pmids, filename, con, tableSuffix,
+parseInvestigatorAffiliation = function(pmXml, dPmid, con = NULL,
+                                        tableSuffix = NULL) {
+  parsePersonAffiliation(pmXml, dPmid, con, tableSuffix,
                          personType = 'investigator')}

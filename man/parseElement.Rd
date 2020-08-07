@@ -7,7 +7,7 @@
 \alias{parsePubDate}
 \alias{parseTitleJournal}
 \alias{parsePubType}
-\alias{parseMeshTerm}
+\alias{parseMesh}
 \alias{parseKeyword}
 \alias{parseGrant}
 \alias{parseChemical}
@@ -20,56 +20,37 @@
 \usage{
 parsePmidStatus(rawXml, filename, con = NULL, tableSuffix = NULL)
 
-parseArticleId(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseArticleId(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parsePubDate(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parsePubDate(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseTitleJournal(
-  pmXml,
-  pmids,
-  filename = NULL,
-  con = NULL,
-  tableSuffix = NULL
-)
+parseTitleJournal(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parsePubType(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parsePubType(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseMeshTerm(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseMesh(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseKeyword(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseKeyword(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseGrant(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseGrant(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseChemical(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseChemical(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseDataBank(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseDataBank(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseComment(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseComment(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseAbstract(pmXml, pmids, filename = NULL, con = NULL, tableSuffix = NULL)
+parseAbstract(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseAuthorAffiliation(
-  pmXml,
-  pmids,
-  filename = NULL,
-  con = NULL,
-  tableSuffix = NULL
-)
+parseAuthorAffiliation(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseInvestigatorAffiliation(
-  pmXml,
-  pmids,
-  filename = NULL,
-  con = NULL,
-  tableSuffix = NULL
-)
+parseInvestigatorAffiliation(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 }
 \arguments{
 \item{rawXml}{An xml document obtained by loading a PubMed XML file using
 \code{\link[xml2:read_xml]{xml2::read_xml()}}.}
 
-\item{filename}{A string or NULL. If not NULL, a column \code{xml_filename} is
-added to the generated table(s).}
+\item{filename}{A string that will be added to a column \code{xml_filename}.}
 
 \item{con}{Connection to the database, created using \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
@@ -78,65 +59,70 @@ added to the generated table(s).}
 \item{pmXml}{An xml nodeset derived from \code{rawXml}, such as that returned by
 \code{parsePmidStatus()}, where each node corresponds to a PMID.}
 
-\item{pmids}{Integer vector of PMIDs for \code{pmXml}.}
+\item{dPmid}{A data.table with one row for each node of \code{pmXml}, should have
+columns \code{pmid}, \code{version}, and possibly \code{xml_filename}.}
 }
 \value{
-\code{parsePmidStatus()} returns a list of two objects: the first is an xml
-nodeset in which each node corresponds to a PMID, the second is a
-data.table with columns \code{pmid} and \code{status}. The latter is parsed from the
-DeleteCitation and MedlineCitation sections.
+\code{parsePmidStatus()} returns a list of two objects. The first is an
+xml nodeset in which each node corresponds to a PubmedArticle in the
+\code{rawXml} object. The second is a data.table with columns \code{pmid}, \code{version},
+\code{xml_filename}, and \code{status}, in which each row corresponds to a
+PubmedArticle in the \code{rawXml} object or a deleted pmid. The \code{status} column
+is parsed from the DeleteCitation and MedlineCitation sections.
 
-\code{parseArticleId()} returns a data.table with columns \code{pmid}, \code{id_type}, and
-\code{id_value}, parsed from the ArticleIdList section. Only \code{id_type}s "doi"
+The following functions return a data.table or list of data.tables with
+columns from \code{dPmid} plus the columns specified.
+
+\code{parseArticleId()}: a data.table with columns \code{id_type} and \code{id_value},
+parsed from the ArticleIdList section. Only \code{id_type}s "doi"
 and "pmc" are retained.
 
-\code{parsePubDate()} returns a data.table with columns \code{pmid}, \code{pub_status},
-and \code{pub_date}, parsed from the History section.
+\code{parsePubDate()}: a data.table with columns  \code{pub_status} and \code{pub_date},
+parsed from the History section.
 
-\code{parseTitleJournal()} returns a data.table with columns \code{pmid}, \code{title},
-\code{journal_full}, and \code{journal_abbrev}, parsed from the Journal section.
+\code{parseTitleJournal()}: a data.table with columns \code{title}, \code{journal_full},
+and \code{journal_abbrev}, parsed from the Journal section.
 
-\code{parsePubType()} returns a data.table with columns \code{pmid}, \code{type_name}, and
-\code{type_id}, parsed from the PublicationTypeList section.
+\code{parsePubType()}: a data.table with columns \code{type_name} and \code{type_id},
+parsed from the PublicationTypeList section.
 
-\code{parseMeshTerm()} returns a data.table with columns \code{pmid}, \code{term_name},
-\code{term_id}, and \code{major_topic}, parsed from the MeshHeadingList section.
+\code{parseMesh()}: a list of two data.tables parsed from the
+MeshHeadingList section. The first with columns \code{descriptor_pos},
+\code{descriptor_name}, \code{descriptor_ui}, and \code{descriptor_major_topic}, the
+second with columns \code{descriptor_pos}, \code{qualifier_name}, \code{qualifier_ui}, and
+\code{qualifier_major_topic}.
 
-\code{parseKeyword()} returns a list of two data.tables: the first has columns
-\code{pmid} and \code{list_owner}, the second has columns \code{pmid}, \code{keyword_name},
-and \code{major_topic}. Both data.tables are parsed from the KeywordList
-section.
+\code{parseKeyword()}: a list of two data.tables parsed from the KeywordList
+section. The first with column \code{list_owner}, the second with columns
+\code{keyword_name} and \code{major_topic}.
 
-\code{parseGrant()} returns a list of two data.tables: the first has columns
-\code{pmid} and \code{complete}, the second has columns \code{pmid}, \code{grant_id},
-\code{acronym}, \code{agency}, and \code{country}. Both data.tables are parsed from the
-GrantList section.
+\code{parseGrant()}: a list of two data.tables parsed from the GrantList
+section. The first has column \code{complete}, the second has columns
+\code{grant_id}, \code{acronym}, \code{agency}, and \code{country}.
 
-\code{parseChemical()} returns a data.table with columns \code{pmid},
-\code{registry_number}, \code{substance_name}, and \code{substance_ui}, parsed from the
-ChemicalList section.
+\code{parseChemical()}: a data.table with columns \code{registry_number},
+\code{substance_name}, and \code{substance_ui}, parsed from the ChemicalList section.
 
-\code{parseDataBank()} returns a data.table with columns \code{pmid},
-\code{data_bank_name}, and \code{accession_number}, parsed from the DataBankList
-section.
+\code{parseDataBank()}: a data.table with columns \code{data_bank_name} and
+\code{accession_number}, parsed from the DataBankList section.
 
-\code{parseComment()} returns a data.table with columns \code{pmid}, \code{ref_type}, and
-\code{ref_pmid}, parsed from the CommentsCorrectionsList section.
+\code{parseComment()}: a data.table with columns \code{ref_type} and \code{ref_pmid},
+parsed from the CommentsCorrectionsList section.
 
-\code{parseAbstract()} returns a data.table with columns \code{pmid}, \code{text}, \code{label},
-\code{nlm_category}, and \code{copyright}, parsed from the Abstract section.
+\code{parseAbstract()}: a list of two data.tables parsed from the Abstract
+section. The first has column \code{copyright}. The second has columns \code{text},
+\code{label}, and \code{nlm_category}.
 
-\code{parseAuthorAffiliation()} returns a list of data.tables parsed from the
-AuthorList section. The first data.table is for authors and has columns
-\code{pmid}, \code{author_pos}, \code{last_name}, \code{fore_name}, \code{initials}, \code{suffix},
-and \code{collective_name}. The second data.table is for affiliations and has
-columns \code{pmid}, \code{author_pos}, \code{affiliation_pos}, and \code{affiliation}. The
-third data.table is for author identifiers and has columns \code{pmid},
-\code{author_pos}, \code{source}, and \code{identifier}. The fourth data.table is for
-author affiliation identifiers and has columns \code{pmid}, \code{author_pos},
-\code{affiliation_pos}, \code{source}, and \code{identifier}.
+\code{parseAuthorAffiliation()}: a list of data.tables parsed from the
+AuthorList section. The first is for authors and has columns \code{author_pos},
+\code{last_name}, \code{fore_name}, \code{initials}, \code{suffix}, and \code{collective_name}. The
+second is for affiliations and has columns \code{author_pos}, \code{affiliation_pos},
+and \code{affiliation}. The third is for author identifiers and has columns
+\code{author_pos}, \code{source}, and \code{identifier}. The fourth is for author
+affiliation identifiers and has columns \code{author_pos}, \code{affiliation_pos},
+\code{source}, and \code{identifier}.
 
-\code{parseInvestigatorAffiliation()} returns a list of data.tables identical to
+\code{parseInvestigatorAffiliation()}: a list of data.tables identical to
 those returned by \code{parseAuthorAffiliation()}, except parsed from the
 InvestigatorList section, with column names containing "investigator"
 instead of "author", and lacking a column in the first data.table for

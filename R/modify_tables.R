@@ -41,7 +41,11 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
     message('Database is already up-to-date.')
     return(invisible())}
 
-  fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take most recent
+  if (mode == 'create') {
+    fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take the last
+  } else {
+    fileInfo = fileInfo[1:max(1, min(.N, nFiles))]} # take the earliest
+
   fileInfo = getPubmedFiles(fileInfo, localDir)
 
   # process files
@@ -70,7 +74,10 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
       sourceSuffix = retrySuffix, targetSuffix = tableSuffix, dryRun = FALSE,
       con = con)}
 
-  if (mode == 'update') {
+  if (mode == 'create') {
+    deleteOldPmidVersions(tableSuffix = tableSuffix, dryRun = FALSE, con = con)
+    dropPmidVersionColumn(tableSuffix = tableSuffix, con = con)
+  } else {
     # add update tables to main tables
     addSourceToTarget(
       sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)}
@@ -114,11 +121,14 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
   if (DBI::dbExistsTable(con, sourceKeep)) {
     DBI::dbRemoveTable(con, sourceKeep)}
 
+  # window functions are for wizards
   q = sprintf(
-    paste('create table %s as',
-          'select pmid, max(xml_filename) as xml_filename',
-          'from pmid_status_%s',
-          'group by pmid'),
+    paste('create table %s as with ranked_pmid_status as',
+          '(select *, row_number() over',
+          '(partition by pmid order by version desc, xml_filename desc) as rn',
+          'from pmid_status_%s)',
+          'select pmid, version, xml_filename',
+          'from ranked_pmid_status where rn = 1'),
     sourceKeep, sourceSuffix)
   n = DBI::dbExecute(con, q)
 
@@ -157,20 +167,62 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
     # append source rows to target tables
     insertStart = if (isTRUE(dryRun)) insertBase[2L] else
       sprintf(insertBase[1L], targetName,
-              paste0('a.', colnames(targetEmpty[[targetName]]), collapse = ', '))
+              paste0('a.', DBI::dbListFields(con, targetName), collapse = ', '))
 
     q = sprintf(paste('%s from %s as a inner join %s as b',
-                      'on a.pmid = b.pmid and a.xml_filename = b.xml_filename'),
+                      'on a.pmid = b.pmid and a.version = b.version',
+                      'and a.xml_filename = b.xml_filename'),
                 insertStart, sourceName, sourceKeep)
     nInsert = runStatement(con, q)
 
     dNow = data.table(source_name = sourceName, target_name = targetName,
                       nrows_delete = nDelete, nrows_insert = nInsert)}
 
+  DBI::dbRemoveTable(con, sourceKeep)
   if (isFALSE(dryRun)) { # with great power comes great responsibility
-    for (sourceName in c(sourceKeep, names(sourceEmpty)))
+    for (sourceName in names(sourceEmpty))
       DBI::dbRemoveTable(con, sourceName)}
 
   d = rbind(d1, d2)
+  setattr(d, 'dryRun', dryRun)
+  return(d)}
+
+
+deleteOldPmidVersions = function(tableSuffix, dryRun, con) {
+  emptyTables = getEmptyTables(tableSuffix)
+  tableKeep = paste_('pmid_status_keep', tableSuffix)
+
+  if (DBI::dbExistsTable(con, tableKeep)) {
+    DBI::dbRemoveTable(con, tableKeep)}
+
+  tableNow = names(emptyTables)[startsWith(names(emptyTables), 'pmid_status')]
+
+  q = sprintf(paste('create table %s as with ranked_pmid_status as',
+                    '(select *, row_number() over',
+                    '(partition by pmid order by version desc) as rn',
+                    'from %s)',
+                    'select %s from ranked_pmid_status where rn = 1'),
+              tableKeep, tableNow,
+              paste(DBI::dbListFields(con, tableNow), collapse = ', '))
+  n = DBI::dbExecute(con, q)
+
+  qStart = if (isTRUE(dryRun)) 'select count(*)' else 'delete'
+  idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
+
+  d = foreach(tableName = names(emptyTables)[idx], .combine = rbind) %do% {
+    q = sprintf(paste('%s from %s as a where not exists',
+                      '(select 1 from %s as b',
+                      'where a.pmid = b.pmid and a.version = b.version)'),
+                qStart, tableName, tableKeep)
+    n = runStatement(con, q)
+    dNow = data.table(table_name = tableName, nrow_delete = n)}
+
+  if (isTRUE(dryRun)) {
+    DBI::dbRemoveTable(con, tableKeep)
+  } else {
+    DBI::dbRemoveTable(con, tableNow)
+    q = sprintf('alter table %s rename to %s', tableKeep, tableNow)
+    n = DBI::dbExecute(con, q)}
+
   setattr(d, 'dryRun', dryRun)
   return(d)}

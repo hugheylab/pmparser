@@ -6,70 +6,74 @@
 #'
 #' @param rawXml An xml document obtained by loading a PubMed XML file using
 #'   [xml2::read_xml()].
-#' @param filename A string or NULL. If not NULL, a column `xml_filename` is
-#'   added to the generated table(s).
+#' @param filename A string that will be added to a column `xml_filename`.
 #' @param pmXml An xml nodeset derived from `rawXml`, such as that returned by
 #'   `parsePmidStatus()`, where each node corresponds to a PMID.
-#' @param pmids Integer vector of PMIDs for `pmXml`.
+#' @param dPmid A data.table with one row for each node of `pmXml`, should have
+#'   columns `pmid`, `version`, and possibly `xml_filename`.
 #' @param con Connection to the database, created using [DBI::dbConnect()].
 #' @param tableSuffix String to append to the table names.
 #'
-#' @return `parsePmidStatus()` returns a list of two objects: the first is an xml
-#'   nodeset in which each node corresponds to a PMID, the second is a
-#'   data.table with columns `pmid` and `status`. The latter is parsed from the
-#'   DeleteCitation and MedlineCitation sections.
+#' @return `parsePmidStatus()` returns a list of two objects. The first is an
+#'   xml nodeset in which each node corresponds to a PubmedArticle in the
+#'   `rawXml` object. The second is a data.table with columns `pmid`, `version`,
+#'   `xml_filename`, and `status`, in which each row corresponds to a
+#'   PubmedArticle in the `rawXml` object or a deleted pmid. The `status` column
+#'   is parsed from the DeleteCitation and MedlineCitation sections.
 #'
-#'   `parseArticleId()` returns a data.table with columns `pmid`, `id_type`, and
-#'   `id_value`, parsed from the ArticleIdList section. Only `id_type`s "doi"
+#'   The following functions return a data.table or list of data.tables with
+#'   columns from `dPmid` plus the columns specified.
+#'
+#'   `parseArticleId()`: a data.table with columns `id_type` and `id_value`,
+#'   parsed from the ArticleIdList section. Only `id_type`s "doi"
 #'   and "pmc" are retained.
 #'
-#'   `parsePubDate()` returns a data.table with columns `pmid`, `pub_status`,
-#'   and `pub_date`, parsed from the History section.
+#'   `parsePubDate()`: a data.table with columns  `pub_status` and `pub_date`,
+#'   parsed from the History section.
 #'
-#'   `parseTitleJournal()` returns a data.table with columns `pmid`, `title`,
-#'   `journal_full`, and `journal_abbrev`, parsed from the Journal section.
+#'   `parseTitleJournal()`: a data.table with columns `title`, `journal_full`,
+#'   and `journal_abbrev`, parsed from the Journal section.
 #'
-#'   `parsePubType()` returns a data.table with columns `pmid`, `type_name`, and
-#'   `type_id`, parsed from the PublicationTypeList section.
+#'   `parsePubType()`: a data.table with columns `type_name` and `type_id`,
+#'   parsed from the PublicationTypeList section.
 #'
-#'   `parseMeshTerm()` returns a data.table with columns `pmid`, `term_name`,
-#'   `term_id`, and `major_topic`, parsed from the MeshHeadingList section.
+#'   `parseMesh()`: a list of two data.tables parsed from the
+#'   MeshHeadingList section. The first with columns `descriptor_pos`,
+#'   `descriptor_name`, `descriptor_ui`, and `descriptor_major_topic`, the
+#'   second with columns `descriptor_pos`, `qualifier_name`, `qualifier_ui`, and
+#'   `qualifier_major_topic`.
 #'
-#'   `parseKeyword()` returns a list of two data.tables: the first has columns
-#'   `pmid` and `list_owner`, the second has columns `pmid`, `keyword_name`,
-#'   and `major_topic`. Both data.tables are parsed from the KeywordList
-#'   section.
+#'   `parseKeyword()`: a list of two data.tables parsed from the KeywordList
+#'   section. The first with column `list_owner`, the second with columns
+#'   `keyword_name` and `major_topic`.
 #'
-#'   `parseGrant()` returns a list of two data.tables: the first has columns
-#'   `pmid` and `complete`, the second has columns `pmid`, `grant_id`,
-#'   `acronym`, `agency`, and `country`. Both data.tables are parsed from the
-#'   GrantList section.
+#'   `parseGrant()`: a list of two data.tables parsed from the GrantList
+#'   section. The first has column `complete`, the second has columns
+#'   `grant_id`, `acronym`, `agency`, and `country`.
 #'
-#'   `parseChemical()` returns a data.table with columns `pmid`,
-#'   `registry_number`, `substance_name`, and `substance_ui`, parsed from the
-#'   ChemicalList section.
+#'   `parseChemical()`: a data.table with columns `registry_number`,
+#'   `substance_name`, and `substance_ui`, parsed from the ChemicalList section.
 #'
-#'   `parseDataBank()` returns a data.table with columns `pmid`,
-#'   `data_bank_name`, and `accession_number`, parsed from the DataBankList
-#'   section.
+#'   `parseDataBank()`: a data.table with columns `data_bank_name` and
+#'   `accession_number`, parsed from the DataBankList section.
 #'
-#'   `parseComment()` returns a data.table with columns `pmid`, `ref_type`, and
-#'   `ref_pmid`, parsed from the CommentsCorrectionsList section.
+#'   `parseComment()`: a data.table with columns `ref_type` and `ref_pmid`,
+#'   parsed from the CommentsCorrectionsList section.
 #'
-#'   `parseAbstract()` returns a data.table with columns `pmid`, `text`, `label`,
-#'   `nlm_category`, and `copyright`, parsed from the Abstract section.
+#'   `parseAbstract()`: a list of two data.tables parsed from the Abstract
+#'   section. The first has column `copyright`. The second has columns `text`,
+#'   `label`, and `nlm_category`.
 #'
-#'   `parseAuthorAffiliation()` returns a list of data.tables parsed from the
-#'   AuthorList section. The first data.table is for authors and has columns
-#'   `pmid`, `author_pos`, `last_name`, `fore_name`, `initials`, `suffix`,
-#'   and `collective_name`. The second data.table is for affiliations and has
-#'   columns `pmid`, `author_pos`, `affiliation_pos`, and `affiliation`. The
-#'   third data.table is for author identifiers and has columns `pmid`,
-#'   `author_pos`, `source`, and `identifier`. The fourth data.table is for
-#'   author affiliation identifiers and has columns `pmid`, `author_pos`,
-#'   `affiliation_pos`, `source`, and `identifier`.
+#'   `parseAuthorAffiliation()`: a list of data.tables parsed from the
+#'   AuthorList section. The first is for authors and has columns `author_pos`,
+#'   `last_name`, `fore_name`, `initials`, `suffix`, and `collective_name`. The
+#'   second is for affiliations and has columns `author_pos`, `affiliation_pos`,
+#'   and `affiliation`. The third is for author identifiers and has columns
+#'   `author_pos`, `source`, and `identifier`. The fourth is for author
+#'   affiliation identifiers and has columns `author_pos`, `affiliation_pos`,
+#'   `source`, and `identifier`.
 #'
-#'   `parseInvestigatorAffiliation()` returns a list of data.tables identical to
+#'   `parseInvestigatorAffiliation()`: a list of data.tables identical to
 #'   those returned by `parseAuthorAffiliation()`, except parsed from the
 #'   InvestigatorList section, with column names containing "investigator"
 #'   instead of "author", and lacking a column in the first data.table for
@@ -84,49 +88,50 @@ NULL
 parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_all(xml_find_all(rawXml, './/DeleteCitation'), './/PMID')
   x2 = data.table(pmid = xml_integer(x1)) # could have zero rows
-  x2[, status := 'Deleted']
+  x2[, `:=`(version = 999, # ugly, but should work
+            xml_filename = filename,
+            status = 'Deleted')]
 
   pmXml = xml_find_all(rawXml, './/PubmedArticle')
+  x0 = xml_find_first(pmXml, './/PMID')
+
   x3 = data.table(
-    pmid = xml_integer(xml_find_first(pmXml, './/PMID')),
+    pmid = xml_integer(x0),
+    version = as.integer(xml_attr(x0, 'Version')),
+    xml_filename = filename,
     status = xml_attr(xml_find_first(pmXml, 'MedlineCitation'), 'Status'))
 
-  x4 = rbind(x2, x3)
-  setColumn(x4, filename)
-
+  x4 = rbind(x3, x2)
   appendTable(con, paste_('pmid_status', tableSuffix), x4)
   return(list(pmXml, x4))}
 
 
 #' @rdname parseElement
 #' @export
-parseArticleId = function(pmXml, pmids, filename = NULL, con = NULL,
-                          tableSuffix = NULL) {
+parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
 
   x2 = xml_find_all(x1, './/ArticleId')
   x3 = data.table(
-    pmid = rep.int(pmids, nIds),
+    dPmid[rep.int(1:.N, nIds)],
     id_type = xml_attr(x2, 'IdType'),
     id_value = xml_text(x2))
   x4 = x3[id_type %in% c('doi', 'pmc')]
 
-  setColumn(x4, filename)
   appendTable(con, paste_('article_id', tableSuffix), x4)
   return(x4)}
 
 
 #' @rdname parseElement
 #' @export
-parsePubDate = function(pmXml, pmids, filename = NULL, con = NULL,
-                        tableSuffix = NULL) {
+parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
   x2 = xml_find_all(x1, './/PubMedPubDate')
 
   x4 = data.table(
-    pmid = rep.int(pmids, nHist),
+    dPmid[rep.int(1:.N, nHist)],
     pub_status = xml_attr(x2, 'PubStatus'),
     y = xml_text(xml_find_all(x2, './/Year')),
     m = xml_text(xml_find_all(x2, './/Month')),
@@ -135,77 +140,102 @@ parsePubDate = function(pmXml, pmids, filename = NULL, con = NULL,
   x4[, pub_date := data.table::as.IDate(sprintf('%s-%s-%s', y, m, d))]
   x4[, c('y', 'm', 'd') := NULL]
 
-  setColumn(x4, filename)
   appendTable(con, paste_('pub_date', tableSuffix), x4)
   return(x4)}
 
 
 #' @rdname parseElement
 #' @export
-parseTitleJournal = function(pmXml, pmids, filename = NULL, con = NULL,
-                             tableSuffix = NULL) {
+parseTitleJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/Journal')
   x2 = data.table(
-    pmid = pmids,
+    dPmid,
     title = xml_text(xml_find_first(pmXml, './/ArticleTitle')),
     journal_full = xml_text(xml_find_first(x1, './/Title')),
     journal_abbrev = xml_text(xml_find_first(x1, './/ISOAbbreviation')))
 
-  setColumn(x2, filename)
   appendTable(con, paste_('title_journal', tableSuffix), x2)
   return(x2)}
 
 
 #' @rdname parseElement
 #' @export
-parsePubType = function(pmXml, pmids, filename = NULL, con = NULL,
-                        tableSuffix = NULL) {
+parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   x2 = xml_find_all(x1, './/PublicationType')
+
   x3 = data.table(
-    pmid = rep.int(pmids, xml_length(x1)),
+    dPmid[rep.int(1:.N, xml_length(x1))],
     type_name = xml_text(x2),
     type_id = xml_attr(x2, 'UI'))
 
-  setColumn(x3, filename)
   appendTable(con, paste_('pub_type', tableSuffix), x3)
   return(x3)}
 
 
 #' @rdname parseElement
 #' @export
-parseMeshTerm = function(pmXml, pmids, filename = NULL, con = NULL,
-                         tableSuffix = NULL) {
+parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  ai = as.integer()
+  ac = as.character()
+
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
-  n = xml_length(x1)
-  x2 = xml_find_all(x1[n > 0], './/DescriptorName')
+  nDescPerPmid = xml_length(x1)
 
+  x2 = xml_find_all(x1[nDescPerPmid > 0], './/DescriptorName')
   x3 = data.table(
-    pmid = rep.int(pmids, n),
-    term_name = xml_text(x2),
-    term_id = xml_attr(x2, 'UI'),
-    major_topic = xml_attr(x2, 'MajorTopicYN'))
+    dPmid[rep.int(1:.N, nDescPerPmid)],
+    descriptor_name = xml_text(x2),
+    descriptor_ui = xml_attr(x2, 'UI'),
+    descriptor_major_topic = xml_attr(x2, 'MajorTopicYN'))
 
-  setColumn(x3, filename)
-  appendTable(con, paste_('mesh_term', tableSuffix), x3)
-  return(x3)}
+  if (nrow(x3) > 0) {
+    x3[, descriptor_pos := 1:.N, by = pmid]
+  } else {
+    x3[, descriptor_pos := ai]}
+  setcolorder(x3, c(colnames(dPmid), 'descriptor_pos'))
+
+  x4 = xml_find_all(x1[nDescPerPmid > 0], './/MeshHeading')
+  x5 = xml_find_all(x4, './/QualifierName', flatten = FALSE)
+  nQualPerDesc = sapply(x5, length)
+
+  descPos = unlist(lapply(nDescPerPmid[nDescPerPmid > 0], function(n) 1:n))
+
+  if (length(nQualPerDesc) > 0 && sum(nQualPerDesc) > 0) {
+    x6 = data.table(
+      x3[rep.int(1:.N, nQualPerDesc), colnames(dPmid), with = FALSE],
+      descriptor_pos = rep.int(descPos, nQualPerDesc),
+      qualifier_name = unlist(lapply(x5, xml_text)),
+      qualifier_ui = unlist(lapply(x5, function(x) xml_attr(x, 'UI'))),
+      qualifier_major_topic = unlist(lapply(x5, function(x)
+        xml_attr(x, 'MajorTopicYN'))))
+  } else {
+    x6 = data.table(
+      x3[, colnames(dPmid), with = FALSE], descriptor_pos = ai,
+      qualifier_name = ac, qualifier_ui = ac, qualifier_major_topic = ac)}
+
+  r = list(x3, x6)
+  names(r) = c(paste_('mesh_descriptor', tableSuffix),
+               paste_('mesh_qualifier', tableSuffix))
+
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  return(r)}
 
 
 #' @rdname parseElement
 #' @export
-parseKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
-                        tableSuffix = NULL) {
+parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/KeywordList')
   n = xml_length(x1)
 
   x2 = data.table(
-    pmid = pmids[n > 0],
+    dPmid[n > 0],
     list_owner = xml_attr(x1[n > 0], 'Owner'))
 
   x3 = xml_find_all(x1[n > 0], './/Keyword')
 
   x4 = data.table(
-    pmid = rep.int(pmids, n),
+    dPmid[rep.int(1:.N, n)],
     keyword_name = trimws(xml_text(x3)),
     major_topic = xml_attr(x3, 'MajorTopicYN'))
 
@@ -213,28 +243,24 @@ parseKeyword = function(pmXml, pmids, filename = NULL, con = NULL,
   names(r) = c(paste_('keyword_list', tableSuffix),
                paste_('keyword_item', tableSuffix)) # consistent with grant_item
 
-  for (i in 1:length(r)) {
-    setColumn(r[[i]], filename)
-    appendTable(con, names(r)[i], r[[i]])}
-
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
 #' @rdname parseElement
 #' @export
-parseGrant = function(pmXml, pmids, filename = NULL, con = NULL,
-                      tableSuffix = NULL) {
+parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/GrantList')
   n = xml_length(x1)
 
   x2 = data.table(
-    pmid = pmids[n > 0],
+    dPmid[n > 0],
     complete = xml_attr(x1[n > 0], 'CompleteYN'))
 
   x3 = xml_find_all(x1[n > 0], './/Grant')
 
   x4 = data.table(
-    pmid = rep.int(pmids, n),
+    dPmid[rep.int(1:.N, n)],
     grant_id = xml_text(xml_find_first(x3, './/GrantID')),
     acronym = xml_text(xml_find_first(x3, './/Acronym')),
     agency = xml_text(xml_find_first(x3, './/Agency')),
@@ -244,17 +270,13 @@ parseGrant = function(pmXml, pmids, filename = NULL, con = NULL,
   names(r) = c(paste_('grant_list', tableSuffix),
                paste_('grant_item', tableSuffix)) # avoid reserved word
 
-  for (i in 1:length(r)) {
-    setColumn(r[[i]], filename)
-    appendTable(con, names(r)[i], r[[i]])}
-
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
 #' @rdname parseElement
 #' @export
-parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
-                         tableSuffix = NULL) {
+parseChemical = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ChemicalList')
   n = xml_length(x1)
 
@@ -262,20 +284,18 @@ parseChemical = function(pmXml, pmids, filename = NULL, con = NULL,
   x3 = xml_find_first(x2, './/NameOfSubstance')
 
   x4 = data.table(
-    pmid = rep.int(pmids, n),
+    dPmid[rep.int(1:.N, n)],
     registry_number = xml_text(xml_find_first(x2, './/RegistryNumber')),
     substance_name = xml_text(x3),
     substance_ui = xml_attr(x3, 'UI'))
 
-  setColumn(x4, filename)
   appendTable(con, paste_('chemical', tableSuffix), x4)
   return(x4)}
 
 
 #' @rdname parseElement
 #' @export
-parseDataBank = function(pmXml, pmids, filename = NULL, con = NULL,
-                         tableSuffix = NULL) {
+parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/DataBankList')
   nBanksPerPmid = xml_length(x1)
 
@@ -284,55 +304,52 @@ parseDataBank = function(pmXml, pmids, filename = NULL, con = NULL,
   nAccsPerBank = sapply(x3, length)
 
   x4 = data.table(
-    pmid = rep.int(pmids, nBanksPerPmid),
+    dPmid[rep.int(1:.N, nBanksPerPmid)],
     data_bank_name = xml_text(xml_find_first(x2, './/DataBankName')))
 
   x5 = x4[rep.int(1:.N, nAccsPerBank)]
   x5[, accession_number := unlist(lapply(x3, xml_text))]
 
-  setColumn(x5, filename)
   appendTable(con, paste_('data_bank', tableSuffix), x5)
   return(x5)}
 
 
 #' @rdname parseElement
 #' @export
-parseComment = function(pmXml, pmids, filename = NULL, con = NULL,
-                        tableSuffix = NULL) {
+parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n > 0], './/CommentsCorrections')
 
   x3 = data.table(
-    pmid = rep.int(pmids, n),
+    dPmid[rep.int(1:.N, n)],
     ref_type = xml_attr(x2, 'RefType'),
     ref_pmid = xml_integer(xml_find_first(x2, './/PMID')))
 
-  setColumn(x3, filename)
   appendTable(con, paste_('comment', tableSuffix), x3)
   return(x3)}
 
 
 #' @rdname parseElement
 #' @export
-parseAbstract = function(pmXml, pmids, filename = NULL, con = NULL,
-                         tableSuffix = NULL) {
+parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(
-    pmid = pmids,
+    dPmid,
     copyright = xml_text(xml_find_first(x1, './/CopyrightInformation')))
 
   x3 = xml_length(x1) - !is.na(x2$copyright)
   x4 = xml_find_all(xml_find_all(pmXml, './/Abstract'), './/AbstractText')
 
   x5 = data.table(
-    pmid = rep.int(pmids, x3),
+    dPmid[rep.int(1:.N, x3)],
     text = xml_text(x4),
     label = xml_attr(x4, 'Label'),
     nlm_category = xml_attr(x4, 'NlmCategory'))
 
-  x6 = merge(x5, x2, by = 'pmid')
+  r = list(x2[!is.na(copyright)], x5)
+  names(r) = c(paste_('abstract_copyright', tableSuffix),
+               paste_('abstract', tableSuffix))
 
-  setColumn(x6, filename)
-  appendTable(con, paste_('abstract', tableSuffix), x6)
-  return(x6)}
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  return(r)}

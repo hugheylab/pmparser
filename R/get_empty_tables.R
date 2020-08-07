@@ -3,82 +3,89 @@ getEmptyTables = function(tableSuffix) {
   ai = as.integer()
 
   r = list(
-    pmid_status = data.table(pmid = ai, status = ac, xml_filename = ac),
+    pmid_status = data.table(xml_filename = ac, status = ac),
 
-    article_id = data.table(pmid = ai, id_type = ac, id_value = ac),
+    article_id = data.table(id_type = ac, id_value = ac),
 
-    title_journal = data.table(
-      pmid = ai, title = ac, journal_full = ac, journal_abbrev = ac),
+    title_journal = data.table(title = ac, journal_full = ac,
+      journal_abbrev = ac),
 
-    pub_type = data.table(pmid = ai, type_name = ac, type_id = ac),
+    pub_type = data.table(type_name = ac, type_id = ac),
 
-    pub_date = data.table(
-      pmid = ai, pub_status = ac, pub_date = data.table::as.IDate(ai)),
+    pub_date = data.table(pub_status = ac, pub_date = data.table::as.IDate(ai)),
 
-    mesh_term = data.table(
-      pmid = ai, term_name = ac, term_id = ac, major_topic = ac),
+    mesh_descriptor = data.table(
+      descriptor_pos = ac, descriptor_name = ac, descriptor_ui = ac,
+      descriptor_major_topic = ac),
 
-    keyword_list = data.table(
-      pmid = ai, list_owner = ac),
+    mesh_qualifier = data.table(
+      descriptor_pos = ac, qualifier_name = ac, qualifier_ui = ac,
+      qualifier_major_topic = ac),
 
-    keyword_item = data.table(
-      pmid = ai, keyword_name = ac, major_topic = ac),
+    keyword_list = data.table(list_owner = ac),
 
-    grant_list = data.table(pmid = ai, complete = ac),
+    keyword_item = data.table(keyword_name = ac, major_topic = ac),
+
+    grant_list = data.table(complete = ac),
 
     grant_item = data.table(
-      pmid = ai, grant_id = ac, acronym = ac, agency = ac, country = ac),
+      grant_id = ac, acronym = ac, agency = ac, country = ac),
 
     chemical = data.table(
-      pmid = ai, registry_number = ac, substance_name = ac, substance_ui = ac),
+      registry_number = ac, substance_name = ac, substance_ui = ac),
 
     data_bank = data.table(
-      pmid = ai, data_bank_name = ac, accession_number = ac),
+      data_bank_name = ac, accession_number = ac),
 
-    comment = data.table(pmid = ai, ref_type = ac, ref_pmid = ai),
+    comment = data.table(ref_type = ac, ref_pmid = ai),
+
+    abstract_copyright = data.table(copyright = ac),
 
     abstract = data.table(
-      pmid = ai, text = ac, label = ac, nlm_category = ac, copyright = ac),
+      text = ac, label = ac, nlm_category = ac, copyright = ac),
 
     author = data.table(
-      pmid = ai, author_pos = ai, last_name = ac, fore_name = ac, initials = ac,
+      author_pos = ai, last_name = ac, fore_name = ac, initials = ac,
       suffix = ac, collective_name = ac),
 
     author_affiliation = data.table(
-      pmid = ai, author_pos = ai, affiliation_pos = ai, affiliation = ac),
+      author_pos = ai, affiliation_pos = ai, affiliation = ac),
 
     author_identifier = data.table(
-      pmid = ai, author_pos = ai, source = ac, identifier = ac),
+      author_pos = ai, source = ac, identifier = ac),
 
     author_affiliation_identifier = data.table(
-      pmid = ai, author_pos = ai, affiliation_pos = ai, source = ac,
-      identifier = ac),
+      author_pos = ai, affiliation_pos = ai, source = ac, identifier = ac),
 
     investigator = data.table(
-      pmid = ai, investigator_pos = ai, last_name = ac, fore_name = ac,
-      initials = ac, suffix = ac),
+      investigator_pos = ai, last_name = ac, fore_name = ac, initials = ac,
+      suffix = ac),
 
     investigator_affiliation = data.table(
-      pmid = ai, investigator_pos = ai, affiliation_pos = ai, affiliation = ac),
+      investigator_pos = ai, affiliation_pos = ai, affiliation = ac),
 
     investigator_identifier = data.table(
-      pmid = ai, investigator_pos = ai, source = ac, identifier = ac),
+      investigator_pos = ai, source = ac, identifier = ac),
 
     investigator_affiliation_identifier = data.table(
-      pmid = ai, investigator_pos = ai, affiliation_pos = ai, source = ac,
+      investigator_pos = ai, affiliation_pos = ai, source = ac,
       identifier = ac),
 
     xml_processed = data.table(
       xml_filename = ac, pmparser_version = ac,
       datetime_processed = as.POSIXct(ac)))
 
-  names(r) = paste_(names(r), tableSuffix)
+  dBase = data.table(pmid = ai, version = ai)
+  for (tableName in setdiff(names(r), 'xml_processed')) {
+    r[[tableName]] = cbind(dBase, r[[tableName]])}
 
   if (!isEmpty(tableSuffix)) {
     tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
     for (tableName in tableNames) {
-      r[[tableName]][, xml_filename := ac]}}
+      r[[tableName]][, xml_filename := ac]
+      setcolorder(r[[tableName]], c('pmid', 'version', 'xml_filename'))}}
 
+  names(r) = paste_(names(r), tableSuffix)
   return(r)}
 
 

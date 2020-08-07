@@ -61,7 +61,7 @@ getParseFuncs = function(steps = 'all') {
     title_journal = parseTitleJournal,
     pub_type = parsePubType,
     pub_date = parsePubDate,
-    mesh_term = parseMeshTerm,
+    mesh = parseMesh,
     keyword = parseKeyword,
     grant = parseGrant,
     chemical = parseChemical,
@@ -111,3 +111,28 @@ runStatement = function(con, q) {
 
 getPkgVersion = function(pkgName = 'pmparser') {
   as.character(utils::packageVersion(pkgName))}
+
+
+dropPmidVersionColumn = function(tableSuffix, con) {
+  emptyTables = getEmptyTables(tableSuffix)
+  idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
+
+  if (attr(class(con), 'package') == 'RSQLite') { # thanks, sqlite
+    for (tableName in names(emptyTables)[idx]) {
+      cols = setdiff(DBI::dbListFields(con, tableName), 'version')
+      tableTmp = paste_(tableName, 'tmp')
+
+      q = sprintf('create table %s as select %s from %s',
+                  tableTmp, paste(cols, collapse = ', '), tableName)
+      x = DBI::dbExecute(con, q)
+      DBI::dbRemoveTable(con, tableName)
+
+      q = sprintf('alter table %s rename to %s', tableTmp, tableName)
+      x = DBI::dbExecute(con, q)}
+
+  } else {
+    for (tableName in names(emptyTables)[idx]) {
+      q = sprintf('alter table %s drop column version', tableName)
+      x = DBI::dbExecute(con, q)}}
+
+  invisible()}
