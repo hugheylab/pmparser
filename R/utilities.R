@@ -61,7 +61,7 @@ getParseFuncs = function(steps = 'all') {
     title_journal = parseTitleJournal,
     pub_type = parsePubType,
     pub_date = parsePubDate,
-    mesh_term = parseMeshTerm,
+    mesh = parseMesh,
     keyword = parseKeyword,
     grant = parseGrant,
     chemical = parseChemical,

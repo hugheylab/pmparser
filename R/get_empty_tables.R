@@ -14,7 +14,13 @@ getEmptyTables = function(tableSuffix) {
 
     pub_date = data.table(pub_status = ac, pub_date = data.table::as.IDate(ai)),
 
-    mesh_term = data.table(term_name = ac, term_id = ac, major_topic = ac),
+    mesh_descriptor = data.table(
+      descriptor_pos = ac, descriptor_name = ac, descriptor_ui = ac,
+      descriptor_major_topic = ac),
+
+    mesh_qualifier = data.table(
+      descriptor_pos = ac, qualifier_name = ac, qualifier_ui = ac,
+      qualifier_major_topic = ac),
 
     keyword_list = data.table(list_owner = ac),
 
@@ -74,7 +80,6 @@ getEmptyTables = function(tableSuffix) {
     r[[tableName]] = cbind(dBase, r[[tableName]])}
 
   if (!isEmpty(tableSuffix)) {
-    # tableNames = names(r)[!grepl('^(pmid_status|xml_processed)', names(r))]
     tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
     for (tableName in tableNames) {
       r[[tableName]][, xml_filename := ac]

@@ -7,7 +7,7 @@
 \alias{parsePubDate}
 \alias{parseTitleJournal}
 \alias{parsePubType}
-\alias{parseMeshTerm}
+\alias{parseMesh}
 \alias{parseKeyword}
 \alias{parseGrant}
 \alias{parseChemical}
@@ -28,7 +28,7 @@ parseTitleJournal(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
 parsePubType(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseMeshTerm(pmXml, dPmid, con = NULL, tableSuffix = NULL)
+parseMesh(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
 parseKeyword(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
@@ -86,8 +86,11 @@ and \code{journal_abbrev}, parsed from the Journal section.
 \code{parsePubType()}: a data.table with columns \code{type_name} and \code{type_id},
 parsed from the PublicationTypeList section.
 
-\code{parseMeshTerm()}: a data.table with columns \code{term_name}, \code{term_id}, and
-\code{major_topic}, parsed from the MeshHeadingList section.
+\code{parseMesh()}: a list of two data.tables parsed from the
+MeshHeadingList section. The first with columns \code{descriptor_pos},
+\code{descriptor_name}, \code{descriptor_ui}, and \code{descriptor_major_topic}, the
+second with columns \code{descriptor_pos}, \code{qualifier_name}, \code{qualifier_ui}, and
+\code{qualifier_major_topic}.
 
 \code{parseKeyword()}: a list of two data.tables parsed from the KeywordList
 section. The first with column \code{list_owner}, the second with columns

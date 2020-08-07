@@ -37,8 +37,11 @@
 #'   `parsePubType()`: a data.table with columns `type_name` and `type_id`,
 #'   parsed from the PublicationTypeList section.
 #'
-#'   `parseMeshTerm()`: a data.table with columns `term_name`, `term_id`, and
-#'   `major_topic`, parsed from the MeshHeadingList section.
+#'   `parseMesh()`: a list of two data.tables parsed from the
+#'   MeshHeadingList section. The first with columns `descriptor_pos`,
+#'   `descriptor_name`, `descriptor_ui`, and `descriptor_major_topic`, the
+#'   second with columns `descriptor_pos`, `qualifier_name`, `qualifier_ui`, and
+#'   `qualifier_major_topic`.
 #'
 #'   `parseKeyword()`: a list of two data.tables parsed from the KeywordList
 #'   section. The first with column `list_owner`, the second with columns
@@ -172,19 +175,51 @@ parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 
 #' @rdname parseElement
 #' @export
-parseMeshTerm = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  ai = as.integer()
+  ac = as.character()
+
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
-  n = xml_length(x1)
-  x2 = xml_find_all(x1[n > 0], './/DescriptorName')
+  nDescPerPmid = xml_length(x1)
 
+  x2 = xml_find_all(x1[nDescPerPmid > 0], './/DescriptorName')
   x3 = data.table(
-    dPmid[rep.int(1:.N, n)],
-    term_name = xml_text(x2),
-    term_id = xml_attr(x2, 'UI'),
-    major_topic = xml_attr(x2, 'MajorTopicYN'))
+    dPmid[rep.int(1:.N, nDescPerPmid)],
+    descriptor_name = xml_text(x2),
+    descriptor_ui = xml_attr(x2, 'UI'),
+    descriptor_major_topic = xml_attr(x2, 'MajorTopicYN'))
 
-  appendTable(con, paste_('mesh_term', tableSuffix), x3)
-  return(x3)}
+  if (nrow(x3) > 0) {
+    x3[, descriptor_pos := 1:.N, by = pmid]
+  } else {
+    x3[, descriptor_pos := ai]}
+  setcolorder(x3, c(colnames(dPmid), 'descriptor_pos'))
+
+  x4 = xml_find_all(x1[nDescPerPmid > 0], './/MeshHeading')
+  x5 = xml_find_all(x4, './/QualifierName', flatten = FALSE)
+  nQualPerDesc = sapply(x5, length)
+
+  descPos = unlist(lapply(nDescPerPmid[nDescPerPmid > 0], function(n) 1:n))
+
+  if (length(nQualPerDesc) > 0 && sum(nQualPerDesc) > 0) {
+    x6 = data.table(
+      x3[rep.int(1:.N, nQualPerDesc), colnames(dPmid), with = FALSE],
+      descriptor_pos = rep.int(descPos, nQualPerDesc),
+      qualifier_name = unlist(lapply(x5, xml_text)),
+      qualifier_ui = unlist(lapply(x5, function(x) xml_attr(x, 'UI'))),
+      qualifier_major_topic = unlist(lapply(x5, function(x)
+        xml_attr(x, 'MajorTopicYN'))))
+  } else {
+    x6 = data.table(
+      x3[, colnames(dPmid), with = FALSE], descriptor_pos = ai,
+      qualifier_name = ac, qualifier_ui = ac, qualifier_major_topic = ac)}
+
+  r = list(x3, x6)
+  names(r) = c(paste_('mesh_descriptor', tableSuffix),
+               paste_('mesh_qualifier', tableSuffix))
+
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  return(r)}
 
 
 #' @rdname parseElement
@@ -208,9 +243,7 @@ parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   names(r) = c(paste_('keyword_list', tableSuffix),
                paste_('keyword_item', tableSuffix)) # consistent with grant_item
 
-  for (i in 1:length(r)) {
-    appendTable(con, names(r)[i], r[[i]])}
-
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
@@ -237,9 +270,7 @@ parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   names(r) = c(paste_('grant_list', tableSuffix),
                paste_('grant_item', tableSuffix)) # avoid reserved word
 
-  for (i in 1:length(r)) {
-    appendTable(con, names(r)[i], r[[i]])}
-
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
@@ -320,7 +351,5 @@ parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   names(r) = c(paste_('abstract_copyright', tableSuffix),
                paste_('abstract', tableSuffix))
 
-  for (i in 1:length(r)) {
-    appendTable(con, names(r)[i], r[[i]])}
-
+  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
