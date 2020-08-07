@@ -133,3 +133,6 @@ Elements are parsed according to the MEDLINE®PubMed® XML Element
 Descriptions and their Attributes
 \href{https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html}{here}.
 }
+\seealso{
+\code{\link[=getCitation]{getCitation()}}, \code{\link[=modifyPubmedDb]{modifyPubmedDb()}}
+}

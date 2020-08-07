@@ -12,7 +12,7 @@ globalVariables(c(
   'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'col', 'group', 'name',
   'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'version',
   'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
-  '..cols', 'tableName', 'copyright'))
+  '..cols', 'tableName', 'copyright', 'descriptor_pos'))
 
 
 parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
@@ -62,27 +62,6 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   invisible()}
 
 
-#' Parse PubMed XML files
-#'
-#' describe shit here
-#'
-#' @param xmlDir Path to directory containing the xml or xml.gz files.
-#' @param xmlFiles Character vector of file names or a data.frame with columns
-#'   `xml_filename` and `step` TODO
-#' @param logPath Path to the log file to create. The log file is a
-#'   tab-delimited file with columns `datetime`, `xml_filename`, `step`,
-#'   `status`, and `message`. A `status` of 0 indicates success, 1 indicates
-#'   an error, in which case `message` contains the error message.
-#' @param tableSuffix String to append to the table names.
-#' @param overwrite Logical indicating whether to overwrite existing tables.
-#' @param dbtype String indicating type of database, either 'postgres',
-#'   'mariadb', 'mysql', or 'sqlite'. Only used if `dbname` is not `NULL`.
-#' @param dbname Name of the database in which to create the tables.
-#' @param ... Other arguments passed to [DBI::dbConnect()].
-#'
-#' @return `NULL`, invisibly.
-#'
-#' @export
 parsePubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
                           tableSuffix = NULL, overwrite = FALSE,
                           dbtype = 'postgres', dbname = NULL, ...) {

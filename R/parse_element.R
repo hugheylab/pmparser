@@ -79,6 +79,7 @@
 #'   instead of "author", and lacking a column in the first data.table for
 #'   `collective_name`.
 #'
+#' @seealso [getCitation()], [modifyPubmedDb()]
 #' @name parseElement
 NULL
 

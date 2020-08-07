@@ -1,8 +1,11 @@
 #' Create or update a PubMed database
 #'
-#' description here
+#' This function downloads PubMed/MEDLINE XML files, parses them, and adds the
+#' information to the database, then downloads the NIH Open Citation Collection
+#' and adds it to the database. Only the most recent version of each PMID is
+#' retained.
 #'
-#' @param localDir Path to directory in which to download the files from PubMed.
+#' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
 #' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
 #'   'sqlite'.
@@ -15,12 +18,19 @@
 #'   baseline files or to update the database using the update files.
 #' @param ... Other arguments passed to [DBI::dbConnect()].
 #'
-#' @return `NULL`, invisibly. Log files will be created in `localDir`.
+#' @return `NULL`, invisibly. Log files for parsing the xml will be created in
+#'   `localDir`. The log file is tab-delimited with columns `datetime`,
+#'   `xml_filename`, `step`, `status`, and `message`. A `status` of 0 indicates
+#'   success, 1 indicates an error, in which case `message` contains the error
+#'   message.
+#'
+#' @seealso [parsePmidStatus()], [getCitation()]
 #'
 #' @export
-modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
-                        retry = TRUE, nCitations = Inf,
-                        mode = c('create', 'update'), ...) {
+modifyPubmedDb = function(
+  localDir, dbname, dbtype = c('postgres', 'mariadb', 'mysql', 'sqlite'),
+  nFiles = Inf, retry = TRUE, nCitations = Inf, mode = c('create', 'update'),
+  ...) {
 
   con = connect(dbtype, dbname, ...)
 
@@ -91,25 +101,6 @@ modifyTables = function(localDir, dbname, dbtype = 'postgres', nFiles = Inf,
   invisible()}
 
 
-#' title here
-#'
-#' description here
-#'
-#' @param sourceSuffix String for suffix of names of source tables. Cannot be
-#'   `NULL` or ''.
-#' @param targetSuffix String for suffix of names of target tables.
-#' @param dryRun Logical indicating whether to perform a dry run to determine
-#'   how many rows in each table would be deleted and inserted, without making
-#'   any changes to the database.
-#' @param con Connection to the database, created using [DBI::dbConnect()].
-#'
-#' @return A data.table with columns `source_name`, `target_name`,
-#'   `nrows_delete`, and `nrows_insert`. If `dryRun` is `FALSE`, a side effect
-#'   in the database is that some rows in the target tables will be deleted,
-#'   some rows in the source tables will be appended to the target tables, and
-#'   the source tables will be deleted.
-#'
-#' @export
 addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
   stopifnot(!isEmpty(sourceSuffix))
 
@@ -184,45 +175,5 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
       DBI::dbRemoveTable(con, sourceName)}
 
   d = rbind(d1, d2)
-  setattr(d, 'dryRun', dryRun)
-  return(d)}
-
-
-deleteOldPmidVersions = function(tableSuffix, dryRun, con) {
-  emptyTables = getEmptyTables(tableSuffix)
-  tableKeep = paste_('pmid_status_keep', tableSuffix)
-
-  if (DBI::dbExistsTable(con, tableKeep)) {
-    DBI::dbRemoveTable(con, tableKeep)}
-
-  tableNow = names(emptyTables)[startsWith(names(emptyTables), 'pmid_status')]
-
-  q = sprintf(paste('create table %s as with ranked_pmid_status as',
-                    '(select *, row_number() over',
-                    '(partition by pmid order by version desc) as rn',
-                    'from %s)',
-                    'select %s from ranked_pmid_status where rn = 1'),
-              tableKeep, tableNow,
-              paste(DBI::dbListFields(con, tableNow), collapse = ', '))
-  n = DBI::dbExecute(con, q)
-
-  qStart = if (isTRUE(dryRun)) 'select count(*)' else 'delete'
-  idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
-
-  d = foreach(tableName = names(emptyTables)[idx], .combine = rbind) %do% {
-    q = sprintf(paste('%s from %s as a where not exists',
-                      '(select 1 from %s as b',
-                      'where a.pmid = b.pmid and a.version = b.version)'),
-                qStart, tableName, tableKeep)
-    n = runStatement(con, q)
-    dNow = data.table(table_name = tableName, nrow_delete = n)}
-
-  if (isTRUE(dryRun)) {
-    DBI::dbRemoveTable(con, tableKeep)
-  } else {
-    DBI::dbRemoveTable(con, tableNow)
-    q = sprintf('alter table %s rename to %s', tableKeep, tableNow)
-    n = DBI::dbExecute(con, q)}
-
   setattr(d, 'dryRun', dryRun)
   return(d)}
