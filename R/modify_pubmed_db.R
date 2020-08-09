@@ -53,8 +53,7 @@ modifyPubmedDb = function(
     return(invisible())}
 
   if (!foreach::getDoParRegistered()) {
-    message(paste('No parallel backend is registered.',
-                  'Parsing of XML files could take a while.'))}
+    message('No parallel backend is registered. This could take a while.')}
 
   if (mode == 'create') {
     fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take the last
