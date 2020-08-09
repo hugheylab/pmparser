@@ -47,7 +47,8 @@ message.
 This function downloads PubMed/MEDLINE XML files, parses them, and adds the
 information to the database, then downloads the NIH Open Citation Collection
 and adds it to the database. Only the most recent version of each PMID is
-retained.
+retained. Parsing of XML files will use a parallel backend if one is
+registered, such as with \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}.
 }
 \seealso{
 \code{\link[=parsePmidStatus]{parsePmidStatus()}}, \code{\link[=getCitation]{getCitation()}}

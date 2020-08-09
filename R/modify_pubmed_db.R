@@ -3,7 +3,8 @@
 #' This function downloads PubMed/MEDLINE XML files, parses them, and adds the
 #' information to the database, then downloads the NIH Open Citation Collection
 #' and adds it to the database. Only the most recent version of each PMID is
-#' retained.
+#' retained. Parsing of XML files will use a parallel backend if one is
+#' registered, such as with [doParallel::registerDoParallel()].
 #'
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
@@ -50,6 +51,10 @@ modifyPubmedDb = function(
   if (nrow(fileInfo) == 0) {
     message('Database is already up-to-date.')
     return(invisible())}
+
+  if (!foreach::getDoParRegistered()) {
+    message(paste('No parallel backend is registered.',
+                  'Parsing of XML files could take a while.'))}
 
   if (mode == 'create') {
     fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take the last
