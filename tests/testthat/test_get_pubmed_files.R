@@ -33,6 +33,5 @@ test_that('getPubmedFiles', {
   fileInfo[, md5_match := as.numeric(md5_match)]
 
   unlink(localDir, recursive = TRUE)
-  doParallel::stopImplicitCluster()
   expect_equivalent(fileInfo, fileInfoExpected)
 })
