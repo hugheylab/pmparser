@@ -10,9 +10,6 @@ getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
 
-  # if localDir is not NULL, skip files already downloaded
-  # if con is not NULL, skip files already processed
-
   pattern = 'pubmed.*\\.xml\\.gz'
 
   dRemote = foreach(subDir = subDirs, .combine = rbind) %do% {

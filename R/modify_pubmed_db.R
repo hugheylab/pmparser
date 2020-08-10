@@ -46,6 +46,8 @@ modifyPubmedDb = function(
   logPath = file.path(localDir, f)
   writeLogFile(logPath, data.table(step = 'start'), append = FALSE)
 
+  if (mode == 'create') r = getReadme(con = con)
+
   # download files
   fileInfo = getPubmedFileInfo(localDir, subDirs = subDir, con = conTmp)
   fileInfo = fileInfo[is.na(processed)]
