@@ -46,7 +46,8 @@ modifyPubmedDb = function(
     conTmp = con}
 
   # download files
-  fileInfo = getPubmedFileInfo(subDirs = subDir, con = conTmp)
+  fileInfo = getPubmedFileInfo(localDir, subDirs = subDir, con = conTmp)
+  fileInfo = fileInfo[is.na(processed)]
 
   if (nrow(fileInfo) == 0) {
     message('Database is already up-to-date.')
@@ -61,12 +62,20 @@ modifyPubmedDb = function(
     fileInfo = fileInfo[1:max(1, min(.N, nFiles))]} # take the earliest
 
   fileInfo = getPubmedFiles(fileInfo, localDir)
+  fileInfoKeep = fileInfo[(md5_match)]
+
+  if (nrow(fileInfoKeep) != nrow(fileInfo)) {
+    w = sprintf(paste('The following xml files did not match their md5 sums',
+                      'and will not be processed:\n%s'),
+                paste(fileInfo[is.na(md5_match) | !(md5_match), xml_filename],
+                      collapse = '\n'))
+    warning(w)}
 
   # process files
   logName1 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
 
   parsePubmedXml(
-    xmlDir = file.path(localDir, subDir), xmlFiles = fileInfo$xml_filename,
+    xmlDir = file.path(localDir, subDir), xmlFiles = fileInfoKeep$xml_filename,
     logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
     overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 

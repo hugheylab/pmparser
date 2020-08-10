@@ -1,6 +1,3 @@
-sub_dir,xml_filename,md5_filename,xml_download,md5_download,md5_computed,md5_provided,md5_match
-baseline,pubmed20n0001.xml.gz,pubmed20n0001.xml.gz.md5,0,0,de2990a294082e5b34fce97798b76cfa,de2990a294082e5b34fce97798b76cfa,TRUE
-baseline,pubmed20n0002.xml.gz,pubmed20n0002.xml.gz.md5,0,0,603699636b87a05bcb9824a3afbc54e6,603699636b87a05bcb9824a3afbc54e6,TRUE
-baseline,pubmed20n0003.xml.gz,pubmed20n0003.xml.gz.md5,0,0,383285704afadaeaa404790b98196922,383285704afadaeaa404790b98196922,TRUE
-baseline,pubmed20n0004.xml.gz,pubmed20n0004.xml.gz.md5,0,0,2ca396a616d07f8295710d498f9edf3d,2ca396a616d07f8295710d498f9edf3d,TRUE
-baseline,pubmed20n0005.xml.gz,pubmed20n0005.xml.gz.md5,0,0,c1595c488b6a79d222013406cb8642a3,c1595c488b6a79d222013406cb8642a3,TRUE
+sub_dir,xml_filename,md5_filename,processed,xml_download,md5_download,md5_computed,md5_provided,md5_match
+baseline,pubmed20n0001.xml.gz,pubmed20n0001.xml.gz.md5,,0,0,de2990a294082e5b34fce97798b76cfa,de2990a294082e5b34fce97798b76cfa,1
+baseline,pubmed20n0002.xml.gz,pubmed20n0002.xml.gz.md5,,0,0,603699636b87a05bcb9824a3afbc54e6,603699636b87a05bcb9824a3afbc54e6,1

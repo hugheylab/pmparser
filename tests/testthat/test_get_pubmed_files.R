@@ -1,4 +1,4 @@
-context('pmparser')
+context('get_pubmed_files')
 
 test_that('getPubmedFileInfo', {
   localDir = NULL
@@ -7,25 +7,32 @@ test_that('getPubmedFileInfo', {
   tableSuffix = NULL
   con = NULL
 
-  fileInfoExpected = fread('file_info_expected.csv')[sub_dir == 'baseline']
-  fileInfo = getPubmedFileInfo(localDir, remoteDir, subDirs, tableSuffix, con)[sub_dir == 'baseline']
+  fileInfoExpected = data.table::fread('file_info_expected.csv')
+  fileInfoExpected = fileInfoExpected[sub_dir == 'baseline']
+  fileInfoExpected[, `:=`(xml_download = as.numeric(xml_download),
+                          processed = as.numeric(processed))]
 
-  expect_equal(fileInfo, fileInfoExpected)
+  fileInfo = getPubmedFileInfo(localDir, remoteDir, subDirs, tableSuffix, con)
+  fileInfo = fileInfo[sub_dir == 'baseline']
 
+  expect_equivalent(fileInfo, fileInfoExpected)
 })
 
 test_that('getPubmedFiles', {
-  fileInfo = head(fread('file_info_expected.csv'), 5)
-  localDir = 'data'
+  fileInfoOrig = data.table::fread('file_info_expected.csv')[1:2]
   remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
+  localDir = 'data'
   checkMd5 = TRUE
 
-  if(!dir.exists('data')){
-    dir.create('data')}
+  if (!dir.exists(localDir)) dir.create(localDir)
 
-  fileInfoExpected = fread('file_info_downloaded.csv')
-  fileInfo = getPubmedFiles(fileInfo, localDir, remoteDir, checkMd5)
+  fileInfoExpected = data.table::fread('file_info_downloaded.csv')
 
-  expect_equal(fileInfo, fileInfoExpected)
+  foreach::registerDoSEQ()
+  fileInfo = getPubmedFiles(fileInfoOrig, localDir, remoteDir, checkMd5)
+  fileInfo[, md5_match := as.numeric(md5_match)]
 
+  unlink(localDir, recursive = TRUE)
+  doParallel::stopImplicitCluster()
+  expect_equivalent(fileInfo, fileInfoExpected)
 })
