@@ -15,9 +15,9 @@ globalVariables(c(
   '..cols', 'tableName', 'copyright', 'descriptor_pos', 'processed'))
 
 
-parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
-                              tableSuffix = NULL, dbtype = 'postgres',
-                              dbname = NULL, ...) {
+parsePubmedXmlCore = function(
+  xmlDir, filename, steps = 'all', logPath = NULL, tableSuffix = NULL,
+  dbtype = 'postgres', dbname = NULL, ...) {
 
   parseFuncs = getParseFuncs(steps)
   writeLogFile(logPath, data.table(filename, 'start', 0, NA))
@@ -62,9 +62,9 @@ parsePubmedXmlCore = function(xmlDir, filename, steps = 'all', logPath = NULL,
   invisible()}
 
 
-parsePubmedXml = function(xmlDir, xmlFiles = NULL, logPath = NULL,
-                          tableSuffix = NULL, overwrite = FALSE,
-                          dbtype = 'postgres', dbname = NULL, ...) {
+parsePubmedXml = function(
+  xmlDir, xmlFiles = NULL, logPath = NULL, tableSuffix = NULL,
+  overwrite = FALSE, dbtype = 'postgres', dbname = NULL, ...) {
 
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 

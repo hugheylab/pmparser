@@ -19,11 +19,8 @@
 #'   baseline files or to update the database using the update files.
 #' @param ... Other arguments passed to [DBI::dbConnect()].
 #'
-#' @return `NULL`, invisibly. Log files for parsing the xml will be created in
-#'   `localDir`. The log file is tab-delimited with columns `datetime`,
-#'   `xml_filename`, `step`, `status`, and `message`. A `status` of 0 indicates
-#'   success, 1 indicates an error, in which case `message` contains the error
-#'   message.
+#' @return `NULL`, invisibly. Tab-delimited log files will be created in
+#'   `localDir`.
 #'
 #' @seealso [parsePmidStatus()], [getCitation()]
 #'
@@ -45,9 +42,14 @@ modifyPubmedDb = function(
     tableSuffix = 'update'
     conTmp = con}
 
+  f = sprintf('pubmed_db_%s_%s.log', mode, format(Sys.time(), '%Y%m%d_%H%M%S'))
+  logPath = file.path(localDir, f)
+  writeLogFile(logPath, data.table(step = 'start'), append = FALSE)
+
   # download files
   fileInfo = getPubmedFileInfo(localDir, subDirs = subDir, con = conTmp)
   fileInfo = fileInfo[is.na(processed)]
+  writeLogFile(logPath, data.table('get pubmed file info'))
 
   if (nrow(fileInfo) == 0) {
     message('Database is already up-to-date.')
@@ -62,6 +64,8 @@ modifyPubmedDb = function(
     fileInfo = fileInfo[1:max(1, min(.N, nFiles))]} # take the earliest
 
   fileInfo = getPubmedFiles(fileInfo, localDir)
+  writeLogFile(logPath, data.table('get pubmed files'))
+
   fileInfoKeep = fileInfo[(md5_match)]
 
   if (nrow(fileInfoKeep) != nrow(fileInfo)) {
@@ -78,6 +82,7 @@ modifyPubmedDb = function(
     xmlDir = file.path(localDir, subDir), xmlFiles = fileInfoKeep$xml_filename,
     logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
     overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
+  writeLogFile(logPath, data.table('parse xml files'))
 
   dFailed = getFailed(file.path(localDir, logName1))
 
@@ -91,26 +96,32 @@ modifyPubmedDb = function(
       xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
       logPath = file.path(localDir, logName2), tableSuffix = retrySuffix,
       overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
+    writeLogFile(logPath, data.table('retry parsing xml files'))
 
     # add retry tables to first try tables
     addSourceToTarget(
       sourceSuffix = retrySuffix, targetSuffix = tableSuffix, dryRun = FALSE,
-      con = con)}
+      con = con)
+    writeLogFile(logPath, data.table('add second try to first try'))}
 
   if (mode == 'create') {
     deleteOldPmidVersions(tableSuffix = tableSuffix, dryRun = FALSE, con = con)
     dropPmidVersionColumn(tableSuffix = tableSuffix, con = con)
+    writeLogFile(logPath, data.table('drop unneeded pmid versions'))
   } else {
     # add update tables to main tables
     addSourceToTarget(
-      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)}
+      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)
+    writeLogFile(logPath, data.table('add updates to main tables'))}
 
   if (nCitations > 0) {
     r = getCitation(
       localDir = localDir, nrows = nCitations, tableSuffix = '',
-      overwrite = TRUE, con = con)}
+      overwrite = TRUE, con = con)
+    writeLogFile(logPath, data.table('get citation table'))}
 
   disconnect(con)
+  writeLogFile(logPath, data.table('finish'))
   invisible()}
 
 

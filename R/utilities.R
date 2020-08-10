@@ -8,8 +8,8 @@ writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
   if (is.null(logPath)) {
     return(invisible())}
   y = data.table(datetime = Sys.time(), x)
-  data.table::fwrite(y, logPath, append = append, sep = '\t', logical01 = TRUE,
-                     ...)}
+  data.table::fwrite(
+    y, logPath, append = append, sep = '\t', logical01 = TRUE, ...)}
 
 
 connect = function(dbtype, dbname, ...) {
