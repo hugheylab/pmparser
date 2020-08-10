@@ -38,6 +38,8 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #'   `dbname` is not `NULL` and the existing citation table and the citation
 #'   file have identical MD5 sums, then the function returns `NULL` invisibly.
 #'
+#' @seealso [parsePmidStatus()], [modifyPubmedDb()]
+#'
 #' @export
 getCitation = function(localDir, filename = 'open_citation_collection.zip',
                        nrows = Inf, tableSuffix = NULL, overwrite = FALSE,

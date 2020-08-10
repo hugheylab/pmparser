@@ -6,7 +6,6 @@ getRemoteFilenames = function(url, pattern) {
   return(d)}
 
 
-#' @export
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
@@ -54,7 +53,6 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
   return(d[])}
 
 
-#' @export
 getPubmedFiles = function(fileInfo, localDir,
                           remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
                           checkMd5 = TRUE) {

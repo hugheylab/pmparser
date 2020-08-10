@@ -42,3 +42,6 @@ Get the latest version of the NIH Open Citation Collection from figshare
 and optionally write it to the database. This function requires the shell
 command \code{unzip}, available by default on most Unix systems.
 }
+\seealso{
+\code{\link[=parsePmidStatus]{parsePmidStatus()}}, \code{\link[=modifyPubmedDb]{modifyPubmedDb()}}
+}
