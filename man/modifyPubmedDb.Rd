@@ -37,11 +37,8 @@ baseline files or to update the database using the update files.}
 \item{...}{Other arguments passed to \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 }
 \value{
-\code{NULL}, invisibly. Log files for parsing the xml will be created in
-\code{localDir}. The log file is tab-delimited with columns \code{datetime},
-\code{xml_filename}, \code{step}, \code{status}, and \code{message}. A \code{status} of 0 indicates
-success, 1 indicates an error, in which case \code{message} contains the error
-message.
+\code{NULL}, invisibly. Tab-delimited log files will be created in
+\code{localDir}.
 }
 \description{
 This function downloads PubMed/MEDLINE XML files, parses them, and adds the

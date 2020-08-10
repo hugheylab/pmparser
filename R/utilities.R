@@ -8,8 +8,8 @@ writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
   if (is.null(logPath)) {
     return(invisible())}
   y = data.table(datetime = Sys.time(), x)
-  data.table::fwrite(y, logPath, append = append, sep = '\t', logical01 = TRUE,
-                     ...)}
+  data.table::fwrite(
+    y, logPath, append = append, sep = '\t', logical01 = TRUE, ...)}
 
 
 connect = function(dbtype, dbname, ...) {
@@ -111,3 +111,10 @@ runStatement = function(con, q) {
 
 getPkgVersion = function(pkgName = 'pmparser') {
   as.character(utils::packageVersion(pkgName))}
+
+
+getReadme = function(
+  url = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt', con = NULL) {
+  dReadme = data.table(text = RCurl::getURL(url))
+  if (!is.null(con)) DBI::dbWriteTable(con, 'readme', dReadme, overwrite = TRUE)
+  return(dReadme)}

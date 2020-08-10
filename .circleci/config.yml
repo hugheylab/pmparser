@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Set environmental variables
           command: |
-            Rscript --vanilla \
+            Rscript \
               -e 'dsc = read.dcf("DESCRIPTION")' \
               -e 'cat(sprintf("export PKG_NAME=%s\n", dsc[,"Package"]))' \
               -e 'cat(sprintf("export PKG_VERSION=%s\n", dsc[,"Version"]))' \
