@@ -21,7 +21,7 @@ test_that('getPubmedFileInfo', {
 test_that('getPubmedFiles', {
   fileInfoOrig = data.table::fread('file_info_expected.csv')[1:2]
   remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
-  localDir = 'data'
+  localDir = 'dataTest'
   checkMd5 = TRUE
 
   if (!dir.exists(localDir)) dir.create(localDir)
