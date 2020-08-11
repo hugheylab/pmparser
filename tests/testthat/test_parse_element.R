@@ -11,6 +11,10 @@ test_that('parsePmidStatus', {
 
   foreach::registerDoSEQ()
 
-  parsePmidStatus(rawXml, fileName, conNow, tableSuffix)
+  pmidStatuses = parsePmidStatus(rawXml, fileName, conNow, tableSuffix)
+
+  pmidStatusesExpected = data.table::fread('pmid_status_output.csv')
+
+  expect_equivalent(pmidStatuses[[2]], pmidStatusesExpected)
 
 })
