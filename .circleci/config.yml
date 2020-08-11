@@ -23,7 +23,8 @@ jobs:
           command: |
             Rscript \
               -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
-              -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'
+              -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'\
+              -e 'devtools::install_github("https://github.com/r-lib/xml2")'
       - run:
           name: Build package
           command: R CMD build . --md5
