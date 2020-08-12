@@ -40,6 +40,8 @@ test_that('parsePubDate', {
 
   expectedOutput = data.table::fread('pub_date_output.csv')
 
+  expectedOutput[,pub_date := data.table::as.IDate(pub_date)]
+
   expect_equivalent(calcOutput, expectedOutput)
 
 })
@@ -49,6 +51,8 @@ test_that('parseTitleJournal', {
   calcOutput = parseTitleJournal(pmXml, dPmid, conNow, tableSuffix)
 
   expectedOutput = data.table::fread('title_journal_output.csv')
+
+  expectedOutput[, title := stringr::str_replace_all(title,'""', '"')]
 
   expect_equivalent(calcOutput, expectedOutput)
 
