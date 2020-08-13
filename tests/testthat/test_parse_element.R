@@ -18,9 +18,9 @@ test_that('parsePmidStatus', {
 
   pmidStatuses = res
 
-  expectedOutput = data.table::fread('pmid_status_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'pmid_status.rds'))
 
-  expect_equivalent(pmidStatuses[[2]], expectedOutput)
+  expect_equivalent(pmidStatuses, expectedOutput)
 
 })
 
@@ -28,7 +28,7 @@ test_that('parseArticleId', {
 
   calcOutput = parseArticleId(pmXml, dPmid, conNow, tableSuffix)
 
-  expectedOutput = data.table::fread('article_id_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'article_id.rds'))
 
   expect_equivalent(calcOutput, expectedOutput)
 
@@ -38,7 +38,7 @@ test_that('parsePubDate', {
 
   calcOutput = parsePubDate(pmXml, dPmid, conNow, tableSuffix)
 
-  expectedOutput = data.table::fread('pub_date_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'pub_date.rds'))
 
   expectedOutput[,pub_date := data.table::as.IDate(pub_date)]
 
@@ -50,7 +50,7 @@ test_that('parseTitleJournal', {
 
   calcOutput = parseTitleJournal(pmXml, dPmid, conNow, tableSuffix)
 
-  expectedOutput = data.table::fread('title_journal_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'title_journal.rds'))
 
   expectedOutput[, title := stringr::str_replace_all(title,'""', '"')]
 
@@ -62,7 +62,7 @@ test_that('parsePubType', {
 
   calcOutput = parsePubType(pmXml, dPmid, conNow, tableSuffix)
 
-  expectedOutput = data.table::fread('pub_type_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'pub_type.rds'))
 
   expect_equivalent(calcOutput, expectedOutput)
 
@@ -72,10 +72,9 @@ test_that('parseMesh', {
 
   calcOutput = parseMesh(pmXml, dPmid, conNow, tableSuffix)
 
-  expectedOutput = data.table::fread('mesh_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'mesh.rds'))
 
-  # Commented out since current example doesn't have mesh terms
-  # expect_equivalent(calcOutput, expectedOutput)
+  expect_equivalent(calcOutput, expectedOutput)
 
 })
 
@@ -83,8 +82,58 @@ test_that('parseKeyword', {
 
   calcOutput = parseKeyword(pmXml, dPmid, conNow, tableSuffix)
 
-  expectedOutput = data.table::fread('keyword_output.csv')
+  expectedOutput = readRDS(file.path('data/output', 'keyword.rds'))
 
-  expect_equivalent(calcOutput[[1]], expectedOutput)
+  expect_equivalent(calcOutput, expectedOutput)
+
+})
+
+test_that('parseGrant', {
+
+  calcOutput = parseGrant(pmXml, dPmid, conNow, tableSuffix)
+
+  expectedOutput = readRDS(file.path('data/output', 'grant.rds'))
+
+  expect_equivalent(calcOutput, expectedOutput)
+
+})
+
+test_that('parseChemical', {
+
+  calcOutput = parseChemical(pmXml, dPmid, conNow, tableSuffix)
+
+  expectedOutput = readRDS(file.path('data/output', 'chemical.rds'))
+
+  expect_equivalent(calcOutput, expectedOutput)
+
+})
+
+test_that('parseDataBank', {
+
+  calcOutput = parseDataBank(pmXml, dPmid, conNow, tableSuffix)
+
+  expectedOutput = readRDS(file.path('data/output', 'data_bank.rds'))
+
+  expect_equivalent(calcOutput, expectedOutput)
+
+})
+
+test_that('parseComment', {
+
+  calcOutput = parseComment(pmXml, dPmid, conNow, tableSuffix)
+
+  expectedOutput = readRDS(file.path('data/output', 'comment.rds'))
+
+  expect_equivalent(calcOutput, expectedOutput)
+
+})
+
+test_that('parseAbstract', {
+
+  calcOutput = parseAbstract(pmXml, dPmid, conNow, tableSuffix)
+
+  expectedOutput = readRDS(file.path('data/output', 'abstract.rds'))
+
+  expect_equivalent(calcOutput, expectedOutput)
 
 })
