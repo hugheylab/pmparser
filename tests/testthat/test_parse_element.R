@@ -1,7 +1,7 @@
 context('parse_element')
 
 xmlDir = 'data/testfiles'
-fileName = 'pubmed20n1016_test.xml.gz'
+fileName = 'pubmed20n1016.xml.gz'
 conNow = NULL
 tableSuffix = NULL
 
