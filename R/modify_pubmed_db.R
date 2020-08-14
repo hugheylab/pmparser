@@ -19,8 +19,8 @@
 #'   baseline files or to update the database using the update files.
 #' @param ... Other arguments passed to [DBI::dbConnect()].
 #'
-#' @return `NULL`, invisibly. Tab-delimited log files will be created in
-#'   `localDir`.
+#' @return `NULL`, invisibly. Tab-delimited log files will be created in a logs
+#'   folder in `localDir`.
 #'
 #' @seealso [parsePmidStatus()], [getCitation()]
 #'
@@ -34,17 +34,20 @@ modifyPubmedDb = function(
   con = connect(dbtype, dbname, ...)
 
   mode = match.arg(mode)
-  if (mode == 'create') { # run on Jan 1
+  if (mode == 'create') {
     subDir = 'baseline'
     tableSuffix = ''
     conTmp = NULL
-  } else { # run on 10th day of each month
+  } else {
     subDir = 'updatefiles'
     tableSuffix = 'update'
     conTmp = con}
 
-  f = sprintf('pubmed_db_%s_%s.log', mode, format(Sys.time(), '%Y%m%d_%H%M%S'))
-  logPath = file.path(localDir, f)
+  logDir = file.path(localDir, 'logs')
+  if (!dir.exists(logDir)) dir.create(logDir)
+
+  f = sprintf('%s_db_%s.log', mode, format(Sys.time(), '%Y%m%d_%H%M%S'))
+  logPath = file.path(logDir, f)
   writeLogFile(logPath, data.table(step = 'start'), append = FALSE)
 
   if (mode == 'create') r = getReadme(con = con)
@@ -58,13 +61,13 @@ modifyPubmedDb = function(
     message('Database is already up-to-date.')
     return(invisible())}
 
-  if (!foreach::getDoParRegistered()) {
-    message('No parallel backend is registered. This could take a while.')}
-
   if (mode == 'create') {
     fileInfo = fileInfo[max(1, min(.N, .N - nFiles + 1)):.N] # take the last
   } else {
     fileInfo = fileInfo[1:max(1, min(.N, nFiles))]} # take the earliest
+
+  if (nrow(fileInfo) > 1 && !foreach::getDoParRegistered()) {
+    message('No parallel backend is registered. This could take a while.')}
 
   writeLogFile(logPath, data.table('get pubmed files'))
   fileInfo = getPubmedFiles(fileInfo, localDir, downloadMd5 = !testing)
@@ -79,26 +82,28 @@ modifyPubmedDb = function(
     warning(w)}
 
   # process files
-  logName1 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
+  logName1 = sprintf(
+    'parse_%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
 
   writeLogFile(logPath, data.table('parse xml files'))
   parsePubmedXml(
     xmlDir = file.path(localDir, subDir), xmlFiles = fileInfoKeep$xml_filename,
-    logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
+    logPath = file.path(logDir, logName1), tableSuffix = tableSuffix,
     overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 
-  dFailed = getFailed(file.path(localDir, logName1))
+  dFailed = getFailed(file.path(logDir, logName1))
 
   if (isTRUE(retry) && nrow(dFailed) > 0) {
 
-    logName2 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
+    logName2 = sprintf(
+      'parse_%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
     retrySuffix = paste_(tableSuffix, 'retry')
 
     # retry failed steps
     writeLogFile(logPath, data.table('retry parsing xml files'))
     parsePubmedXml(
       xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
-      logPath = file.path(localDir, logName2), tableSuffix = retrySuffix,
+      logPath = file.path(logDir, logName2), tableSuffix = retrySuffix,
       overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 
     # add retry tables to first try tables
