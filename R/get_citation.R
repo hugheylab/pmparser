@@ -32,6 +32,7 @@ getCitationInfo = function(
 #'   name.
 #' @param overwrite Logical indicating whether to overwrite an existing table.
 #' @param con Connection to the database, created using [DBI::dbConnect()].
+#' @param ... Other arguments passed to internal functions.
 #'
 #' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
 #'   Beware this is a large table and could swamp some machines' memories. If
@@ -43,7 +44,7 @@ getCitationInfo = function(
 #' @export
 getCitation = function(
   localDir, filename = 'open_citation_collection.zip', nrows = Inf,
-  tableSuffix = NULL, overwrite = FALSE, con = NULL) {
+  tableSuffix = NULL, overwrite = FALSE, con = NULL, ...) {
 
   filepath = file.path(localDir, filename)
   tableBase = 'citation'
@@ -60,7 +61,7 @@ getCitation = function(
     } else {
       md5Database = ''}}
 
-  citationInfo = getCitationInfo()
+  citationInfo = getCitationInfo(...)
   md5Remote = citationInfo$supplied_md5
 
   if (md5Database == md5Remote) {

@@ -17,15 +17,21 @@ getPubmedFileInfo = function(
                               paste0(pattern, '(?=\n)'))
     dNow[, sub_dir := subDir]}
 
+  dEmpty = data.table(
+    sub_dir = as.character(), xml_filename = as.character(),
+    xml_download = as.integer())
+
   if (is.null(localDir)) {
-    dLocal = data.table(sub_dir = as.character(), xml_filename = as.character(),
-                        xml_download = as.integer())
+    dLocal = dEmpty
   } else {
     dLocal = foreach(subDir = subDirs, .combine = rbind) %do% {
-      dNow = data.table(
-        sub_dir = subDir,
-        xml_filename = dir(file.path(localDir, subDir), paste0(pattern, '$')),
-        xml_download = 0L)}}
+      filenames = dir(file.path(localDir, subDir), paste0(pattern, '$'))
+
+      if (length(filenames) == 0) {
+        dNow = dEmpty
+      } else {
+        dNow = data.table(
+          sub_dir = subDir, xml_filename = filenames, xml_download = 0L)}}}
 
   if (is.null(con)) {
     dDb = data.table(xml_filename = as.character(), processed = as.integer())

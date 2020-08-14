@@ -10,7 +10,8 @@ getCitation(
   nrows = Inf,
   tableSuffix = NULL,
   overwrite = FALSE,
-  con = NULL
+  con = NULL,
+  ...
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ name.}
 \item{overwrite}{Logical indicating whether to overwrite an existing table.}
 
 \item{con}{Connection to the database, created using \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
+
+\item{...}{Other arguments passed to internal functions.}
 }
 \value{
 Normally, a data.table with columns \code{citing_pmid} and \code{cited_pmid}.
