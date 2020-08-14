@@ -126,3 +126,22 @@ getReadme = function(remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
 
 
 isTesting = function() identical(Sys.getenv('TESTTHAT'), 'true')
+
+
+#' Get Postgres connection parameters
+#'
+#' This is a helper function to get parameters from a .pgpass file. See
+#' [here](https://www.postgresql.org/docs/9.6/libpq-pgpass.html) for details.
+#'
+#' @param path Path to .pgpass file. The file's first line should be
+#'   \preformatted{# hostname:port:database:username:password}
+#'
+#' @return A data.table with one row for each set of parameters.
+#'
+#' @export
+getPgParams = function(path = '~/.pgpass') {
+  x1 = readLines(path)
+  x2 = strsplit(trimws(gsub('#', '', x1)), ':')
+  x3 = data.table::rbindlist(lapply(x2[-1L], as.list))
+  setnames(x3, x2[[1L]])
+  x3}
