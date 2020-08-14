@@ -17,15 +17,21 @@ getPubmedFileInfo = function(
                               paste0(pattern, '(?=\n)'))
     dNow[, sub_dir := subDir]}
 
+  dEmpty = data.table(
+    sub_dir = as.character(), xml_filename = as.character(),
+    xml_download = as.integer())
+
   if (is.null(localDir)) {
-    dLocal = data.table(sub_dir = as.character(), xml_filename = as.character(),
-                        xml_download = as.integer())
+    dLocal = dEmpty
   } else {
     dLocal = foreach(subDir = subDirs, .combine = rbind) %do% {
-      dNow = data.table(
-        sub_dir = subDir,
-        xml_filename = dir(file.path(localDir, subDir), paste0(pattern, '$')),
-        xml_download = 0L)}}
+      filenames = dir(file.path(localDir, subDir), paste0(pattern, '$'))
+
+      if (length(filenames) == 0) {
+        dNow = dEmpty
+      } else {
+        dNow = data.table(
+          sub_dir = subDir, xml_filename = filenames, xml_download = 0L)}}}
 
   if (is.null(con)) {
     dDb = data.table(xml_filename = as.character(), processed = as.integer())
@@ -55,17 +61,22 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
 
 getPubmedFiles = function(
   fileInfo, localDir, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
-  checkMd5 = TRUE) {
+  downloadMd5 = TRUE, checkMd5 = TRUE) {
 
   for (subDir in unique(fileInfo$sub_dir)) {
     if (!dir.exists(file.path(localDir, subDir)))
       dir.create(file.path(localDir, subDir))}
 
   fileInfo = data.table(fileInfo)
-  fileInfo[, md5_download := NA_integer_]
 
-  # download all md5 files since it'll be quick and we know they're right
-  d = foreach(f = iterators::iter(fileInfo, by = 'row'), .combine = rbind) %dopar% {
+  # default to download md5 files since it's quick and we know they're right
+  if (isTRUE(downloadMd5)) {
+    fileInfo[, md5_download := NA_integer_]
+  } else { # trick for testing
+    fileInfo[, md5_download := xml_download]}
+
+  feo = foreach(f = iterators::iter(fileInfo, by = 'row'), .combine = rbind)
+  d = feo %dopar% {
     x = foreach(pre = c('xml', 'md5'), .combine = cbind) %do% {
       col = paste_(pre, 'filename')
       down = paste_(pre, 'download')

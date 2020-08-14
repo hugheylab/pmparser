@@ -30,6 +30,7 @@ modifyPubmedDb = function(
   nFiles = Inf, retry = TRUE, nCitations = Inf, mode = c('create', 'update'),
   ...) {
 
+  testing = isTesting()
   con = connect(dbtype, dbname, ...)
 
   mode = match.arg(mode)
@@ -49,9 +50,9 @@ modifyPubmedDb = function(
   if (mode == 'create') r = getReadme(con = con)
 
   # download files
+  writeLogFile(logPath, data.table('get pubmed file info'))
   fileInfo = getPubmedFileInfo(localDir, subDirs = subDir, con = conTmp)
   fileInfo = fileInfo[is.na(processed)]
-  writeLogFile(logPath, data.table('get pubmed file info'))
 
   if (nrow(fileInfo) == 0) {
     message('Database is already up-to-date.')
@@ -65,8 +66,8 @@ modifyPubmedDb = function(
   } else {
     fileInfo = fileInfo[1:max(1, min(.N, nFiles))]} # take the earliest
 
-  fileInfo = getPubmedFiles(fileInfo, localDir)
   writeLogFile(logPath, data.table('get pubmed files'))
+  fileInfo = getPubmedFiles(fileInfo, localDir, downloadMd5 = !testing)
 
   fileInfoKeep = fileInfo[(md5_match)]
 
@@ -80,11 +81,11 @@ modifyPubmedDb = function(
   # process files
   logName1 = sprintf('%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
 
+  writeLogFile(logPath, data.table('parse xml files'))
   parsePubmedXml(
     xmlDir = file.path(localDir, subDir), xmlFiles = fileInfoKeep$xml_filename,
     logPath = file.path(localDir, logName1), tableSuffix = tableSuffix,
     overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
-  writeLogFile(logPath, data.table('parse xml files'))
 
   dFailed = getFailed(file.path(localDir, logName1))
 
@@ -94,33 +95,32 @@ modifyPubmedDb = function(
     retrySuffix = paste_(tableSuffix, 'retry')
 
     # retry failed steps
+    writeLogFile(logPath, data.table('retry parsing xml files'))
     parsePubmedXml(
       xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
       logPath = file.path(localDir, logName2), tableSuffix = retrySuffix,
       overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
-    writeLogFile(logPath, data.table('retry parsing xml files'))
 
     # add retry tables to first try tables
+    writeLogFile(logPath, data.table('add second try to first try'))
     addSourceToTarget(
       sourceSuffix = retrySuffix, targetSuffix = tableSuffix, dryRun = FALSE,
-      con = con)
-    writeLogFile(logPath, data.table('add second try to first try'))}
+      con = con)}
 
   if (mode == 'create') {
+    writeLogFile(logPath, data.table('drop unneeded pmid versions'))
     deleteOldPmidVersions(tableSuffix = tableSuffix, dryRun = FALSE, con = con)
     dropPmidVersionColumn(tableSuffix = tableSuffix, con = con)
-    writeLogFile(logPath, data.table('drop unneeded pmid versions'))
   } else {
-    # add update tables to main tables
+    writeLogFile(logPath, data.table('add updates to main tables'))
     addSourceToTarget(
-      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)
-    writeLogFile(logPath, data.table('add updates to main tables'))}
+      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)}
 
   if (nCitations > 0) {
+    writeLogFile(logPath, data.table('get citation table'))
     r = getCitation(
       localDir = localDir, nrows = nCitations, tableSuffix = '',
-      overwrite = TRUE, con = con)
-    writeLogFile(logPath, data.table('get citation table'))}
+      overwrite = TRUE, con = con, checkMd5 = !testing)}
 
   disconnect(con)
   writeLogFile(logPath, data.table('finish'))
