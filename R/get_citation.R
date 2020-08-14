@@ -1,6 +1,6 @@
-getCitationInfo = function(filename = 'open_citation_collection.zip',
-                           collectionId = 4586573,
-                           baseUrl = 'https://api.figshare.com/v2') {
+getCitationInfo = function(
+  filename = 'open_citation_collection.zip', collectionId = 4586573,
+  baseUrl = 'https://api.figshare.com/v2') {
 
   #getting content from icite collection
   iciteUrl = sprintf('%s/collections/%d/articles', baseUrl, collectionId)
@@ -32,6 +32,9 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #'   name.
 #' @param overwrite Logical indicating whether to overwrite an existing table.
 #' @param con Connection to the database, created using [DBI::dbConnect()].
+#' @param checkMd5 Logical indicating whether to download the citation file if
+#'   the MD5 sums of the local and remote versions do not match. This should not
+#'   normally be changed from the default.
 #'
 #' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
 #'   Beware this is a large table and could swamp some machines' memories. If
@@ -41,9 +44,9 @@ getCitationInfo = function(filename = 'open_citation_collection.zip',
 #' @seealso [parsePmidStatus()], [modifyPubmedDb()]
 #'
 #' @export
-getCitation = function(localDir, filename = 'open_citation_collection.zip',
-                       nrows = Inf, tableSuffix = NULL, overwrite = FALSE,
-                       con = NULL) {
+getCitation = function(
+  localDir, filename = 'open_citation_collection.zip', nrows = Inf,
+  tableSuffix = NULL, overwrite = FALSE, con = NULL, checkMd5 = TRUE) {
 
   filepath = file.path(localDir, filename)
   tableBase = 'citation'
@@ -54,38 +57,34 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
   if (is.null(con)) {
     md5Database = ''
   } else {
-
     if (DBI::dbExistsTable(con, versionName)) {
       dVersion = DBI::dbReadTable(con, versionName)
       md5Database = dVersion$md5_computed
     } else {
       md5Database = ''}}
 
-  # get md5 of local file, download it if necessary
-  if (file.exists(filepath) && isFALSE(overwrite)) {
-    md5Computed = tools::md5sum(filepath)
+  citationInfo = getCitationInfo()
+  md5Remote = citationInfo$supplied_md5
 
-    if (md5Computed == md5Database) {
-      message('Citation table in database is already up-to-date.')
-      return(invisible())}
+  if (md5Database == md5Remote) {
+    message('Citation table in database is already up-to-date.')
+    return(invisible())}
 
+  if (file.exists(filepath)) {
+    md5Local = tools::md5sum(filepath)
   } else {
-    citationInfo = getCitationInfo()
+    md5Local = ''}
 
-    if (citationInfo$supplied_md5 == md5Database) {
-      message('Citation table in database is already up-to-date.')
-      return(invisible())}
-
+  if (md5Local != md5Remote && isTRUE(checkMd5)) {
     utils::download.file(citationInfo$download_url, filepath, mode = 'wb')
-    md5Computed = tools::md5sum(filepath)
-
-    if (md5Computed != citationInfo$supplied_md5) {
+    md5Local = tools::md5sum(filepath)
+    if (md5Local != md5Remote) {
       stop('Supplied and computed MD5 checksums do not match.')}}
 
   # read the file
   if (tools::file_ext(filepath) == 'zip') {
-    dCitation = data.table::fread(cmd = paste('unzip -p', filepath),
-                                  nrows = nrows)
+    dCitation = data.table::fread(
+      cmd = paste('unzip -p', filepath), nrows = nrows)
   } else {
     dCitation = data.table::fread(filepath, nrows = nrows)}
 
@@ -99,7 +98,7 @@ getCitation = function(localDir, filename = 'open_citation_collection.zip',
     DBI::dbWriteTable(con, citationName, dCitation, overwrite = overwrite)
 
     dVersion = data.table(
-      md5_computed = md5Computed,
+      md5_computed = md5Remote,
       pmparser_version = getPkgVersion(),
       datetime_processed = Sys.time())
 

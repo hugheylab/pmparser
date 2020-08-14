@@ -113,8 +113,35 @@ getPkgVersion = function(pkgName = 'pmparser') {
   as.character(utils::packageVersion(pkgName))}
 
 
-getReadme = function(
-  url = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt', con = NULL) {
-  dReadme = data.table(text = RCurl::getURL(url))
+getReadme = function(remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
+                     filename = 'README.txt', con = NULL) {
+  if (startsWith(remoteDir, 'ftp://')) {
+    txt = RCurl::getURL(paste(remoteDir, filename, sep = '/'))
+  } else { # was going to use for testing
+    path = file.path(remoteDir, filename)
+    txt = readChar(path, file.info(path)$size)}
+  dReadme = data.table(text = txt)
   if (!is.null(con)) DBI::dbWriteTable(con, 'readme', dReadme, overwrite = TRUE)
   return(dReadme)}
+
+
+isTesting = function() identical(Sys.getenv('TESTTHAT'), 'true')
+
+
+#' Get Postgres connection parameters
+#'
+#' This is a helper function to get parameters from a .pgpass file. See
+#' [here](https://www.postgresql.org/docs/9.6/libpq-pgpass.html) for details.
+#'
+#' @param path Path to .pgpass file. The file's first line should be
+#'   \preformatted{# hostname:port:database:username:password}
+#'
+#' @return A data.table with one row for each set of parameters.
+#'
+#' @export
+getPgParams = function(path = '~/.pgpass') {
+  x1 = readLines(path)
+  x2 = strsplit(trimws(gsub('#', '', x1)), ':')
+  x3 = data.table::rbindlist(lapply(x2[-1L], as.list))
+  setnames(x3, x2[[1L]])
+  x3}

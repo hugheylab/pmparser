@@ -66,6 +66,14 @@ parsePubmedXml = function(
   xmlDir, xmlFiles = NULL, logPath = NULL, tableSuffix = NULL,
   overwrite = FALSE, dbtype = 'postgres', dbname = NULL, ...) {
 
+  if (dbtype == 'sqlite' && foreach::getDoParWorkers() > 1) {
+    doOp = `%do%`
+    warning(paste('Parsing of XML files cannot run in parallel if using an',
+                  'sqlite database. Parsing will run sequentially.'),
+            immediate. = TRUE)
+  } else {
+    doOp = `%dopar%`}
+
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
   writeEmptyTables(tableSuffix, overwrite, dbtype, dbname, ...)
@@ -73,10 +81,10 @@ parsePubmedXml = function(
     xml_filename = 'all', step = 'start', status = 0, message = NA)
   writeLogFile(logPath, dLog, append = FALSE)
 
-  r = foreach(filenameNow = unique(xmlInfo$xml_filename)) %dopar% {
+  r = doOp(foreach(filenameNow = unique(xmlInfo$xml_filename)), {
     steps = xmlInfo[xml_filename == filenameNow]$step
     parsePubmedXmlCore(
-      xmlDir, filenameNow, steps, logPath, tableSuffix, dbtype, dbname, ...)}
+      xmlDir, filenameNow, steps, logPath, tableSuffix, dbtype, dbname, ...)})
 
   writeLogFile(logPath, data.table('all', 'finish', 0, NA))
   invisible()}
