@@ -32,7 +32,9 @@ getCitationInfo = function(
 #'   name.
 #' @param overwrite Logical indicating whether to overwrite an existing table.
 #' @param con Connection to the database, created using [DBI::dbConnect()].
-#' @param ... Other arguments passed to internal functions.
+#' @param checkMd5 Logical indicating whether to download the citation file if
+#'   the MD5 sums of the local and remote versions do not match. This should not
+#'   normally be changed from the default.
 #'
 #' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
 #'   Beware this is a large table and could swamp some machines' memories. If
@@ -44,7 +46,7 @@ getCitationInfo = function(
 #' @export
 getCitation = function(
   localDir, filename = 'open_citation_collection.zip', nrows = Inf,
-  tableSuffix = NULL, overwrite = FALSE, con = NULL, ...) {
+  tableSuffix = NULL, overwrite = FALSE, con = NULL, checkMd5 = TRUE) {
 
   filepath = file.path(localDir, filename)
   tableBase = 'citation'
@@ -61,7 +63,7 @@ getCitation = function(
     } else {
       md5Database = ''}}
 
-  citationInfo = getCitationInfo(...)
+  citationInfo = getCitationInfo()
   md5Remote = citationInfo$supplied_md5
 
   if (md5Database == md5Remote) {
@@ -73,7 +75,7 @@ getCitation = function(
   } else {
     md5Local = ''}
 
-  if (md5Local != md5Remote) {
+  if (md5Local != md5Remote && isTRUE(checkMd5)) {
     utils::download.file(citationInfo$download_url, filepath, mode = 'wb')
     md5Local = tools::md5sum(filepath)
     if (md5Local != md5Remote) {

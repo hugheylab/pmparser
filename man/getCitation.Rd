@@ -11,7 +11,7 @@ getCitation(
   tableSuffix = NULL,
   overwrite = FALSE,
   con = NULL,
-  ...
+  checkMd5 = TRUE
 )
 }
 \arguments{
@@ -31,7 +31,9 @@ name.}
 
 \item{con}{Connection to the database, created using \code{\link[DBI:dbConnect]{DBI::dbConnect()}}.}
 
-\item{...}{Other arguments passed to internal functions.}
+\item{checkMd5}{Logical indicating whether to download the citation file if
+the MD5 sums of the local and remote versions do not match. This should not
+normally be changed from the default.}
 }
 \value{
 Normally, a data.table with columns \code{citing_pmid} and \code{cited_pmid}.
