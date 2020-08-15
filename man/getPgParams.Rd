@@ -17,3 +17,10 @@ A data.table with one row for each set of parameters.
 This is a helper function to get parameters from a .pgpass file. See
 \href{https://www.postgresql.org/docs/9.6/libpq-pgpass.html}{here} for details.
 }
+\examples{
+pg = getPgParams(system.file('extdata', 'pgpass', package = 'pmparser'))
+
+}
+\seealso{
+\code{\link[=modifyPubmedDb]{modifyPubmedDb()}}
+}

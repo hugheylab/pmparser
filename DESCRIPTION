@@ -1,13 +1,13 @@
 Package: pmparser
 Title: Create and maintain a relational database of data from PubMed/MEDLINE
-Version: 0.0.0.9009
+Version: 0.0.0.9010
 Authors@R: as.person(c(
   "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
   "Josh Schoenbachler <joshschoenbachler@gmail.com> [aut]",
   "Elliot Outland <ehoutland@gmail.com> [aut]"))
 Description: Provides a simple interface for extracting various elements from
   the publicly available PubMed XML files, incorporating PubMed's regular
-  updates, and combining the information with the NIH Open Citation Collection.
+  updates, and combining the data with the NIH Open Citation Collection.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true

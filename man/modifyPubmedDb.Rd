@@ -21,7 +21,8 @@ modifyPubmedDb(
 \item{dbname}{Name of database.}
 
 \item{dbtype}{Type of database, either 'postgres', 'mariadb', 'mysql', or
-'sqlite'.}
+'sqlite'. Due to the large size of the database, SQLite is recommended only
+for small-scale testing.}
 
 \item{nFiles}{Maximum number of xml files to parse that are not already in
 the database. This should not normally be changed from the default.}
@@ -47,6 +48,12 @@ and adds it to the database. Only the most recent version of each PMID is
 retained. Parsing of XML files will use a parallel backend if one is
 registered, such as with \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}.
 }
+\examples{
+\dontrun{
+modifyPubmedDb('.', 'pmdb', mode = 'create')
+}
+
+}
 \seealso{
-\code{\link[=parsePmidStatus]{parsePmidStatus()}}, \code{\link[=getCitation]{getCitation()}}
+\code{\link[=parsePmidStatus]{parsePmidStatus()}}, \code{\link[=getCitation]{getCitation()}}, \code{\link[=getPgParams]{getPgParams()}}
 }

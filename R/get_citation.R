@@ -20,7 +20,9 @@ getCitationInfo = function(
 #' Get the latest version of the NIH Open Citation Collection from figshare
 #' [here](https://nih.figshare.com/collections/iCite_Database_Snapshots_NIH_Open_Citation_Collection_/4586573),
 #' and optionally write it to the database. This function requires the shell
-#' command `unzip`, available by default on most Unix systems.
+#' command `unzip`, available by default on most Unix systems. This function
+#' should not normally be called directly, as it is called by
+#' [modifyPubmedDb()].
 #'
 #' @param localDir String indicating path to directory containing the citation
 #'   file or to which the citation file should be downloaded.
@@ -37,9 +39,14 @@ getCitationInfo = function(
 #'   normally be changed from the default.
 #'
 #' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
-#'   Beware this is a large table and could swamp some machines' memories. If
+#'   Beware this is a large table and could swamp the machine's memory. If
 #'   `dbname` is not `NULL` and the existing citation table and the citation
 #'   file have identical MD5 sums, then the function returns `NULL` invisibly.
+#'
+#' @examples
+#' \dontrun{
+#' dCitation = getCitation('.')
+#' }
 #'
 #' @seealso [parsePmidStatus()], [modifyPubmedDb()]
 #'

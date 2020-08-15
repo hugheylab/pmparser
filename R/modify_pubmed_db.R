@@ -9,7 +9,8 @@
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
 #' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
-#'   'sqlite'.
+#'   'sqlite'. Due to the large size of the database, SQLite is recommended only
+#'   for small-scale testing.
 #' @param nFiles Maximum number of xml files to parse that are not already in
 #'   the database. This should not normally be changed from the default.
 #' @param retry Logical indicating whether to retry parsing steps that fail.
@@ -22,7 +23,12 @@
 #' @return `NULL`, invisibly. Tab-delimited log files will be created in a logs
 #'   folder in `localDir`.
 #'
-#' @seealso [parsePmidStatus()], [getCitation()]
+#' @examples
+#' \dontrun{
+#' modifyPubmedDb('.', 'pmdb', mode = 'create')
+#' }
+#'
+#' @seealso [parsePmidStatus()], [getCitation()], [getPgParams()]
 #'
 #' @export
 modifyPubmedDb = function(
@@ -92,8 +98,10 @@ modifyPubmedDb = function(
     overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 
   dFailed = getFailed(file.path(logDir, logName1))
+  dMissing = getMissing(con, tableSuffix, fileInfoKeep)
+  dRetry = rbind(dFailed[, .(xml_filename, step)], dMissing[, step := 'all'])
 
-  if (isTRUE(retry) && nrow(dFailed) > 0) {
+  if (isTRUE(retry) && nrow(dRetry) > 0) {
 
     logName2 = sprintf(
       'parse_%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
@@ -102,7 +110,7 @@ modifyPubmedDb = function(
     # retry failed steps
     writeLogFile(logPath, data.table('retry parsing xml files'))
     parsePubmedXml(
-      xmlDir = file.path(localDir, subDir), xmlFiles = dFailed,
+      xmlDir = file.path(localDir, subDir), xmlFiles = dRetry,
       logPath = file.path(logDir, logName2), tableSuffix = retrySuffix,
       overwrite = TRUE, dbtype = dbtype, dbname = dbname, ...)
 

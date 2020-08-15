@@ -37,7 +37,7 @@ normally be changed from the default.}
 }
 \value{
 Normally, a data.table with columns \code{citing_pmid} and \code{cited_pmid}.
-Beware this is a large table and could swamp some machines' memories. If
+Beware this is a large table and could swamp the machine's memory. If
 \code{dbname} is not \code{NULL} and the existing citation table and the citation
 file have identical MD5 sums, then the function returns \code{NULL} invisibly.
 }
@@ -45,7 +45,15 @@ file have identical MD5 sums, then the function returns \code{NULL} invisibly.
 Get the latest version of the NIH Open Citation Collection from figshare
 \href{https://nih.figshare.com/collections/iCite_Database_Snapshots_NIH_Open_Citation_Collection_/4586573}{here},
 and optionally write it to the database. This function requires the shell
-command \code{unzip}, available by default on most Unix systems.
+command \code{unzip}, available by default on most Unix systems. This function
+should not normally be called directly, as it is called by
+\code{\link[=modifyPubmedDb]{modifyPubmedDb()}}.
+}
+\examples{
+\dontrun{
+dCitation = getCitation('.')
+}
+
 }
 \seealso{
 \code{\link[=parsePmidStatus]{parsePmidStatus()}}, \code{\link[=modifyPubmedDb]{modifyPubmedDb()}}

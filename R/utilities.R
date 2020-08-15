@@ -4,6 +4,13 @@ getFailed = function(logPath) {
   return(d)}
 
 
+getMissing = function(con, tableSuffix, dFile) {
+  dProc = DBI::dbReadTable(con, paste_('xml_processed', tableSuffix))
+  data.table::setDT(dProc)
+  dMissing = data.table::fsetdiff(
+    dFile[, .(xml_filename)], dProc[, .(xml_filename)])}
+
+
 writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
   if (is.null(logPath)) {
     return(invisible())}
@@ -42,7 +49,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
     xmlInfo = data.table(xml_filename = unique(xmlFiles), step = 'all')
 
   } else if (is.data.frame(xmlFiles)) {
-    stopifnot(all(c('filename', 'step') %in% colnames(xmlFiles)),
+    stopifnot(all(c('xml_filename', 'step') %in% colnames(xmlFiles)),
               !isEmpty(tableSuffix))
     xmlInfo = unique(data.table(xmlFiles)[, .(xml_filename, step)])
 
@@ -137,6 +144,11 @@ isTesting = function() identical(Sys.getenv('TESTTHAT'), 'true')
 #'   \preformatted{# hostname:port:database:username:password}
 #'
 #' @return A data.table with one row for each set of parameters.
+#'
+#' @examples
+#' pg = getPgParams(system.file('extdata', 'pgpass', package = 'pmparser'))
+#'
+#' @seealso [modifyPubmedDb()]
 #'
 #' @export
 getPgParams = function(path = '~/.pgpass') {

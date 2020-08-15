@@ -132,6 +132,35 @@ instead of "author", and lacking a column in the first data.table for
 Elements are parsed according to the MEDLINE®PubMed® XML Element
 Descriptions and their Attributes
 \href{https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html}{here}.
+These functions should not normally be called directly, as they are called by
+\code{\link[=modifyPubmedDb]{modifyPubmedDb()}}.
+}
+\examples{
+library('data.table')
+library('xml2')
+
+filename = 'pubmed20n0000.xml.gz'
+rawXml = read_xml(system.file('extdata', filename, package = 'pmparser'))
+
+pmidStatusList = parsePmidStatus(rawXml, filename)
+pmXml = pmidStatusList[[1L]]
+dPmidRaw = pmidStatusList[[2L]]
+dPmid = dPmidRaw[status != 'Deleted', !'status']
+
+dArticleId = parseArticleId(pmXml, dPmid)
+dTitleJournal = parseTitleJournal(pmXml, dPmid)
+dPubType = parsePubType(pmXml, dPmid)
+dPubDate = parsePubDate(pmXml, dPmid)
+meshList = parseMesh(pmXml, dPmid)
+keywordList = parseKeyword(pmXml, dPmid)
+grantList = parseGrant(pmXml, dPmid)
+dChemical = parseChemical(pmXml, dPmid)
+dDataBank = parseDataBank(pmXml, dPmid)
+dComment = parseComment(pmXml, dPmid)
+abstractList = parseAbstract(pmXml, dPmid)
+authorList = parseAuthorAffiliation(pmXml, dPmid)
+investigatorList = parseInvestigatorAffiliation(pmXml, dPmid)
+
 }
 \seealso{
 \code{\link[=getCitation]{getCitation()}}, \code{\link[=modifyPubmedDb]{modifyPubmedDb()}}

@@ -3,6 +3,8 @@
 #' Elements are parsed according to the MEDLINE®PubMed® XML Element
 #' Descriptions and their Attributes
 #' [here](https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html).
+#' These functions should not normally be called directly, as they are called by
+#' [modifyPubmedDb()].
 #'
 #' @param rawXml An xml document obtained by loading a PubMed XML file using
 #'   [xml2::read_xml()].
@@ -79,7 +81,34 @@
 #'   instead of "author", and lacking a column in the first data.table for
 #'   `collective_name`.
 #'
+#' @examples
+#' library('data.table')
+#' library('xml2')
+#'
+#' filename = 'pubmed20n0000.xml.gz'
+#' rawXml = read_xml(system.file('extdata', filename, package = 'pmparser'))
+#'
+#' pmidStatusList = parsePmidStatus(rawXml, filename)
+#' pmXml = pmidStatusList[[1L]]
+#' dPmidRaw = pmidStatusList[[2L]]
+#' dPmid = dPmidRaw[status != 'Deleted', !'status']
+#'
+#' dArticleId = parseArticleId(pmXml, dPmid)
+#' dTitleJournal = parseTitleJournal(pmXml, dPmid)
+#' dPubType = parsePubType(pmXml, dPmid)
+#' dPubDate = parsePubDate(pmXml, dPmid)
+#' meshList = parseMesh(pmXml, dPmid)
+#' keywordList = parseKeyword(pmXml, dPmid)
+#' grantList = parseGrant(pmXml, dPmid)
+#' dChemical = parseChemical(pmXml, dPmid)
+#' dDataBank = parseDataBank(pmXml, dPmid)
+#' dComment = parseComment(pmXml, dPmid)
+#' abstractList = parseAbstract(pmXml, dPmid)
+#' authorList = parseAuthorAffiliation(pmXml, dPmid)
+#' investigatorList = parseInvestigatorAffiliation(pmXml, dPmid)
+#'
 #' @seealso [getCitation()], [modifyPubmedDb()]
+#'
 #' @name parseElement
 NULL
 
@@ -299,6 +328,9 @@ parseChemical = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/DataBankList')
   nBanksPerPmid = xml_length(x1)
+
+  if (sum(nBanksPerPmid) == 0) {
+    return(data.table(dPmid[0L], accession_number = as.character()))}
 
   x2 = xml_find_all(x1[nBanksPerPmid > 0], './/DataBank')
   x3 = xml_find_all(x2, './/AccessionNumber', flatten = FALSE)
