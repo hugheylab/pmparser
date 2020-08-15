@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# bash -i pubmed/scripts/setup_ubuntu.sh # for conda deactivate and activate
+
 # starting with hugheylab-ubuntu20
 conda deactivate # to avoid errors when installing R packages
 sudo apt update
