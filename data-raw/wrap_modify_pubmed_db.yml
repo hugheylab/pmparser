@@ -1,0 +1,7 @@
+localDir: '.'
+dbtype: 'postgres'
+nFiles: 1
+retry: TRUE
+nCitations: 1.0e+5
+# Inf: .inf
+# scientific notation: 1.0e+5
