@@ -14,7 +14,10 @@ sudo apt update
 
 # postgres versions on EC2 and RDS instances must match for pg_dump to work
 sudo apt install -y postgresql-12 libpq-dev libmariadbclient-dev
+
+# make sure xml2::xml_find_all has flatten argument
 Rscript -e "install.packages('devtools')"
+Rscript -e "devtools::install_github('r-lib/xml2')"
 
 # once pmparser is on the lab's drat repo
 # Rscript -e "install.packages('BiocManager')"
@@ -22,9 +25,6 @@ Rscript -e "install.packages('devtools')"
 
 # until then
 Rscript -e "devtools::install('pmparser', dependencies = TRUE)"
-
-# make sure xml2::xml_find_all has flatten argument
-Rscript -e "devtools::install_github('r-lib/xml2')"
 
 conda activate
 

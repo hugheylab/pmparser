@@ -1,5 +1,8 @@
-nCores = parallel::detectCores() - 2L
-doParallel::registerDoParallel(cores = nCores)
+library('doFuture')
+
+registerDoFuture()
+nCores = availableCores() - 2L
+plan(multisession, workers = nCores)
 data.table::setDTthreads(nCores)
 
 mode = commandArgs(TRUE)[1L]

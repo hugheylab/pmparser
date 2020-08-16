@@ -1,4 +1,4 @@
-nCores = parallel::detectCores() - 2L
+nCores = future::availableCores() - 2L
 pg = pmparser::getPgParams()
 
 dumpDir = 'dumps'

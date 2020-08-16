@@ -139,7 +139,7 @@ modifyPubmedDb = function(
   if (nrow(dMissing) > 0) {
     path = paste0(tools::file_path_sans_ext(logPath), '_missing.csv')
     data.table::fwrite(dMissing, path)
-    writeLogFile(logPath, data.table(sprintf('finish: see %s'), basename(path)))
+    writeLogFile(logPath, data.table(sprintf('finish: see %s', basename(path))))
   } else {
     writeLogFile(logPath, data.table('finish: good to go'))}
 
