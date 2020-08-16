@@ -4,7 +4,7 @@
 #' information to the database, then downloads the NIH Open Citation Collection
 #' and adds it to the database. Only the most recent version of each PMID is
 #' retained. Parsing of XML files will use a parallel backend if one is
-#' registered, such as with [doParallel::registerDoParallel()].
+#' registered, such as with [doFuture::registerDoFuture()].
 #'
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
@@ -135,8 +135,15 @@ modifyPubmedDb = function(
       localDir = localDir, nrows = nCitations, tableSuffix = '',
       overwrite = TRUE, con = con, checkMd5 = !testing)}
 
+  dMissing = getMissing(con, '', fileInfoKeep)
+  if (nrow(dMissing) > 0) {
+    path = paste0(tools::file_path_sans_ext(logPath), '_missing.csv')
+    data.table::fwrite(dMissing, path)
+    writeLogFile(logPath, data.table(sprintf('finish: see %s'), basename(path)))
+  } else {
+    writeLogFile(logPath, data.table('finish: good to go'))}
+
   disconnect(con)
-  writeLogFile(logPath, data.table('finish'))
   invisible()}
 
 
