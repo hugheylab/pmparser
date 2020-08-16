@@ -40,8 +40,8 @@ getPubmedFileInfo = function(
     data.table::setDT(dDb)
     dDb = dDb[, .(xml_filename, processed = 0L)]}
 
-  d = merge(dRemote, dLocal, by = c('sub_dir', 'xml_filename'), all.x = TRUE)
-  d = merge(d, dDb, by = 'xml_filename', all.x = TRUE)
+  d = merge(dRemote, dDb, by = 'xml_filename', all.x = TRUE)
+  d = merge(d, dLocal, by = c('sub_dir', 'xml_filename'), all.x = TRUE)
   setcolorder(d, 'sub_dir')
   return(d)}
 
@@ -61,7 +61,7 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
 
 getPubmedFiles = function(
   fileInfo, localDir, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
-  downloadMd5 = TRUE, checkMd5 = TRUE) {
+  downloadMd5 = TRUE) {
 
   for (subDir in unique(fileInfo$sub_dir)) {
     if (!dir.exists(file.path(localDir, subDir)))
@@ -75,25 +75,33 @@ getPubmedFiles = function(
   } else { # trick for testing
     fileInfo[, md5_download := xml_download]}
 
-  feo = foreach(f = iterators::iter(fileInfo, by = 'row'), .combine = rbind)
-  d = feo %dopar% {
-    x = foreach(pre = c('xml', 'md5'), .combine = cbind) %do% {
-      col = paste_(pre, 'filename')
-      down = paste_(pre, 'download')
-      if (is.na(f[[down]])) {
-        utils::download.file(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
-                             file.path(localDir, f$sub_dir, f[[col]]))
-      } else {
-        0}}}
+  # download md5 files
+  fTmp = fileInfo[is.na(md5_download)]
+  col = 'md5_filename'
+  r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
+    utils::download.file(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+                         file.path(localDir, f$sub_dir, f[[col]]))}
+  fileInfo[is.na(md5_download), md5_download := r]
 
-  d = data.table::as.data.table(d)
-  setnames(d, c('xml_download', 'md5_download'))
-  fileInfo = cbind(fileInfo[, !c('xml_download', 'md5_download')], d)
+  # check md5 sums
+  fileInfo[, `:=`(md5_computed = '', md5_provided = '', md5_match = FALSE)]
+  fileInfo[md5_download == 0 & xml_download == 0,
+           c('md5_computed', 'md5_provided', 'md5_match') :=
+             checkPubmedFiles(file.path(localDir, sub_dir, xml_filename),
+                              file.path(localDir, sub_dir, md5_filename))]
 
-  if (isTRUE(checkMd5)) {
-    fileInfo[(xml_download == 0) & (md5_download == 0),
-             c('md5_computed', 'md5_provided', 'md5_match') :=
-               checkPubmedFiles(file.path(localDir, sub_dir, xml_filename),
-                                file.path(localDir, sub_dir, md5_filename))]}
+  # download xml files
+  fTmp = fileInfo[!(md5_match)]
+  col = 'xml_filename'
+  r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
+    utils::download.file(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+                         file.path(localDir, f$sub_dir, f[[col]]))}
+  fileInfo[!(md5_match), xml_download := r]
+
+  # check md5 sums again
+  fileInfo[md5_download == 0 & xml_download == 0,
+           c('md5_computed', 'md5_provided', 'md5_match') :=
+             checkPubmedFiles(file.path(localDir, sub_dir, xml_filename),
+                              file.path(localDir, sub_dir, md5_filename))]
 
   return(fileInfo[])}

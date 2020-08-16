@@ -1,6 +1,6 @@
-sub_dir,xml_filename,md5_filename,xml_download,processed
-baseline,pubmed20n0001.xml.gz,pubmed20n0001.xml.gz.md5,,
-baseline,pubmed20n0002.xml.gz,pubmed20n0002.xml.gz.md5,,
+sub_dir,xml_filename,md5_filename,processed,xml_download
+baseline,pubmed20n0001.xml.gz,pubmed20n0001.xml.gz.md5,,0
+baseline,pubmed20n0002.xml.gz,pubmed20n0002.xml.gz.md5,,0
 baseline,pubmed20n0003.xml.gz,pubmed20n0003.xml.gz.md5,,
 baseline,pubmed20n0004.xml.gz,pubmed20n0004.xml.gz.md5,,
 baseline,pubmed20n0005.xml.gz,pubmed20n0005.xml.gz.md5,,

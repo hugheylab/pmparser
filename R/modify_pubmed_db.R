@@ -77,15 +77,13 @@ modifyPubmedDb = function(
 
   writeLogFile(logPath, data.table('get pubmed files'))
   fileInfo = getPubmedFiles(fileInfo, localDir, downloadMd5 = !testing)
-
   fileInfoKeep = fileInfo[(md5_match)]
 
   if (nrow(fileInfoKeep) != nrow(fileInfo)) {
     w = sprintf(paste('The following xml files did not match their md5 sums',
                       'and will not be processed:\n%s'),
-                paste(fileInfo[is.na(md5_match) | !(md5_match), xml_filename],
-                      collapse = '\n'))
-    warning(w)}
+                paste(fileInfo[!(md5_match), xml_filename], collapse = '\n'))
+    warning(w, .immediate = TRUE)}
 
   # process files
   logName1 = sprintf(
