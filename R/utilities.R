@@ -145,3 +145,21 @@ getPgParams = function(path = '~/.pgpass') {
   x3 = data.table::rbindlist(lapply(x2[-1L], as.list))
   setnames(x3, x2[[1L]])
   x3}
+
+#' Copy of withr::local_file function, but allows additional parameters.
+#'
+#' Allows more parameters to be provided to the unlink step in the withr::local_file function.
+#'
+#' @param file `[named list]`\cr Files to create.
+#' @param .local_envir `[environment]`\cr The environment to use for scoping.
+#'
+#'
+#' @export
+local_folder = function(file, ..., .local_envir = parent.frame()) {
+    file_nms <- rlang::names2(file)
+    unnamed <- file_nms == ""
+    file_nms[unnamed] <- as.character(file[unnamed])
+    withr::defer(unlink(file_nms, ...), envir = .local_envir)
+
+    invisible(file)
+  }

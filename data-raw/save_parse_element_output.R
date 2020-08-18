@@ -7,7 +7,7 @@ saveParseFuncsOutput = function(steps = 'all', fileName, xmlDir = NULL, saveDir 
   rawXml = xml2::read_xml(file.path(xmlDir, fileName))
 
   step = 'pmid_status'
-  res = parsePmidStatus(rawXml, fileName, conNow, tableSuffix)
+  res = parsePmidStatus(rawXml, fileName, con, tableSuffix)
   if(save) saveRDS(res, file.path(saveDir, paste0(step, fileSuffix, '.rds')))
 
   pmXml = res[[1L]]

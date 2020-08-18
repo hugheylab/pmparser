@@ -2,6 +2,7 @@
 
 export(getCitation)
 export(getPgParams)
+export(local_folder)
 export(modifyPubmedDb)
 export(parseAbstract)
 export(parseArticleId)

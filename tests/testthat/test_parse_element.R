@@ -1,6 +1,6 @@
 context('parse_element')
 
-xmlDir = 'data/testfiles'
+xmlDir = 'data/testfiles/updatefiles'
 fileName = 'pubmed20n1016.xml.gz'
 conNow = NULL
 tableSuffix = NULL

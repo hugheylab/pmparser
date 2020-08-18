@@ -24,6 +24,8 @@ test_that('getPubmedFiles', {
   localDir = 'dataTest'
   checkMd5 = TRUE
 
+  local_folder(localDir, recursive = TRUE)
+
   if (!dir.exists(localDir)) dir.create(localDir)
 
   fileInfoExpected = data.table::fread('file_info_downloaded.csv')
@@ -32,6 +34,5 @@ test_that('getPubmedFiles', {
   fileInfo = getPubmedFiles(fileInfoOrig, localDir, remoteDir, checkMd5)
   fileInfo[, md5_match := as.numeric(md5_match)]
 
-  unlink(localDir, recursive = TRUE)
   expect_equivalent(fileInfo, fileInfoExpected)
 })
