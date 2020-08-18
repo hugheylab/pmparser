@@ -1,0 +1,2360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2019//EN" "https://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_190101.dtd">
+<PubmedArticleSet>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075408</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>A twisted tale: the origin and evolution of motility and chemotaxis in prokaryotes.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>279-281</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-279</ELocationID>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Faguy</LastName>
+            <ForeName>D M</ForeName>
+            <Initials>DM</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Jarrell</LastName>
+            <ForeName>K F</ForeName>
+            <Initials>KF</Initials>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <CitationSubset>IM</CitationSubset>
+      <CitationSubset>S</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D001105" MajorTopicYN="N">Archaea</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D001412" MajorTopicYN="N">Bacillus subtilis</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D001419" MajorTopicYN="N">Bacteria</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D018407" MajorTopicYN="N">Bacterial Physiological Phenomena</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D002633" MajorTopicYN="N">Chemotaxis</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D019143" MajorTopicYN="Y">Evolution, Molecular</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005407" MajorTopicYN="N">Flagella</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D019766" MajorTopicYN="N">Genes, Archaeal</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005798" MajorTopicYN="N">Genes, Bacterial</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009068" MajorTopicYN="N">Movement</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075408</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-279</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075409</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>ISP-4 and CWBP52 are proteins encoded by the same gene in Bacillus subtilis.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>281</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-281</ELocationID>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Hageman</LastName>
+            <ForeName>J H</ForeName>
+            <Initials>JH</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Switzer</LastName>
+            <ForeName>R L</ForeName>
+            <Initials>RL</Initials>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>EC 3.4.21.-</RegistryNumber>
+          <NameOfSubstance UI="D012697">Serine Endopeptidases</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D001412" MajorTopicYN="N">Bacillus subtilis</DescriptorName>
+          <QualifierName UI="Q000201" MajorTopicYN="Y">enzymology</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005798" MajorTopicYN="N">Genes, Bacterial</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012697" MajorTopicYN="N">Serine Endopeptidases</DescriptorName>
+          <QualifierName UI="Q000737" MajorTopicYN="N">chemistry</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000302" MajorTopicYN="N">isolation &amp; purification</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="Y">metabolism</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075409</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-281</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075410</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Evidence that halogenated furanones from Delisea pulchra inhibit acylated homoserine lactone (AHL)-mediated gene expression by displacing the AHL signal from its receptor protein.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>283-291</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-283</ELocationID>
+        <Abstract>
+          <AbstractText>Acylated homoserine lactone (AHL)-mediated gene expression controls phenotypes involved in colonization, often specifically of higher organisms, in both marine and terrestrial environments. The marine red alga Delisea pulchra produces halogenated furanones which resemble AHLs structurally and show inhibitory activity at ecologically realistic concentrations in AHL bioassays. Evidence is presented that halogenated furanones displace tritiated OHHL [N-3-(oxohexanoyl)-L-homoserine lactone] from Escherichia coli cells overproducing LuxR with potencies corresponding to their respective inhibitory activities in an AHL-regulated bioluminescence assay, indicating that this is the mechanism by which furanones inhibit AHL-dependent phenotypes. Alternative mechanisms for this phenomenon are also addressed. General metabolic disruption was assessed with two-dimensional PAGE, revealing limited non-AHL-related effects. A direct chemical interaction between the algal compounds and AHLs, as monitored by 1H NMR spectroscopy, was shown not to occur in vitro. These results support the contention that furanones, at the concentrations produced by the alga, can control bacterial colonization of surfaces by specifically interfering with AHL-mediated gene expression at the level of the LuxR protein.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Manefield</LastName>
+            <ForeName>Michael</ForeName>
+            <Initials>M</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Microbiology and Immunology, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>de Nys</LastName>
+            <ForeName>Rocky</ForeName>
+            <Initials>R</Initials>
+            <AffiliationInfo>
+              <Affiliation>Centre for Marine Biofouling and Bio-lnnovation, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>School of Biological Sciences, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Naresh</LastName>
+            <ForeName>Kumar</ForeName>
+            <Initials>K</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Chemistry, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Roger</LastName>
+            <ForeName>Read</ForeName>
+            <Initials>R</Initials>
+            <AffiliationInfo>
+              <Affiliation>School of Chemistry, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Givskov</LastName>
+            <ForeName>Michael</ForeName>
+            <Initials>M</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Microbiology, Technical University of Denmark, Lyngby, Denmark.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Peter</LastName>
+            <ForeName>Steinberg</ForeName>
+            <Initials>S</Initials>
+            <AffiliationInfo>
+              <Affiliation>Centre for Marine Biofouling and Bio-lnnovation, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>School of Biological Sciences, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Kjelleberg</LastName>
+            <ForeName>Staffan</ForeName>
+            <Initials>S</Initials>
+            <AffiliationInfo>
+              <Affiliation>Centre for Marine Biofouling and Bio-lnnovation, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>School of Microbiology and Immunology, University of New South Wales, Sydney, Australia.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D005663">Furans</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D006219">Halogens</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D012097">Repressor Proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D015534">Trans-Activators</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>115038-68-1</RegistryNumber>
+          <NameOfSubstance UI="C064778">LuxR autoinducer binding proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>1192-20-7</RegistryNumber>
+          <NameOfSubstance UI="C088386">homoserine lactone</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>76924-95-3</RegistryNumber>
+          <NameOfSubstance UI="C030654">N-(3-oxohexanoyl)-3-aminodihydro-2(3H)-furanone</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>OL659KIY4X</RegistryNumber>
+          <NameOfSubstance UI="D015107">4-Butyrolactone</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D015107" MajorTopicYN="N">4-Butyrolactone</DescriptorName>
+          <QualifierName UI="Q000031" MajorTopicYN="Y">analogs &amp; derivatives</QualifierName>
+          <QualifierName UI="Q000138" MajorTopicYN="N">chemical synthesis</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+          <QualifierName UI="Q000633" MajorTopicYN="N">toxicity</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000215" MajorTopicYN="N">Acylation</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015180" MajorTopicYN="N">Electrophoresis, Gel, Two-Dimensional</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004926" MajorTopicYN="N">Escherichia coli</DescriptorName>
+          <QualifierName UI="Q000187" MajorTopicYN="N">drug effects</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000502" MajorTopicYN="N">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005663" MajorTopicYN="N">Furans</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+          <QualifierName UI="Q000494" MajorTopicYN="Y">pharmacology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015964" MajorTopicYN="Y">Gene Expression Regulation, Bacterial</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006219" MajorTopicYN="N">Halogens</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008163" MajorTopicYN="N">Luminescent Measurements</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009682" MajorTopicYN="N">Magnetic Resonance Spectroscopy</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012097" MajorTopicYN="N">Repressor Proteins</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000461" MajorTopicYN="N">Rhodophyta</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="Y">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015398" MajorTopicYN="Y">Signal Transduction</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015534" MajorTopicYN="N">Trans-Activators</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075410</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-283</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075411</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Farnesol-induced growth inhibition in Saccharomyces cerevisiae by a cell cycle mechanism.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>293-299</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-293</ELocationID>
+        <Abstract>
+          <AbstractText>The growth of budding yeast, Saccharomyces cerevisiae, was inhibited in medium containing 25 microM farnesol (FOH). The FOH-treated cells were still viable, and were characterized by a transition from budded to unbudded phase as well as a significant loss of intracellular diacylglycerol (DAG). FOH-induced growth inhibition could be effectively prevented by the coaddition of a membrane-permeable DAG analogue which can activate yeast protein kinase C (PKC). However, yeast cell growth was not initiated upon addition of the PKC activator when the cells had been pretreated with FOH for 20 min. The failure in cell growth recovery was believed to be due to a signalling-mediated cell cycle arrest in FOH-pretreated cells. Differential display analysis demonstrated that the expression of cell cycle genes encoding DNA ligase (CDC9) and histone acetyltransferase (HAT2) was strongly repressed in FOH-treated cells. Repression of the expression of these genes was effectively cancelled when cells were grown in medium supplemented with DAG. The authors propose an interference with a phosphatidylinositol-type signalling which is involved in cell cycle progression as a cause of FOH-induced growth inhibition in yeast cells.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Machida</LastName>
+            <ForeName>Kiyotaka</ForeName>
+            <Initials>K</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Bio- and Geoscience, Graduate School of Science, Osaka City University, 3-3-138 Sugimoto, Sumiyoshi-ku, Osaka 558-8585, Japan.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Tanaka</LastName>
+            <ForeName>Toshio</ForeName>
+            <Initials>T</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Bio- and Geoscience, Graduate School of Science, Osaka City University, 3-3-138 Sugimoto, Sumiyoshi-ku, Osaka 558-8585, Japan.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Yano</LastName>
+            <ForeName>Yoshihisa</ForeName>
+            <Initials>Y</Initials>
+            <AffiliationInfo>
+              <Affiliation>Second Department of Biochemistry, Medical School, Osaka City University, 1-4-54 Asahimachi, Osaka 545, Japan.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Otani</LastName>
+            <ForeName>Shuzo</ForeName>
+            <Initials>S</Initials>
+            <AffiliationInfo>
+              <Affiliation>Second Department of Biochemistry, Medical School, Osaka City University, 1-4-54 Asahimachi, Osaka 545, Japan.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Taniguchi</LastName>
+            <ForeName>Makoto</ForeName>
+            <Initials>M</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Bio- and Geoscience, Graduate School of Science, Osaka City University, 3-3-138 Sugimoto, Sumiyoshi-ku, Osaka 558-8585, Japan.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D004075">Diglycerides</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D010713">Phosphatidylcholines</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D029701">Saccharomyces cerevisiae Proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>4602-84-0</RegistryNumber>
+          <NameOfSubstance UI="D005204">Farnesol</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>86390-77-4</RegistryNumber>
+          <NameOfSubstance UI="C038237">1-oleoyl-2-acetylglycerol</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.3.1.-</RegistryNumber>
+          <NameOfSubstance UI="D000123">Acetyltransferases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.3.1.48</RegistryNumber>
+          <NameOfSubstance UI="D051548">Histone Acetyltransferases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.7.11.13</RegistryNumber>
+          <NameOfSubstance UI="D011493">Protein Kinase C</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 6.5.1.-</RegistryNumber>
+          <NameOfSubstance UI="D011088">DNA Ligases</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D000123" MajorTopicYN="N">Acetyltransferases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D002453" MajorTopicYN="N">Cell Cycle</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011088" MajorTopicYN="N">DNA Ligases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004075" MajorTopicYN="N">Diglycerides</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+          <QualifierName UI="Q000494" MajorTopicYN="N">pharmacology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005204" MajorTopicYN="N">Farnesol</DescriptorName>
+          <QualifierName UI="Q000494" MajorTopicYN="Y">pharmacology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015966" MajorTopicYN="N">Gene Expression Regulation, Fungal</DescriptorName>
+          <QualifierName UI="Q000187" MajorTopicYN="Y">drug effects</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D051548" MajorTopicYN="N">Histone Acetyltransferases</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010713" MajorTopicYN="N">Phosphatidylcholines</DescriptorName>
+          <QualifierName UI="Q000494" MajorTopicYN="N">pharmacology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011493" MajorTopicYN="N">Protein Kinase C</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012441" MajorTopicYN="N">Saccharomyces cerevisiae</DescriptorName>
+          <QualifierName UI="Q000187" MajorTopicYN="Y">drug effects</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000254" MajorTopicYN="N">growth &amp; development</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D029701" MajorTopicYN="Y">Saccharomyces cerevisiae Proteins</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015398" MajorTopicYN="Y">Signal Transduction</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075411</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-293</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">24727161</PMID>
+      <DateCompleted>
+        <Year>2015</Year>
+        <Month>02</Month>
+        <Day>19</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2014</Year>
+        <Month>06</Month>
+        <Day>02</Day>
+      </DateRevised>
+      <Article PubModel="Print-Electronic">
+        <Journal>
+          <ISSN IssnType="Electronic">1873-2763</ISSN>
+          <JournalIssue CitedMedium="Internet">
+            <Volume>64</Volume>
+            <PubDate>
+              <Year>2014</Year>
+              <Month>Jul</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Bone</Title>
+          <ISOAbbreviation>Bone</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Peroxisomal dysfunction is associated with up-regulation of apoptotic cell death via miR-223 induction in knee osteoarthritis patients with type 2 diabetes mellitus.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>124-31</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1016/j.bone.2014.04.001</ELocationID>
+        <ELocationID EIdType="pii" ValidYN="Y">S8756-3282(14)00136-7</ELocationID>
+        <Abstract>
+          <AbstractText>Recent increasing evidences showing the interconnection between mitochondria and peroxisome in performing metabolic functions imply that peroxisome dysfunction could lead to a wide variety of human diseases including cancer and osteoarthritis (OA) as mitochondria dysfunction. Even though there is a higher incidence and development of OA in diabetes mellitus (DM) patients, there is not much evidential mechanism study in this inter-regulation between OA and OA with DM in a new view of peroxisome. In this study, we analyzed the alteration of peroxisomal gene expression that could responsible for pathological difference between OA chondrocytes and OA/DM chondrocytes. To discriminate responsible genes in the OA/DM pathogenesis, the expressions of three hundred sixty-two genes reported to differentially relate to peroxisome were analyzed with OA chondrocytes in OA cartilage and OA/DM chondrocytes in the cartilage of OA with DM patient. Among them, PEX-16, a component of peroxisome, was significantly down-regulated in OA/DM chondrocytes and this down-regulation of PEX-16 increased the miR-223 induction. Knockdown studies using PEX-16 null cell line and PEX-16 specific siRNA showed the significant increase in apoptotic cell death. Moreover, over-expression of miR-223 stimulates apoptotic cell death in human articular chondrocytes and induced severe cartilage destruction in db/db mice. In conclusion, our study showed the differential peroxisomal gene expression profiles for OA/DM chondrocytes from OA chondrocytes and suggests the possibility that peroxisomal dysfunction in OA/DM could be responsible for early incidence and development of OA in DM patients. </AbstractText>
+          <CopyrightInformation>Copyright © 2014 Elsevier Inc. All rights reserved.</CopyrightInformation>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Kim</LastName>
+            <ForeName>Dongkyun</ForeName>
+            <Initials>D</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological Sciences, College of Natural Sciences, Wonkwang University, Iksan, Chunbuk, 570-749, Republic of Korea.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Song</LastName>
+            <ForeName>Jinsoo</ForeName>
+            <Initials>J</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological Sciences, College of Natural Sciences, Wonkwang University, Iksan, Chunbuk, 570-749, Republic of Korea.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Ahn</LastName>
+            <ForeName>Chihyun</ForeName>
+            <Initials>C</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological Sciences, College of Natural Sciences, Wonkwang University, Iksan, Chunbuk, 570-749, Republic of Korea.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Kang</LastName>
+            <ForeName>Yeonho</ForeName>
+            <Initials>Y</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological Sciences, College of Natural Sciences, Wonkwang University, Iksan, Chunbuk, 570-749, Republic of Korea.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Chun</LastName>
+            <ForeName>Churl-Hong</ForeName>
+            <Initials>CH</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Orthopedic Surgery, Wonkwang University School of Medicine, Iksan, Chunbuk, 570-749, Republic of Korea.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Jin</LastName>
+            <ForeName>Eun-Jung</ForeName>
+            <Initials>EJ</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological Sciences, College of Natural Sciences, Wonkwang University, Iksan, Chunbuk, 570-749, Republic of Korea. Electronic address: jineunjung@wku.ac.kr.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+        <ArticleDate DateType="Electronic">
+          <Year>2014</Year>
+          <Month>04</Month>
+          <Day>13</Day>
+        </ArticleDate>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>United States</Country>
+        <MedlineTA>Bone</MedlineTA>
+        <NlmUniqueID>8504048</NlmUniqueID>
+        <ISSNLinking>1873-2763</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="C525067">MIRN223 microRNA, human</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D035683">MicroRNAs</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <CommentsCorrectionsList>
+        <CommentsCorrections RefType="ErratumIn">
+          <RefSource>Bone. 2019 Dec 12;132:115182</RefSource>
+          <PMID Version="1">31838303</PMID>
+        </CommentsCorrections>
+      </CommentsCorrectionsList>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D017209" MajorTopicYN="Y">Apoptosis</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D003924" MajorTopicYN="N">Diabetes Mellitus, Type 2</DescriptorName>
+          <QualifierName UI="Q000473" MajorTopicYN="Y">pathology</QualifierName>
+          <QualifierName UI="Q000503" MajorTopicYN="N">physiopathology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006801" MajorTopicYN="N">Humans</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D035683" MajorTopicYN="N">MicroRNAs</DescriptorName>
+          <QualifierName UI="Q000096" MajorTopicYN="Y">biosynthesis</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D020370" MajorTopicYN="N">Osteoarthritis, Knee</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000473" MajorTopicYN="Y">pathology</QualifierName>
+          <QualifierName UI="Q000503" MajorTopicYN="N">physiopathology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D020675" MajorTopicYN="N">Peroxisomes</DescriptorName>
+          <QualifierName UI="Q000502" MajorTopicYN="Y">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D016133" MajorTopicYN="N">Polymerase Chain Reaction</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015854" MajorTopicYN="Y">Up-Regulation</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+      <KeywordList Owner="NOTNLM">
+        <Keyword MajorTopicYN="N">Diabetes mellitus</Keyword>
+        <Keyword MajorTopicYN="N">Osteoarthritis</Keyword>
+        <Keyword MajorTopicYN="N">PEX-16</Keyword>
+        <Keyword MajorTopicYN="N">Peroxisome dysfunction</Keyword>
+        <Keyword MajorTopicYN="N">miR-223</Keyword>
+      </KeywordList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="received">
+          <Year>2013</Year>
+          <Month>08</Month>
+          <Day>07</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="revised">
+          <Year>2014</Year>
+          <Month>03</Month>
+          <Day>14</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="accepted">
+          <Year>2014</Year>
+          <Month>04</Month>
+          <Day>02</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2014</Year>
+          <Month>4</Month>
+          <Day>15</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2014</Year>
+          <Month>4</Month>
+          <Day>15</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>2015</Year>
+          <Month>2</Month>
+          <Day>20</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">24727161</ArticleId>
+        <ArticleId IdType="pii">S8756-3282(14)00136-7</ArticleId>
+        <ArticleId IdType="doi">10.1016/j.bone.2014.04.001</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">26180261</PMID>
+      <DateCompleted>
+        <Year>2016</Year>
+        <Month>06</Month>
+        <Day>21</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>10</Day>
+      </DateRevised>
+      <Article PubModel="Print-Electronic">
+        <Journal>
+          <ISSN IssnType="Electronic">1475-3162</ISSN>
+          <JournalIssue CitedMedium="Internet">
+            <Volume>59</Volume>
+            <Issue>8</Issue>
+            <PubDate>
+              <Year>2015</Year>
+              <Month>Oct</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>The Annals of occupational hygiene</Title>
+          <ISOAbbreviation>Ann Occup Hyg</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Respirator Performance against Nanoparticles under Simulated Workplace Activities.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>1012-21</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1093/annhyg/mev042</ELocationID>
+        <Abstract>
+          <AbstractText>Filtering facepiece respirators (FFRs) and elastomeric half-mask respirators (EHRs) are commonly used by workers for protection against potentially hazardous particles, including engineered nanoparticles. The purpose of this study was to evaluate the performance of these types of respirators against 10-400 nm particles using human subjects exposed to NaCl aerosols under simulated workplace activities. Simulated workplace protection factors (SWPFs) were measured for eight combinations of respirator models (2 N95 FFRs, 2 P100 FFRs, 2 N95 EHRs, and 2 P100 EHRs) worn by 25 healthy test subjects (13 females and 12 males) with varying face sizes. Before beginning a SWPF test for a given respirator model, each subject had to pass a quantitative fit test. Each SWPF test was performed using a protocol of six exercises for 3 min each: (i) normal breathing, (ii) deep breathing, (iii) moving head side to side, (iv) moving head up and down, (v) bending at the waist, and (vi) a simulated laboratory-vessel cleaning motion. Two scanning mobility particle sizers were used simultaneously to measure the upstream (outside the respirator) and downstream (inside the respirator) test aerosol; SWPF was then calculated as a ratio of the upstream and downstream particle concentrations. In general, geometric mean SWPF (GM-SWPF) was highest for the P100 EHRs, followed by P100 FFRs, N95 EHRs, and N95 FFRs. This trend holds true for nanoparticles (10-100 nm), larger size particles (100-400 nm), and the 'all size' range (10-400 nm). All respirators provided better or similar performance levels for 10-100 nm particles as compared to larger 100-400 nm particles. This study found that class P100 respirators provided higher SWPFs compared to class N95 respirators (P &lt; 0.05) for both FFR and EHR types. All respirators provided expected performance (i.e. fifth percentile SWPF &gt; 10) against all particle size ranges tested.</AbstractText>
+          <CopyrightInformation>Published by Oxford University Press on behalf of the British Occupational Hygiene Society 2015.</CopyrightInformation>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Vo</LastName>
+            <ForeName>Evanly</ForeName>
+            <Initials>E</Initials>
+            <AffiliationInfo>
+              <Affiliation>National Institute for Occupational Safety and Health, National Personal Protective Technology Laboratory, 626 Cochrans Mill Road, Pittsburgh, PA 15236, USA; Eav8@cdc.gov.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Zhuang</LastName>
+            <ForeName>Ziqing</ForeName>
+            <Initials>Z</Initials>
+            <AffiliationInfo>
+              <Affiliation>National Institute for Occupational Safety and Health, National Personal Protective Technology Laboratory, 626 Cochrans Mill Road, Pittsburgh, PA 15236, USA;</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Horvatin</LastName>
+            <ForeName>Matthew</ForeName>
+            <Initials>M</Initials>
+            <AffiliationInfo>
+              <Affiliation>URS Corporation, 626 Cochrans Mill Road, Pittsburgh, PA 15236, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Liu</LastName>
+            <ForeName>Yuewei</ForeName>
+            <Initials>Y</Initials>
+            <AffiliationInfo>
+              <Affiliation>National Institute for Occupational Safety and Health, National Personal Protective Technology Laboratory, 626 Cochrans Mill Road, Pittsburgh, PA 15236, USA;</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>He</LastName>
+            <ForeName>Xinjian</ForeName>
+            <Initials>X</Initials>
+            <AffiliationInfo>
+              <Affiliation>National Institute for Occupational Safety and Health, National Personal Protective Technology Laboratory, 626 Cochrans Mill Road, Pittsburgh, PA 15236, USA;</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Rengasamy</LastName>
+            <ForeName>Samy</ForeName>
+            <Initials>S</Initials>
+            <AffiliationInfo>
+              <Affiliation>National Institute for Occupational Safety and Health, National Personal Protective Technology Laboratory, 626 Cochrans Mill Road, Pittsburgh, PA 15236, USA;</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+          <Grant>
+            <GrantID>CC999999</GrantID>
+            <Agency>Intramural CDC HHS</Agency>
+            <Country>United States</Country>
+          </Grant>
+        </GrantList>
+        <PublicationTypeList>
+          <PublicationType UI="D023362">Evaluation Study</PublicationType>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013487">Research Support, U.S. Gov't, P.H.S.</PublicationType>
+        </PublicationTypeList>
+        <ArticleDate DateType="Electronic">
+          <Year>2015</Year>
+          <Month>07</Month>
+          <Day>15</Day>
+        </ArticleDate>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Ann Occup Hyg</MedlineTA>
+        <NlmUniqueID>0203526</NlmUniqueID>
+        <ISSNLinking>0003-4878</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D000336">Aerosols</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D000395">Air Pollutants, Occupational</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <CommentsCorrectionsList>
+        <CommentsCorrections RefType="CommentIn">
+          <RefSource>Nature. 2019 Dec;576(7786):213</RefSource>
+          <PMID Version="1">31822844</PMID>
+        </CommentsCorrections>
+      </CommentsCorrectionsList>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D000328" MajorTopicYN="N">Adult</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000336" MajorTopicYN="N">Aerosols</DescriptorName>
+          <QualifierName UI="Q000032" MajorTopicYN="N">analysis</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000368" MajorTopicYN="N">Aged</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D000395" MajorTopicYN="N">Air Pollutants, Occupational</DescriptorName>
+          <QualifierName UI="Q000032" MajorTopicYN="N">analysis</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004867" MajorTopicYN="N">Equipment Design</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005260" MajorTopicYN="N">Female</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005374" MajorTopicYN="N">Filtration</DescriptorName>
+          <QualifierName UI="Q000295" MajorTopicYN="N">instrumentation</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006801" MajorTopicYN="N">Humans</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D019570" MajorTopicYN="N">Inhalation Exposure</DescriptorName>
+          <QualifierName UI="Q000517" MajorTopicYN="N">prevention &amp; control</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008297" MajorTopicYN="N">Male</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008875" MajorTopicYN="N">Middle Aged</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D053758" MajorTopicYN="Y">Nanoparticles</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009314" MajorTopicYN="N">National Institute for Occupational Safety and Health, U.S.</DescriptorName>
+          <QualifierName UI="Q000592" MajorTopicYN="N">standards</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D016273" MajorTopicYN="N">Occupational Exposure</DescriptorName>
+          <QualifierName UI="Q000517" MajorTopicYN="N">prevention &amp; control</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010316" MajorTopicYN="N">Particle Size</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012134" MajorTopicYN="N">Respiratory Protective Devices</DescriptorName>
+          <QualifierName UI="Q000592" MajorTopicYN="Y">standards</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014481" MajorTopicYN="N" Type="Geographic">United States</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D017132" MajorTopicYN="Y">Workplace</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+      <KeywordList Owner="NOTNLM">
+        <Keyword MajorTopicYN="N">N95 respirators</Keyword>
+        <Keyword MajorTopicYN="N">P100 respirators</Keyword>
+        <Keyword MajorTopicYN="N">elastomeric half-mask respirators</Keyword>
+        <Keyword MajorTopicYN="N">filtering facepiece respirators</Keyword>
+        <Keyword MajorTopicYN="N">nanoparticle</Keyword>
+        <Keyword MajorTopicYN="N">simulated workplace protection factors</Keyword>
+      </KeywordList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="received">
+          <Year>2015</Year>
+          <Month>03</Month>
+          <Day>30</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="accepted">
+          <Year>2015</Year>
+          <Month>05</Month>
+          <Day>21</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>2015</Year>
+          <Month>7</Month>
+          <Day>17</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>2015</Year>
+          <Month>7</Month>
+          <Day>17</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>2016</Year>
+          <Month>6</Month>
+          <Day>22</Day>
+          <Hour>6</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">26180261</ArticleId>
+        <ArticleId IdType="pii">mev042</ArticleId>
+        <ArticleId IdType="doi">10.1093/annhyg/mev042</ArticleId>
+        <ArticleId IdType="pmc">PMC5504519</ArticleId>
+        <ArticleId IdType="mid">NIHMS862520</ArticleId>
+      </ArticleIdList>
+      <ReferenceList>
+        <Reference>
+          <Citation>Pharmacol Ther. 2009 Feb;121(2):192-204</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">19103221</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Occup Environ Hyg. 2006 Sep;3(9):465-74</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">16857645</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Ann Occup Hyg. 2005 Oct;49(7):569-74</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">16126767</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Occup Environ Hyg. 2007 Sep;4(9):647-59</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">17613722</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Mcgill J Med. 2008 Jan;11(1):43-50</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">18523535</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Occup Environ Med. 2011 Jun;53(6 Suppl):S68-73</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21654421</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Invest Dermatol. 2007 Jul;127(7):1701-12</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">17380118</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Ann Occup Hyg. 2011 Nov;55(9):1016-36</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">21965464</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Circulation. 2010 Jun 1;121(21):2331-78</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">20458016</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Br J Anaesth. 2002 Oct;89(4):541-5</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">12393352</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Ann Occup Hyg. 1984;28(2):173-82</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">6476685</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Ann Occup Hyg. 2013 Apr;57(3):328-44</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23100605</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Occup Environ Hyg. 2009 Oct;6(10):593-603</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">19598054</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Occup Environ Hyg. 2013;10(9):496-504</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">23927376</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>J Aerosol Sci. 2013 Jul;61:50-59</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">26166842</ArticleId>
+          </ArticleIdList>
+        </Reference>
+        <Reference>
+          <Citation>Ann Occup Hyg. 2009 Mar;53(2):117-28</Citation>
+          <ArticleIdList>
+            <ArticleId IdType="pubmed">19261695</ArticleId>
+          </ArticleIdList>
+        </Reference>
+      </ReferenceList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075412</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Reconstitution of a bacterial/plant polyamine biosynthesis pathway in Saccharomyces cerevisiae.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>301-307</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-301</ELocationID>
+        <Abstract>
+          <AbstractText>Polyamine synthesis in most organisms is initiated by the decarboxylation of ornithine to form putrescine via ornithine decarboxylase (ODC). Plants, some bacteria and some fungi and protozoa generate putrescine from arginine, via arginine decarboxylase (ADC) and agmatine ureohydrolase (AUH) or agmatine iminohydrolase. A polyamine-requiring strain of Saccharomyces cerevisiae with a mutation in the gene encoding ODC was transformed with plasmids bearing genes encoding Escherichia coli ADC and AUH. Transformants regained the ability to grow in the absence of exogenous polyamines and contained enzyme activities consistent with the presence of both prokaryotic enzymes. Similar results were obtained when a plasmid containing a gene encoding oat (Avena sativa L.) ADC was substituted for the E. coli gene. These data demonstrate the successful complementation of a yeast biosynthetic polyamine synthesis defect by genes encoding an alternative pathway found in bacteria; they also show that plant ADC can substitute for the bacterial enzyme in this pathway. The recombinant yeast provides a tool for the study of the functional properties of these enzymes and for discovery of compounds that specifically inhibit this pathway.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Klein</LastName>
+            <ForeName>R D</ForeName>
+            <Initials>RD</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pharmacia and Upjohn, Animal Health Discovery Research, Kalamazoo, MI 49007, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Geary</LastName>
+            <ForeName>T G</ForeName>
+            <Initials>TG</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pharmacia and Upjohn, Animal Health Discovery Research, Kalamazoo, MI 49007, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Gibson</LastName>
+            <ForeName>A S</ForeName>
+            <Initials>AS</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pharmacia and Upjohn, Animal Health Discovery Research, Kalamazoo, MI 49007, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Favreau</LastName>
+            <ForeName>M A</ForeName>
+            <Initials>MA</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pharmacia and Upjohn, Animal Health Discovery Research, Kalamazoo, MI 49007, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Winterrowd</LastName>
+            <ForeName>C A</ForeName>
+            <Initials>CA</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pharmacia and Upjohn, Animal Health Discovery Research, Kalamazoo, MI 49007, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Upton</LastName>
+            <ForeName>S J</ForeName>
+            <Initials>SJ</Initials>
+            <AffiliationInfo>
+              <Affiliation>Division of Biology, Kansas State University, Manhattan, KS 66506, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Keithly</LastName>
+            <ForeName>J S</ForeName>
+            <Initials>JS</Initials>
+            <AffiliationInfo>
+              <Affiliation>Wadsworth Center, NY State Department of Health, David Axelrod Institute, Albany, NY 12201-2002, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Zhu</LastName>
+            <ForeName>G</ForeName>
+            <Initials>G</Initials>
+            <AffiliationInfo>
+              <Affiliation>Wadsworth Center, NY State Department of Health, David Axelrod Institute, Albany, NY 12201-2002, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Malmberg</LastName>
+            <ForeName>R L</ForeName>
+            <Initials>RL</Initials>
+            <AffiliationInfo>
+              <Affiliation>Botany Department, University of Georgia, Athens, GA 30602-7271, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Martinez</LastName>
+            <ForeName>M P</ForeName>
+            <Initials>MP</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pace University, Haskins Laboratories, 41 Park Row, New York, NY 10038-1598, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Yarlett</LastName>
+            <ForeName>N</ForeName>
+            <Initials>N</Initials>
+            <AffiliationInfo>
+              <Affiliation>Pace University, Haskins Laboratories, 41 Park Row, New York, NY 10038-1598, USA.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+          <Grant>
+            <GrantID>AI 40320</GrantID>
+            <Acronym>AI</Acronym>
+            <Agency>NIAID NIH HHS</Agency>
+            <Country>United States</Country>
+          </Grant>
+        </GrantList>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013487">Research Support, U.S. Gov't, P.H.S.</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D011073">Polyamines</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 3.5.3.-</RegistryNumber>
+          <NameOfSubstance UI="D014512">Ureohydrolases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 3.5.3.11</RegistryNumber>
+          <NameOfSubstance UI="C019625">agmatinase</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 4.1.1.-</RegistryNumber>
+          <NameOfSubstance UI="D002262">Carboxy-Lyases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 4.1.1.17</RegistryNumber>
+          <NameOfSubstance UI="D009955">Ornithine Decarboxylase</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 4.1.1.19</RegistryNumber>
+          <NameOfSubstance UI="C019722">arginine decarboxylase</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D018554" MajorTopicYN="N">Avena</DescriptorName>
+          <QualifierName UI="Q000201" MajorTopicYN="N">enzymology</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D002262" MajorTopicYN="N">Carboxy-Lyases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004926" MajorTopicYN="N">Escherichia coli</DescriptorName>
+          <QualifierName UI="Q000201" MajorTopicYN="N">enzymology</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005798" MajorTopicYN="N">Genes, Bacterial</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D017343" MajorTopicYN="N">Genes, Plant</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009955" MajorTopicYN="N">Ornithine Decarboxylase</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010957" MajorTopicYN="N">Plasmids</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011073" MajorTopicYN="N">Polyamines</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="Y">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012441" MajorTopicYN="N">Saccharomyces cerevisiae</DescriptorName>
+          <QualifierName UI="Q000201" MajorTopicYN="N">enzymology</QualifierName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000254" MajorTopicYN="N">growth &amp; development</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014170" MajorTopicYN="N">Transformation, Genetic</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014512" MajorTopicYN="N">Ureohydrolases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075412</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-301</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075413</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Down-regulation of the expression of PKC1 and SRB1/PSA1/VIG9, two genes involved in cell wall integrity in Saccharomyces cerevisiae, causes flocculation.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>309-316</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-309</ELocationID>
+        <Abstract>
+          <AbstractText>The cell wall integrity determinants PKC1 and SRB1/PSA1/VIG9 of Saccharomyces cerevisiae were expressed under the control of the tightly regulated promoter pMET3. Substitution of the cell-cycle-regulated SRB1/PSA1 native promoter with pMET3 led to faster cell growth, larger cell volumes, and a twofold reduction of the steady-state SRB1/PSA1 mRNA level. In addition, the new pattern of expression of SRB1/PSA1 resulted in a dominant flocculation phenotype at all phases of batch growth. By contrast, expression of PKC1 from pMET3 increased the flocculation capacity of cells only at stationary phase. Methionine-mediated repression of either PSA1/SRB1 or PKC1 resulted in enhanced cell clumping. Cells in which both these genes had been replaced with their respective pMET3-regulated cassettes were highly flocculent under both expression and repression conditions. These results suggest that greater exposure of flocculin on the cell surface, caused by either cell wall distortion (through depletion of Pkc1p) or aberrant regulation of mannosylation (through constitutive production of Srb1p), results in an increased flocculation ability.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Zhang</LastName>
+            <ForeName>Nianshu</ForeName>
+            <Initials>N</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Gardner</LastName>
+            <ForeName>David C J</ForeName>
+            <Initials>DCJ</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Oliver</LastName>
+            <ForeName>Stephen G</ForeName>
+            <Initials>SG</Initials>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Stateva</LastName>
+            <ForeName>Lubomira I</ForeName>
+            <Initials>LI</Initials>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D005656">Fungal Proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>AE28F7PNPL</RegistryNumber>
+          <NameOfSubstance UI="D008715">Methionine</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.7.1.-</RegistryNumber>
+          <NameOfSubstance UI="C097993">Pkc1 protein, Trichoderma reesei</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.7.11.13</RegistryNumber>
+          <NameOfSubstance UI="D011493">Protein Kinase C</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D002473" MajorTopicYN="N">Cell Wall</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015536" MajorTopicYN="N">Down-Regulation</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004794" MajorTopicYN="N">Enzyme Repression</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005427" MajorTopicYN="N">Flocculation</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005656" MajorTopicYN="N">Fungal Proteins</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015966" MajorTopicYN="Y">Gene Expression Regulation, Fungal</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005800" MajorTopicYN="N">Genes, Fungal</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008715" MajorTopicYN="N">Methionine</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011401" MajorTopicYN="N">Promoter Regions, Genetic</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011493" MajorTopicYN="Y">Protein Kinase C</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012441" MajorTopicYN="N">Saccharomyces cerevisiae</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000254" MajorTopicYN="N">growth &amp; development</QualifierName>
+          <QualifierName UI="Q000502" MajorTopicYN="Y">physiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014158" MajorTopicYN="N">Transcription, Genetic</DescriptorName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075413</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-309</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075414</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Transcription of the pcbAB, pcbC and penDE genes of Penicillium chrysogenum AS-P-78 is repressed by glucose and the repression is not reversed by alkaline pHs.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>317-324</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-317</ELocationID>
+        <Abstract>
+          <AbstractText>Glucose repressed transcription of the penicillin biosynthesis genes pcbAB, pcbC and penDE when added at inoculation time to cultures of Penicillium chrysogenum AS-P-78 but it had little repressive effect when added at 12 h and no effect when added at 24 or 36 h. A slight increase in the expression of pcbC and penDE (and to a smaller extent of pcbAB) was observed in glucose-grown cultures at pH 6.8, 7.4 and 8.0 as compared with pH 6.2, but alkaline pHs did not override the strong repression exerted by glucose. Transcription of the actin gene used as control was not significantly affected by glucose or alkaline pHs. Repression by glucose of the three penicillin biosynthetic genes was also observed using the lacZ reporter gene coupled to each of the three promoters in monocopy transformants with the constructions integrated at the pyrG locus. Glucose repression of the three genes encoding enzymes of penicillin biosynthesis therefore appears to be exerted by a regulatory mechanism independent from pH regulation.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Gutiérrez</LastName>
+            <ForeName>Santiago</ForeName>
+            <Initials>S</Initials>
+            <AffiliationInfo>
+              <Affiliation>Institute of Biotechnology, INBIOTEC, Parque Científico de León, Avda del Real 1, 24006 León, Spain.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Area of Microbiology, Faculty of Biology, University of León, 24071 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Marcos</LastName>
+            <ForeName>Ana T</ForeName>
+            <Initials>AT</Initials>
+            <AffiliationInfo>
+              <Affiliation>Institute of Biotechnology, INBIOTEC, Parque Científico de León, Avda del Real 1, 24006 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Casqueiro</LastName>
+            <ForeName>Javier</ForeName>
+            <Initials>J</Initials>
+            <AffiliationInfo>
+              <Affiliation>Institute of Biotechnology, INBIOTEC, Parque Científico de León, Avda del Real 1, 24006 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Kosalková</LastName>
+            <ForeName>Katarina</ForeName>
+            <Initials>K</Initials>
+            <AffiliationInfo>
+              <Affiliation>Area of Microbiology, Faculty of Biology, University of León, 24071 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Fernández</LastName>
+            <ForeName>Francisco J</ForeName>
+            <Initials>FJ</Initials>
+            <AffiliationInfo>
+              <Affiliation>Institute of Biotechnology, INBIOTEC, Parque Científico de León, Avda del Real 1, 24006 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Velasco</LastName>
+            <ForeName>Javier</ForeName>
+            <Initials>J</Initials>
+            <AffiliationInfo>
+              <Affiliation>Area of Microbiology, Faculty of Biology, University of León, 24071 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Martín</LastName>
+            <ForeName>Juan F</ForeName>
+            <Initials>JF</Initials>
+            <AffiliationInfo>
+              <Affiliation>Institute of Biotechnology, INBIOTEC, Parque Científico de León, Avda del Real 1, 24006 León, Spain.</Affiliation>
+            </AffiliationInfo>
+            <AffiliationInfo>
+              <Affiliation>Area of Microbiology, Faculty of Biology, University of León, 24071 León, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D046915">Penicillin-Binding Proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D010406">Penicillins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 1.-</RegistryNumber>
+          <NameOfSubstance UI="D010088">Oxidoreductases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 1.21.3.1</RegistryNumber>
+          <NameOfSubstance UI="C038370">isopenicillin N synthetase</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.3.-</RegistryNumber>
+          <NameOfSubstance UI="D000217">Acyltransferases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 2.3.1.-</RegistryNumber>
+          <NameOfSubstance UI="C018756">acyl-CoA-6-aminopenicillanic acid acyltransferase</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 3.2.1.23</RegistryNumber>
+          <NameOfSubstance UI="D001616">beta-Galactosidase</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 6.3.2.-</RegistryNumber>
+          <NameOfSubstance UI="D010453">Peptide Synthases</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>EC 6.3.2.-</RegistryNumber>
+          <NameOfSubstance UI="C095368">alpha-aminoadipyl-cysteinyl-valine synthetase</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>IY9XDZ35W2</RegistryNumber>
+          <NameOfSubstance UI="D005947">Glucose</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>J2B2A4N98G</RegistryNumber>
+          <NameOfSubstance UI="D007785">Lactose</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D000217" MajorTopicYN="N">Acyltransferases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D015966" MajorTopicYN="Y">Gene Expression Regulation, Fungal</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005800" MajorTopicYN="N">Genes, Fungal</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D017930" MajorTopicYN="N">Genes, Reporter</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D005947" MajorTopicYN="N">Glucose</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="Y">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D006863" MajorTopicYN="N">Hydrogen-Ion Concentration</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D007763" MajorTopicYN="N">Lac Operon</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D007785" MajorTopicYN="N">Lactose</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D009693" MajorTopicYN="N">Nucleic Acid Hybridization</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010088" MajorTopicYN="N">Oxidoreductases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D046915" MajorTopicYN="Y">Penicillin-Binding Proteins</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010406" MajorTopicYN="N">Penicillins</DescriptorName>
+          <QualifierName UI="Q000096" MajorTopicYN="Y">biosynthesis</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010408" MajorTopicYN="N">Penicillium chrysogenum</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000254" MajorTopicYN="N">growth &amp; development</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010453" MajorTopicYN="N">Peptide Synthases</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010957" MajorTopicYN="N">Plasmids</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011401" MajorTopicYN="N">Promoter Regions, Genetic</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014158" MajorTopicYN="Y">Transcription, Genetic</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014170" MajorTopicYN="N">Transformation, Genetic</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D001616" MajorTopicYN="N">beta-Galactosidase</DescriptorName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075414</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-317</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="MEDLINE" Owner="NLM">
+      <PMID Version="1">10075415</PMID>
+      <DateCompleted>
+        <Year>1999</Year>
+        <Month>09</Month>
+        <Day>13</Day>
+      </DateCompleted>
+      <DateRevised>
+        <Year>2019</Year>
+        <Month>12</Month>
+        <Day>16</Day>
+      </DateRevised>
+      <Article PubModel="Print">
+        <Journal>
+          <ISSN IssnType="Print">1350-0872</ISSN>
+          <JournalIssue CitedMedium="Print">
+            <Volume>145 ( Pt 2)</Volume>
+            <PubDate>
+              <Year>1999</Year>
+              <Month>Feb</Month>
+            </PubDate>
+          </JournalIssue>
+          <Title>Microbiology (Reading, England)</Title>
+          <ISOAbbreviation>Microbiology (Reading, Engl.)</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>Replication regions from plant-pathogenic Pseudomonas syringae plasmids are similar to ColE2-related replicons.</ArticleTitle>
+        <Pagination>
+          <MedlinePgn>325-334</MedlinePgn>
+        </Pagination>
+        <ELocationID EIdType="doi" ValidYN="Y">10.1099/13500872-145-2-325</ELocationID>
+        <Abstract>
+          <AbstractText>Many strains of the phytopathogen Pseudomonas syringae contain mutually compatible plasmids that share extensive regions of sequence homology and essential replication determinants. The replication regions of two compatible large plasmids involved in virulence or pathogenicity, pPT23A from P. syringae pv. tomato strain PT23 and pAV505 from P. syringae pv. phaseolicola strain HRI1302A, were isolated. DNA sequencing of the origins of replication revealed homologous ORFs, designated ORF-Pto and ORF-Pph, respectively. Both ORFs are 1311 bp long and encode peptides of 437 amino acids with predicted molecular masses of 48259 (Pto) and 48334 (Pph) Da. Expression of the two ORFs in Escherichia coli produced peptides of 50 kDa (Pto) and 56 kDa (Pph). The predicted peptides showed an overall identity of 897 %, being highly conserved from residues 1 to 373, but showing considerable variation in their C-terminal regions (50% identity over the last 64 aa). The two ORFs had significant similarity with the putative replication protein from plasmid pTiK12 of Thiobacillus intermedius and other CoIE2-related plasmids. However, both peptides were 100 residues longer than any of the known CoIE2-related rep sequences. Subcloning of fragments from the replication region of pPT23A revealed the presence of at least three incompatibility determinants, designated IncA, IncB and IncC. Partial sequencing of the region downstream of ORF-Pto revealed homology to the ru/AB genes, involved in UV resistance, from plasmid pPSR1. It is proposed that the replication origin of pPT23A serves as the prototype of a family of related plasmids.</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+          <Author ValidYN="Y">
+            <LastName>Gibbon</LastName>
+            <ForeName>Marjorie J</ForeName>
+            <Initials>MJ</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological and Biomedical Sciences, UWE-Bristol, Coldharbour Lane, Bristol BS16 1QY, UK.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Sesma</LastName>
+            <ForeName>Ane</ForeName>
+            <Initials>A</Initials>
+            <AffiliationInfo>
+              <Affiliation>Departamento de Producción Agraria, Universidad Pública de Navarra, 31006 Pamplona, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Canal</LastName>
+            <ForeName>Arantzazu</ForeName>
+            <Initials>A</Initials>
+            <AffiliationInfo>
+              <Affiliation>Departamento de Producción Agraria, Universidad Pública de Navarra, 31006 Pamplona, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Wood</LastName>
+            <ForeName>John R</ForeName>
+            <Initials>JR</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological and Biomedical Sciences, UWE-Bristol, Coldharbour Lane, Bristol BS16 1QY, UK.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Hidalgo</LastName>
+            <ForeName>Elena</ForeName>
+            <Initials>E</Initials>
+            <AffiliationInfo>
+              <Affiliation>Departamento de Química, Escuela Técnica Superior de Ingeniería Agraria, Avda. Alcalde Rovira Roure, 177, 25198 Lérida, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Brown</LastName>
+            <ForeName>Judy</ForeName>
+            <Initials>J</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological and Biomedical Sciences, UWE-Bristol, Coldharbour Lane, Bristol BS16 1QY, UK.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Vivian</LastName>
+            <ForeName>Alan</ForeName>
+            <Initials>A</Initials>
+            <AffiliationInfo>
+              <Affiliation>Department of Biological and Biomedical Sciences, UWE-Bristol, Coldharbour Lane, Bristol BS16 1QY, UK.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+          <Author ValidYN="Y">
+            <LastName>Murillo</LastName>
+            <ForeName>Jesús</ForeName>
+            <Initials>J</Initials>
+            <AffiliationInfo>
+              <Affiliation>Departamento de Producción Agraria, Universidad Pública de Navarra, 31006 Pamplona, Spain.</Affiliation>
+            </AffiliationInfo>
+          </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <DataBankList CompleteYN="Y">
+          <DataBank>
+            <DataBankName>GENBANK</DataBankName>
+            <AccessionNumberList>
+              <AccessionNumber>AJ006933</AccessionNumber>
+              <AccessionNumber>AJ222648</AccessionNumber>
+              <AccessionNumber>AJ224509</AccessionNumber>
+              <AccessionNumber>AJ224510</AccessionNumber>
+              <AccessionNumber>AJ276998</AccessionNumber>
+              <AccessionNumber>AJ276999</AccessionNumber>
+              <AccessionNumber>AJ277000</AccessionNumber>
+              <AccessionNumber>AJ277001</AccessionNumber>
+              <AccessionNumber>AJ277002</AccessionNumber>
+              <AccessionNumber>AJ277003</AccessionNumber>
+              <AccessionNumber>AJ277004</AccessionNumber>
+              <AccessionNumber>AJ277005</AccessionNumber>
+              <AccessionNumber>AJ277006</AccessionNumber>
+              <AccessionNumber>AJ277007</AccessionNumber>
+              <AccessionNumber>AJ277008</AccessionNumber>
+              <AccessionNumber>AJ277009</AccessionNumber>
+              <AccessionNumber>AJ277010</AccessionNumber>
+              <AccessionNumber>AJ277011</AccessionNumber>
+              <AccessionNumber>AJ277012</AccessionNumber>
+              <AccessionNumber>AJ277013</AccessionNumber>
+              <AccessionNumber>AJ277014</AccessionNumber>
+              <AccessionNumber>AJ277015</AccessionNumber>
+              <AccessionNumber>AJ277016</AccessionNumber>
+              <AccessionNumber>AJ277017</AccessionNumber>
+              <AccessionNumber>AJ277018</AccessionNumber>
+              <AccessionNumber>AJ277019</AccessionNumber>
+              <AccessionNumber>AJ277020</AccessionNumber>
+              <AccessionNumber>AJ277021</AccessionNumber>
+            </AccessionNumberList>
+          </DataBank>
+        </DataBankList>
+        <PublicationTypeList>
+          <PublicationType UI="D016428">Journal Article</PublicationType>
+          <PublicationType UI="D013485">Research Support, Non-U.S. Gov't</PublicationType>
+        </PublicationTypeList>
+      </Article>
+      <MedlineJournalInfo>
+        <Country>England</Country>
+        <MedlineTA>Microbiology</MedlineTA>
+        <NlmUniqueID>9430468</NlmUniqueID>
+        <ISSNLinking>1350-0872</ISSNLinking>
+      </MedlineJournalInfo>
+      <ChemicalList>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="D001426">Bacterial Proteins</NameOfSubstance>
+        </Chemical>
+        <Chemical>
+          <RegistryNumber>0</RegistryNumber>
+          <NameOfSubstance UI="C102287">RulA protein, Pseudomonas syringae</NameOfSubstance>
+        </Chemical>
+      </ChemicalList>
+      <CitationSubset>IM</CitationSubset>
+      <MeshHeadingList>
+        <MeshHeading>
+          <DescriptorName UI="D000595" MajorTopicYN="N">Amino Acid Sequence</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D001426" MajorTopicYN="N">Bacterial Proteins</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+          <QualifierName UI="Q000378" MajorTopicYN="N">metabolism</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D001483" MajorTopicYN="N">Base Sequence</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D004261" MajorTopicYN="N">DNA Replication</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D008969" MajorTopicYN="N">Molecular Sequence Data</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D016254" MajorTopicYN="N">Mutagenesis, Insertional</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D016366" MajorTopicYN="N">Open Reading Frames</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010935" MajorTopicYN="N">Plant Diseases</DescriptorName>
+          <QualifierName UI="Q000382" MajorTopicYN="N">microbiology</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D010957" MajorTopicYN="N">Plasmids</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D011549" MajorTopicYN="N">Pseudomonas</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+          <QualifierName UI="Q000472" MajorTopicYN="N">pathogenicity</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D018741" MajorTopicYN="N">Replication Origin</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D012093" MajorTopicYN="N">Replicon</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="Y">genetics</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+          <DescriptorName UI="D014774" MajorTopicYN="N">Virulence</DescriptorName>
+          <QualifierName UI="Q000235" MajorTopicYN="N">genetics</QualifierName>
+        </MeshHeading>
+      </MeshHeadingList>
+    </MedlineCitation>
+    <PubmedData>
+      <History>
+        <PubMedPubDate PubStatus="pubmed">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+          <Year>1999</Year>
+          <Month>3</Month>
+          <Day>13</Day>
+          <Hour>0</Hour>
+          <Minute>0</Minute>
+        </PubMedPubDate>
+      </History>
+      <PublicationStatus>ppublish</PublicationStatus>
+      <ArticleIdList>
+        <ArticleId IdType="pubmed">10075415</ArticleId>
+        <ArticleId IdType="doi">10.1099/13500872-145-2-325</ArticleId>
+      </ArticleIdList>
+    </PubmedData>
+  </PubmedArticle>
+  <DeleteCitation>
+<PMID Version="1">30834443</PMID>
+<PMID Version="1">31085722</PMID>
+<PMID Version="1">31085723</PMID>
+<PMID Version="1">31085724</PMID>
+<PMID Version="1">31085726</PMID>
+<PMID Version="1">31085729</PMID>
+<PMID Version="1">31110142</PMID>
+<PMID Version="1">31110143</PMID>
+<PMID Version="1">31110147</PMID>
+<PMID Version="1">31133560</PMID>
+<PMID Version="1">31133561</PMID>
+<PMID Version="1">31133564</PMID>
+<PMID Version="1">31133566</PMID>
+<PMID Version="1">31160402</PMID>
+<PMID Version="1">31160403</PMID>
+<PMID Version="1">31160404</PMID>
+<PMID Version="1">31160406</PMID>
+<PMID Version="1">31160409</PMID>
+<PMID Version="1">31182510</PMID>
+<PMID Version="1">31182511</PMID>
+<PMID Version="1">31182512</PMID>
+<PMID Version="1">31182514</PMID>
+<PMID Version="1">31182517</PMID>
+<PMID Version="1">31222211</PMID>
+<PMID Version="1">31300758</PMID>
+<PMID Version="1">31300759</PMID>
+<PMID Version="1">31300760</PMID>
+<PMID Version="1">31300761</PMID>
+<PMID Version="1">31300762</PMID>
+<PMID Version="1">31300765</PMID>
+<PMID Version="1">31300766</PMID>
+<PMID Version="1">31300767</PMID>
+<PMID Version="1">31300768</PMID>
+<PMID Version="1">31300769</PMID>
+<PMID Version="1">31300770</PMID>
+<PMID Version="1">31300771</PMID>
+<PMID Version="1">31300772</PMID>
+<PMID Version="1">31300787</PMID>
+<PMID Version="1">31300788</PMID>
+<PMID Version="1">31300789</PMID>
+<PMID Version="1">31300790</PMID>
+<PMID Version="1">31300791</PMID>
+<PMID Version="1">31300792</PMID>
+<PMID Version="1">31300793</PMID>
+<PMID Version="1">31300794</PMID>
+<PMID Version="1">31300795</PMID>
+<PMID Version="1">31300796</PMID>
+<PMID Version="1">31300797</PMID>
+<PMID Version="1">31300798</PMID>
+<PMID Version="1">31300799</PMID>
+<PMID Version="1">31300800</PMID>
+<PMID Version="1">31300801</PMID>
+<PMID Version="1">31350476</PMID>
+<PMID Version="1">31350477</PMID>
+<PMID Version="1">31350479</PMID>
+<PMID Version="1">31350480</PMID>
+<PMID Version="1">31350481</PMID>
+<PMID Version="1">31350482</PMID>
+<PMID Version="1">31350483</PMID>
+<PMID Version="1">31350484</PMID>
+<PMID Version="1">31350485</PMID>
+<PMID Version="1">31350486</PMID>
+<PMID Version="1">31350487</PMID>
+<PMID Version="1">31350488</PMID>
+<PMID Version="1">31350503</PMID>
+<PMID Version="1">31350504</PMID>
+<PMID Version="1">31350505</PMID>
+<PMID Version="1">31350506</PMID>
+<PMID Version="1">31350507</PMID>
+<PMID Version="1">31350508</PMID>
+<PMID Version="1">31350509</PMID>
+<PMID Version="1">31350510</PMID>
+<PMID Version="1">31350511</PMID>
+<PMID Version="1">31350512</PMID>
+<PMID Version="1">31350513</PMID>
+<PMID Version="1">31350514</PMID>
+<PMID Version="1">31350515</PMID>
+<PMID Version="1">31350516</PMID>
+<PMID Version="1">31350517</PMID>
+<PMID Version="1">31350518</PMID>
+<PMID Version="1">31399656</PMID>
+<PMID Version="1">31399657</PMID>
+<PMID Version="1">31399658</PMID>
+<PMID Version="1">31399659</PMID>
+<PMID Version="1">31399660</PMID>
+<PMID Version="1">31399661</PMID>
+<PMID Version="1">31399662</PMID>
+<PMID Version="1">31399663</PMID>
+<PMID Version="1">31399664</PMID>
+<PMID Version="1">31399665</PMID>
+<PMID Version="1">31399666</PMID>
+<PMID Version="1">31399667</PMID>
+<PMID Version="1">31399668</PMID>
+<PMID Version="1">31399684</PMID>
+<PMID Version="1">31399685</PMID>
+<PMID Version="1">31399686</PMID>
+<PMID Version="1">31399687</PMID>
+<PMID Version="1">31399688</PMID>
+<PMID Version="1">31399689</PMID>
+<PMID Version="1">31399690</PMID>
+<PMID Version="1">31399691</PMID>
+<PMID Version="1">31399692</PMID>
+<PMID Version="1">31399693</PMID>
+<PMID Version="1">31399694</PMID>
+<PMID Version="1">31399695</PMID>
+<PMID Version="1">31440966</PMID>
+<PMID Version="1">31441778</PMID>
+<PMID Version="1">31444422</PMID>
+<PMID Version="1">31444423</PMID>
+<PMID Version="1">31444424</PMID>
+<PMID Version="1">31444425</PMID>
+<PMID Version="1">31444426</PMID>
+<PMID Version="1">31444427</PMID>
+<PMID Version="1">31444428</PMID>
+<PMID Version="1">31444429</PMID>
+<PMID Version="1">31444430</PMID>
+<PMID Version="1">31444431</PMID>
+<PMID Version="1">31444432</PMID>
+<PMID Version="1">31444433</PMID>
+<PMID Version="1">31444434</PMID>
+<PMID Version="1">31444450</PMID>
+<PMID Version="1">31444451</PMID>
+<PMID Version="1">31444452</PMID>
+<PMID Version="1">31444453</PMID>
+<PMID Version="1">31444454</PMID>
+<PMID Version="1">31444455</PMID>
+<PMID Version="1">31444456</PMID>
+<PMID Version="1">31444457</PMID>
+<PMID Version="1">31444458</PMID>
+<PMID Version="1">31444459</PMID>
+<PMID Version="1">31444460</PMID>
+<PMID Version="1">31444461</PMID>
+<PMID Version="1">31444462</PMID>
+<PMID Version="1">31444463</PMID>
+<PMID Version="1">31444464</PMID>
+<PMID Version="1">31520015</PMID>
+<PMID Version="1">31520016</PMID>
+<PMID Version="1">31520017</PMID>
+<PMID Version="1">31520018</PMID>
+<PMID Version="1">31520019</PMID>
+<PMID Version="1">31520020</PMID>
+<PMID Version="1">31520022</PMID>
+<PMID Version="1">31520023</PMID>
+<PMID Version="1">31520024</PMID>
+<PMID Version="1">31520025</PMID>
+<PMID Version="1">31520026</PMID>
+<PMID Version="1">31520027</PMID>
+<PMID Version="1">31520048</PMID>
+<PMID Version="1">31520049</PMID>
+<PMID Version="1">31520050</PMID>
+<PMID Version="1">31520051</PMID>
+<PMID Version="1">31520052</PMID>
+<PMID Version="1">31520053</PMID>
+<PMID Version="1">31520054</PMID>
+<PMID Version="1">31520055</PMID>
+<PMID Version="1">31520056</PMID>
+<PMID Version="1">31520057</PMID>
+<PMID Version="1">31520058</PMID>
+<PMID Version="1">31520059</PMID>
+<PMID Version="1">31520060</PMID>
+<PMID Version="1">31520061</PMID>
+<PMID Version="1">31520062</PMID>
+<PMID Version="1">31562426</PMID>
+<PMID Version="1">31562427</PMID>
+<PMID Version="1">31562428</PMID>
+<PMID Version="1">31583851</PMID>
+<PMID Version="1">31583852</PMID>
+<PMID Version="1">31618758</PMID>
+<PMID Version="1">31690998</PMID>
+<PMID Version="1">31730212</PMID>
+<PMID Version="1">31730213</PMID>
+<PMID Version="1">31797799</PMID>
+<PMID Version="1">31797801</PMID>
+<PMID Version="1">31797802</PMID>
+<PMID Version="1">31797803</PMID>
+<PMID Version="1">31797804</PMID>
+<PMID Version="1">31797805</PMID>
+<PMID Version="1">31797806</PMID>
+<PMID Version="1">31797807</PMID>
+<PMID Version="1">31797808</PMID>
+<PMID Version="1">31797809</PMID>
+<PMID Version="1">31797810</PMID>
+<PMID Version="1">31797811</PMID>
+<PMID Version="1">31797812</PMID>
+<PMID Version="1">31809596</PMID>
+<PMID Version="1">31811275</PMID>
+<PMID Version="1">31819250</PMID>
+<PMID Version="1">31822825</PMID>
+<PMID Version="1">31822831</PMID>
+<PMID Version="1">31822832</PMID>
+<PMID Version="1">31822833</PMID>
+<PMID Version="1">31822834</PMID>
+<PMID Version="1">31822836</PMID>
+<PMID Version="1">31822837</PMID>
+<PMID Version="1">31822838</PMID>
+<PMID Version="1">31822840</PMID>
+<PMID Version="1">31823846</PMID>
+<PMID Version="1">31823928</PMID>
+<PMID Version="1">31826877</PMID>
+<PMID Version="1">31826878</PMID>
+<PMID Version="1">31827302</PMID>
+<PMID Version="1">31832990</PMID>
+<PMID Version="1">31835927</PMID>
+<PMID Version="1">31835972</PMID>
+<PMID Version="1">31836599</PMID>
+<PMID Version="1">31836617</PMID>
+<PMID Version="1">31836658</PMID>
+<PMID Version="1">31836864</PMID>
+<PMID Version="1">31840691</PMID>
+<PMID Version="1">31840692</PMID>
+<PMID Version="1">31840693</PMID>
+<PMID Version="1">31840694</PMID>
+<PMID Version="1">31840695</PMID>
+<PMID Version="1">31840713</PMID>
+<PMID Version="1">31840730</PMID>
+<PMID Version="1">31840732</PMID>
+<PMID Version="1">31840733</PMID>
+<PMID Version="1">31840735</PMID>
+</DeleteCitation>
+</PubmedArticleSet>

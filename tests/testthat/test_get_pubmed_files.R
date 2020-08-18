@@ -25,7 +25,11 @@ test_that('getPubmedFiles', {
 
   localDir = 'pubmed'
   remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
+  
   downloadMd5 = FALSE
+  localDir = 'dataTest'
+
+  local_folder(localDir, recursive = TRUE)
 
   if (!dir.exists(localDir)) dir.create(localDir)
   file.copy(list.files(refDir, include.dirs = TRUE, full.names = TRUE),
@@ -35,6 +39,5 @@ test_that('getPubmedFiles', {
     fileInfoOrig, localDir, remoteDir, downloadMd5)
   fileInfo[, md5_match := as.numeric(md5_match)]
 
-  unlink(localDir, recursive = TRUE)
   expect_equal(fileInfo, fileInfoExpected, check.attributes = FALSE)
 })
