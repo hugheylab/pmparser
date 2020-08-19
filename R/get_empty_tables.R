@@ -46,7 +46,7 @@ getEmptyTables = function(tableSuffix) {
 
     author = data.table(
       author_pos = ai, last_name = ac, fore_name = ac, initials = ac,
-      suffix = ac, collective_name = ac),
+      suffix = ac, valid = ac, equal_contrib = ac, collective_name = ac),
 
     author_affiliation = data.table(
       author_pos = ai, affiliation_pos = ai, affiliation = ac),
@@ -61,7 +61,7 @@ getEmptyTables = function(tableSuffix) {
 
     investigator = data.table(
       investigator_pos = ai, last_name = ac, fore_name = ac, initials = ac,
-      suffix = ac),
+      suffix = ac, valid = ac),
 
     investigator_affiliation = data.table(
       investigator_pos = ai, affiliation_pos = ai, affiliation = ac),

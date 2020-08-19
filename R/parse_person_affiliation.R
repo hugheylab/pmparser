@@ -21,9 +21,11 @@ parsePersonAffiliation = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
     last_name = xml_text(xml_find_first(x2, './/LastName')),
     fore_name = xml_text(xml_find_first(x2, './/ForeName')),
     initials = xml_text(xml_find_first(x2, './/Initials')),
-    suffix = xml_text(xml_find_first(x2, './/Suffix')))
+    suffix = xml_text(xml_find_first(x2, './/Suffix')),
+    valid = xml_attr(x2, 'ValidYN'))
 
   if (personType == 'author') {
+    dPerson[, equal_contrib := xml_attr(x2, 'EqualContrib')]
     dPerson[, collective_name :=
               xml_text(xml_find_first(x2, './/CollectiveName'))]}
 

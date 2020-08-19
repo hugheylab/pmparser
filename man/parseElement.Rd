@@ -115,19 +115,20 @@ section. The first has column \code{copyright}. The second has columns \code{tex
 
 \code{parseAuthorAffiliation()}: a list of data.tables parsed from the
 AuthorList section. The first is for authors and has columns \code{author_pos},
-\code{last_name}, \code{fore_name}, \code{initials}, \code{suffix}, and \code{collective_name}. The
-second is for affiliations and has columns \code{author_pos}, \code{affiliation_pos},
-and \code{affiliation}. The third is for author identifiers and has columns
-\code{author_pos}, \code{source}, and \code{identifier}. The fourth is for author
-affiliation identifiers and has columns \code{author_pos}, \code{affiliation_pos},
-\code{source}, and \code{identifier}. The fifth is for the author list itself and has
-a column \code{complete}.
+\code{last_name}, \code{fore_name}, \code{initials}, \code{suffix}, \code{valid}, \code{equal_contrib},
+and \code{collective_name}. The second is for affiliations and has columns
+\code{author_pos}, \code{affiliation_pos}, and \code{affiliation}. The third is for author
+identifiers and has columns \code{author_pos}, \code{source}, and \code{identifier}. The
+fourth is for author affiliation identifiers and has columns \code{author_pos},
+\code{affiliation_pos}, \code{source}, and \code{identifier}. The fifth is for the author
+list itself and has a column \code{complete}.
 
 \code{parseInvestigatorAffiliation()}: a list of data.tables similar to those
 returned by \code{parseAuthorAffiliation()}, except parsed from the
 InvestigatorList section, with column names containing "investigator"
-instead of "author", where the first data.table lacks the column for
-\code{collective_name} and the fifth data.table does not exist.
+instead of "author", and where the first data.table lacks columns for
+\code{equal_contrib} and \code{collective_name} and the fifth data.table does not
+exist.
 }
 \description{
 Elements are parsed according to the MEDLINE®PubMed® XML Element

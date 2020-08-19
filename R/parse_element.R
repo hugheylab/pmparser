@@ -68,19 +68,20 @@
 #'
 #'   `parseAuthorAffiliation()`: a list of data.tables parsed from the
 #'   AuthorList section. The first is for authors and has columns `author_pos`,
-#'   `last_name`, `fore_name`, `initials`, `suffix`, and `collective_name`. The
-#'   second is for affiliations and has columns `author_pos`, `affiliation_pos`,
-#'   and `affiliation`. The third is for author identifiers and has columns
-#'   `author_pos`, `source`, and `identifier`. The fourth is for author
-#'   affiliation identifiers and has columns `author_pos`, `affiliation_pos`,
-#'   `source`, and `identifier`. The fifth is for the author list itself and has
-#'   a column `complete`.
+#'   `last_name`, `fore_name`, `initials`, `suffix`, `valid`, `equal_contrib`,
+#'   and `collective_name`. The second is for affiliations and has columns
+#'   `author_pos`, `affiliation_pos`, and `affiliation`. The third is for author
+#'   identifiers and has columns `author_pos`, `source`, and `identifier`. The
+#'   fourth is for author affiliation identifiers and has columns `author_pos`,
+#'   `affiliation_pos`, `source`, and `identifier`. The fifth is for the author
+#'   list itself and has a column `complete`.
 #'
 #'   `parseInvestigatorAffiliation()`: a list of data.tables similar to those
 #'   returned by `parseAuthorAffiliation()`, except parsed from the
 #'   InvestigatorList section, with column names containing "investigator"
-#'   instead of "author", where the first data.table lacks the column for
-#'   `collective_name` and the fifth data.table does not exist.
+#'   instead of "author", and where the first data.table lacks columns for
+#'   `equal_contrib` and `collective_name` and the fifth data.table does not
+#'   exist.
 #'
 #' @examples
 #' library('data.table')
