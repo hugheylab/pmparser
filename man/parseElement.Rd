@@ -120,13 +120,14 @@ second is for affiliations and has columns \code{author_pos}, \code{affiliation_
 and \code{affiliation}. The third is for author identifiers and has columns
 \code{author_pos}, \code{source}, and \code{identifier}. The fourth is for author
 affiliation identifiers and has columns \code{author_pos}, \code{affiliation_pos},
-\code{source}, and \code{identifier}.
+\code{source}, and \code{identifier}. The fifth is for the author list itself and has
+a column \code{complete}.
 
-\code{parseInvestigatorAffiliation()}: a list of data.tables identical to
-those returned by \code{parseAuthorAffiliation()}, except parsed from the
+\code{parseInvestigatorAffiliation()}: a list of data.tables similar to those
+returned by \code{parseAuthorAffiliation()}, except parsed from the
 InvestigatorList section, with column names containing "investigator"
-instead of "author", and lacking a column in the first data.table for
-\code{collective_name}.
+instead of "author", where the first data.table lacks the column for
+\code{collective_name} and the fifth data.table does not exist.
 }
 \description{
 Elements are parsed according to the MEDLINE®PubMed® XML Element

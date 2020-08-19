@@ -73,13 +73,14 @@
 #'   and `affiliation`. The third is for author identifiers and has columns
 #'   `author_pos`, `source`, and `identifier`. The fourth is for author
 #'   affiliation identifiers and has columns `author_pos`, `affiliation_pos`,
-#'   `source`, and `identifier`.
+#'   `source`, and `identifier`. The fifth is for the author list itself and has
+#'   a column `complete`.
 #'
-#'   `parseInvestigatorAffiliation()`: a list of data.tables identical to
-#'   those returned by `parseAuthorAffiliation()`, except parsed from the
+#'   `parseInvestigatorAffiliation()`: a list of data.tables similar to those
+#'   returned by `parseAuthorAffiliation()`, except parsed from the
 #'   InvestigatorList section, with column names containing "investigator"
-#'   instead of "author", and lacking a column in the first data.table for
-#'   `collective_name`.
+#'   instead of "author", where the first data.table lacks the column for
+#'   `collective_name` and the fifth data.table does not exist.
 #'
 #' @examples
 #' library('data.table')

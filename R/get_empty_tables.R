@@ -57,6 +57,8 @@ getEmptyTables = function(tableSuffix) {
     author_affiliation_identifier = data.table(
       author_pos = ai, affiliation_pos = ai, source = ac, identifier = ac),
 
+    author_list = data.table(complete = ac),
+
     investigator = data.table(
       investigator_pos = ai, last_name = ac, fore_name = ac, initials = ac,
       suffix = ac),
@@ -91,8 +93,7 @@ getEmptyTables = function(tableSuffix) {
 
 writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                             dbtype = 'postgres', dbname = NULL, ...) {
-  if (is.null(dbname)) {
-    return(invisible())}
+  if (is.null(dbname)) return(invisible())
 
   con = connect(dbtype, dbname, ...)
   emptyTables = getEmptyTables(tableSuffix)

@@ -12,7 +12,8 @@ parsePersonAffiliation = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
 
   # get persons
   x2 = xml_find_all(pmXml, sprintf('.//%s', personPre))
-  nPersons = xml_length(xml_find_first(pmXml, sprintf('.//%sList', personPre)))
+  x3 = xml_find_first(pmXml, sprintf('.//%sList', personPre))
+  nPersons = xml_length(x3)
   # above line may break if InvestigatorList gets an identifier
 
   dPerson = data.table(
@@ -118,6 +119,12 @@ parsePersonAffiliation = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
                paste_(personType, 'affiliation', tableSuffix),
                paste_(personType, 'identifier', tableSuffix),
                paste_(personType, 'affiliation_identifier', tableSuffix))
+
+  if (personType == 'author') {
+    tableName = paste_('author_list', tableSuffix)
+    r[[tableName]] = data.table(
+      dPmidNow[nPersons > 0],
+      complete = xml_attr(x3[nPersons > 0], 'CompleteYN'))}
 
   for (i in 1:length(r)) {
     # change colnames based on personType
