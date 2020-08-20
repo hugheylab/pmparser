@@ -124,7 +124,7 @@ jobs:
                 echo "No tarball of current version exists on drat repo, deploying."
               fi
 
-              if [ "$DEPLOYTARBALL" = true ] && FALSE
+              if [ "$DEPLOYTARBALL" = true ] && false
               then
                 echo "Deploying."
                 cd ../drat
