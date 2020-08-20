@@ -67,6 +67,8 @@ parsePubmedXml = function(
   xmlDir, xmlFiles = NULL, logPath = NULL, tableSuffix = NULL,
   overwrite = FALSE, dbtype = 'postgres', dbname = NULL, ...) {
 
+  xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
+
   if (dbtype == 'sqlite' && foreach::getDoParWorkers() > 1) {
     doOp = `%do%`
     warning(paste('Parsing of XML files cannot run in parallel if using an',
@@ -74,8 +76,6 @@ parsePubmedXml = function(
             immediate. = TRUE)
   } else {
     doOp = `%dopar%`}
-
-  xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
   writeEmptyTables(tableSuffix, overwrite, dbtype, dbname, ...)
   dLog = data.table(

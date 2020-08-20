@@ -29,8 +29,7 @@ connect = function(dbtype, dbname, ...) {
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
 
 
-disconnect = function(con) {
-  if (!is.null(con)) DBI::dbDisconnect(con)}
+disconnect = function(con) if (!is.null(con)) DBI::dbDisconnect(con)
 
 
 appendTable = function(con, tableName, d) {
@@ -43,7 +42,7 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
   if (is.null(xmlFiles)) {
     xmlFiles = list.files(xmlDir, 'xml\\.gz$')
-    xmlInfo = data.table(xml_filename = unique(xmlFiles), step = 'all')
+    xmlInfo = data.table(xml_filename = xmlFiles, step = 'all')
 
   } else if (is.character(xmlFiles)) {
     xmlInfo = data.table(xml_filename = unique(xmlFiles), step = 'all')
@@ -78,20 +77,16 @@ getParseFuncs = function(steps = 'all') {
     author = parseAuthor,
     investigator = parseInvestigator)
 
-  if ('all' %in% steps) {
-    x = parseFuncs
-  } else {
-    x = parseFuncs[names(parseFuncs) %in% steps]}
+  x = if ('all' %in% steps) parseFuncs else
+    parseFuncs[names(parseFuncs) %in% steps]
   return(x)}
 
 
 setColumn = function(d, value, colname = 'xml_filename') {
-  if (!is.null(value)) {
-    data.table::set(d, j = colname, value = value)}}
+  if (!is.null(value)) data.table::set(d, j = colname, value = value)}
 
 
-isEmpty = function(x) {
-  return(is.null(x) || all(x == ''))}
+isEmpty = function(x) is.null(x) || all(x == '')
 
 
 paste_ = function(...) {
@@ -157,8 +152,7 @@ local_file = function(file, ..., .local_envir = parent.frame()) {
 #' This is a helper function to get parameters from a .pgpass file. See
 #' [here](https://www.postgresql.org/docs/9.6/libpq-pgpass.html) for details.
 #'
-#' @param path Path to .pgpass file. The file's first line should be
-#'   \preformatted{# hostname:port:database:username:password}
+#' @param path Path to .pgpass file.
 #'
 #' @return A data.table with one row for each set of parameters.
 #'
@@ -169,8 +163,8 @@ local_file = function(file, ..., .local_envir = parent.frame()) {
 #'
 #' @export
 getPgParams = function(path = '~/.pgpass') {
-  x1 = readLines(path)
-  x2 = strsplit(trimws(gsub('#', '', x1)), ':')
-  x3 = data.table::rbindlist(lapply(x2[-1L], as.list))
-  setnames(x3, x2[[1L]])
+  x1 = trimws(readLines(path))
+  x2 = strsplit(x1[!startsWith(x1, '#')], ':')
+  x3 = data.table::rbindlist(lapply(x2, as.list))
+  setnames(x3, c('hostname', 'port', 'database', 'username', 'password'))
   x3}

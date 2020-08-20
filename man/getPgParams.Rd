@@ -7,8 +7,7 @@
 getPgParams(path = "~/.pgpass")
 }
 \arguments{
-\item{path}{Path to .pgpass file. The file's first line should be
-\preformatted{# hostname:port:database:username:password}}
+\item{path}{Path to .pgpass file.}
 }
 \value{
 A data.table with one row for each set of parameters.
