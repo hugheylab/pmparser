@@ -1,5 +1,6 @@
-parsePersonAffiliation = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
-                                  personType = c('author', 'investigator')) {
+parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
+                       personType = c('author', 'investigator')) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   personType = match.arg(personType)
   personPre = paste0(toupper(substring(personType, 1, 1)),
                      substring(personType, 2))
@@ -142,14 +143,11 @@ parsePersonAffiliation = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
 
 #' @rdname parseElement
 #' @export
-parseAuthorAffiliation = function(pmXml, dPmid, con = NULL,
-                                  tableSuffix = NULL) {
-  parsePersonAffiliation(pmXml, dPmid, con, tableSuffix, personType = 'author')}
+parseAuthor = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  parsePerson(pmXml, dPmid, con, tableSuffix, personType = 'author')}
 
 
 #' @rdname parseElement
 #' @export
-parseInvestigatorAffiliation = function(pmXml, dPmid, con = NULL,
-                                        tableSuffix = NULL) {
-  parsePersonAffiliation(pmXml, dPmid, con, tableSuffix,
-                         personType = 'investigator')}
+parseInvestigator = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  parsePerson(pmXml, dPmid, con, tableSuffix, personType = 'investigator')}

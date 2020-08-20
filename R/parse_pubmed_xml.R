@@ -12,7 +12,8 @@ globalVariables(c(
   'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'pre', 'group', 'name',
   'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'version',
   'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
-  '..cols', 'tableName', 'copyright', 'descriptor_pos', 'processed'))
+  '..cols', 'tableName', 'copyright', 'descriptor_pos', 'processed', 'N',
+  'equal_contrib', 'sample_base'))
 
 
 parsePubmedXmlCore = function(

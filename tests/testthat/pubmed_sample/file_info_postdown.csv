@@ -1,0 +1,5 @@
+sub_dir,xml_filename,md5_filename,processed,xml_download,md5_download,md5_computed,md5_provided,md5_match
+baseline,pubmed20n1014.xml.gz,pubmed20n1014.xml.gz.md5,,0,0,f5d4a517faba5cd1a66df646d3b4e788,f5d4a517faba5cd1a66df646d3b4e788,1
+baseline,pubmed20n1015.xml.gz,pubmed20n1015.xml.gz.md5,,0,0,59c0c45fd3d2aa8500bbd00e6c551432,59c0c45fd3d2aa8500bbd00e6c551432,1
+updatefiles,pubmed20n1016.xml.gz,pubmed20n1016.xml.gz.md5,,0,0,60f2e301f8552a0c569b4dbcccea3ea4,60f2e301f8552a0c569b4dbcccea3ea4,1
+updatefiles,pubmed20n1017.xml.gz,pubmed20n1017.xml.gz.md5,,0,0,aeddabb8361ec67aa528e0397729a8f3,aeddabb8361ec67aa528e0397729a8f3,1

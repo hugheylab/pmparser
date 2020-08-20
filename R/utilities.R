@@ -75,8 +75,8 @@ getParseFuncs = function(steps = 'all') {
     data_bank = parseDataBank,
     comment = parseComment,
     abstract = parseAbstract,
-    author = parseAuthorAffiliation,
-    investigator = parseInvestigatorAffiliation)
+    author = parseAuthor,
+    investigator = parseInvestigator)
 
   if ('all' %in% steps) {
     x = parseFuncs
@@ -133,6 +133,23 @@ getReadme = function(remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
 
 
 isTesting = function() identical(Sys.getenv('TESTTHAT'), 'true')
+
+
+names2 = function(x) {
+  nms = names(x)
+  if (is.null(nms)) {
+    rep('', length(x))
+  } else {
+    nms[is.na(nms)] = ''
+    nms}}
+
+
+local_file = function(file, ..., .local_envir = parent.frame()) {
+  file_nms = names2(file)
+  unnamed = file_nms == ''
+  file_nms[unnamed] = as.character(file[unnamed])
+  withr::defer(unlink(file_nms, ...), envir = .local_envir)
+  invisible(file)}
 
 
 #' Get Postgres connection parameters

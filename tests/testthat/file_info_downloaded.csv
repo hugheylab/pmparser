@@ -1,3 +1,0 @@
-sub_dir,xml_filename,md5_filename,processed,xml_download,md5_download,md5_computed,md5_provided,md5_match
-baseline,pubmed20n0001.xml.gz,pubmed20n0001.xml.gz.md5,,0,0,de2990a294082e5b34fce97798b76cfa,de2990a294082e5b34fce97798b76cfa,1
-baseline,pubmed20n0002.xml.gz,pubmed20n0002.xml.gz.md5,,0,0,603699636b87a05bcb9824a3afbc54e6,603699636b87a05bcb9824a3afbc54e6,1

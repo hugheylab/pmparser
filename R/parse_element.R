@@ -66,28 +66,27 @@
 #'   section. The first has column `copyright`. The second has columns `text`,
 #'   `label`, and `nlm_category`.
 #'
-#'   `parseAuthorAffiliation()`: a list of data.tables parsed from the
-#'   AuthorList section. The first is for authors and has columns `author_pos`,
-#'   `last_name`, `fore_name`, `initials`, `suffix`, `valid`, `equal_contrib`,
-#'   and `collective_name`. The second is for affiliations and has columns
+#'   `parseAuthor()`: a list of data.tables parsed from the AuthorList section.
+#'   The first is for authors and has columns `author_pos`, `last_name`,
+#'   `fore_name`, `initials`, `suffix`, `valid`, `equal_contrib`, and
+#'   `collective_name`. The second is for affiliations and has columns
 #'   `author_pos`, `affiliation_pos`, and `affiliation`. The third is for author
 #'   identifiers and has columns `author_pos`, `source`, and `identifier`. The
 #'   fourth is for author affiliation identifiers and has columns `author_pos`,
 #'   `affiliation_pos`, `source`, and `identifier`. The fifth is for the author
 #'   list itself and has a column `complete`.
 #'
-#'   `parseInvestigatorAffiliation()`: a list of data.tables similar to those
-#'   returned by `parseAuthorAffiliation()`, except parsed from the
-#'   InvestigatorList section, with column names containing "investigator"
-#'   instead of "author", and where the first data.table lacks columns for
-#'   `equal_contrib` and `collective_name` and the fifth data.table does not
-#'   exist.
+#'   `parseInvestigator()`: a list of data.tables similar to those returned by
+#'   `parseAuthor()`, except parsed from the InvestigatorList section, with
+#'   column names containing "investigator" instead of "author", and where the
+#'   first data.table lacks columns for `equal_contrib` and `collective_name`
+#'   and the fifth data.table does not exist.
 #'
 #' @examples
 #' library('data.table')
 #' library('xml2')
 #'
-#' filename = 'pubmed20n0000.xml.gz'
+#' filename = 'pubmed20n1016.xml.gz'
 #' rawXml = read_xml(system.file('extdata', filename, package = 'pmparser'))
 #'
 #' pmidStatusList = parsePmidStatus(rawXml, filename)
@@ -106,8 +105,8 @@
 #' dDataBank = parseDataBank(pmXml, dPmid)
 #' dComment = parseComment(pmXml, dPmid)
 #' abstractList = parseAbstract(pmXml, dPmid)
-#' authorList = parseAuthorAffiliation(pmXml, dPmid)
-#' investigatorList = parseInvestigatorAffiliation(pmXml, dPmid)
+#' authorList = parseAuthor(pmXml, dPmid)
+#' investigatorList = parseInvestigator(pmXml, dPmid)
 #'
 #' @seealso [getCitation()], [modifyPubmedDb()]
 #'
@@ -141,6 +140,7 @@ parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
 
@@ -158,6 +158,7 @@ parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
   x2 = xml_find_all(x1, './/PubMedPubDate')
@@ -179,6 +180,7 @@ parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseTitleJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Journal')
   x2 = data.table(
     dPmid,
@@ -193,6 +195,7 @@ parseTitleJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   x2 = xml_find_all(x1, './/PublicationType')
 
@@ -208,6 +211,7 @@ parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   ai = as.integer()
   ac = as.character()
 
@@ -257,6 +261,7 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/KeywordList')
   n = xml_length(x1)
 
@@ -282,6 +287,7 @@ parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/GrantList')
   n = xml_length(x1)
 
@@ -309,6 +315,7 @@ parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseChemical = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/ChemicalList')
   n = xml_length(x1)
 
@@ -328,6 +335,7 @@ parseChemical = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/DataBankList')
   nBanksPerPmid = xml_length(x1)
 
@@ -352,6 +360,7 @@ parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
   x2 = xml_find_all(x1[n > 0], './/CommentsCorrections')
@@ -368,6 +377,7 @@ parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(
     dPmid,

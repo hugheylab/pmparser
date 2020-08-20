@@ -1,40 +1,33 @@
 foreach::registerDoSEQ()
 
+refDir = 'pubmed_sample'
+localDir = 'pubmed'
+
 test_that('getPubmedFileInfo', {
-  localDir = 'pubmed_ref'
-  remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
-  subDirs = c('baseline', 'updatefiles')
-  tableSuffix = NULL
-  con = NULL
+  fileInfoExp = data.table::fread(
+    file.path(refDir, 'file_info_predown_baseline.csv'))
+  fileInfoExp = fileInfoExp[sub_dir == 'baseline']
+  fileInfoExp[, `:=`(xml_download = as.numeric(xml_download),
+                     processed = as.numeric(processed))]
 
-  fileInfoExpected = data.table::fread('file_info_expected.csv')
-  fileInfoExpected = fileInfoExpected[sub_dir == 'baseline']
-  fileInfoExpected[, `:=`(xml_download = as.numeric(xml_download),
-                          processed = as.numeric(processed))]
-
-  fileInfo = getPubmedFileInfo(localDir, remoteDir, subDirs, tableSuffix, con)
+  fileInfo = getPubmedFileInfo(refDir)
   fileInfo = fileInfo[sub_dir == 'baseline']
-
-  expect_equal(fileInfo, fileInfoExpected, check.attributes = FALSE)
+  expect_equal(fileInfo, fileInfoExp, check.attributes = FALSE)
 })
 
 test_that('getPubmedFiles', {
-  refDir = 'pubmed_ref'
-  fileInfoOrig = data.table::fread('file_info_expected.csv')[1:2]
-  fileInfoExpected = data.table::fread('file_info_downloaded.csv')
+  local_file(localDir, recursive = TRUE)
+  if (dir.exists(localDir)) unlink(localDir, recursive = TRUE)
+  dir.create(localDir)
+  x = file.copy(list.files(refDir, include.dirs = TRUE, full.names = TRUE),
+                localDir, recursive = TRUE, copy.date = TRUE)
 
-  localDir = 'pubmed'
-  remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/'
-  downloadMd5 = FALSE
+  fileInfoExp = data.table::fread(file.path(refDir, 'file_info_postdown.csv'))
+  dFileAll = data.table::fread(file.path(refDir, 'file_info_predown_all.csv'))
+  idx = getTestStandardIndex(dFileAll, offset = 1L)
+  dFilePre = dFileAll[idx]
 
-  if (!dir.exists(localDir)) dir.create(localDir)
-  file.copy(list.files(refDir, include.dirs = TRUE, full.names = TRUE),
-            localDir, recursive = TRUE, copy.date = TRUE)
-
-  fileInfo = getPubmedFiles(
-    fileInfoOrig, localDir, remoteDir, downloadMd5)
+  fileInfo = getPubmedFiles(dFilePre, localDir, downloadMd5 = FALSE)
   fileInfo[, md5_match := as.numeric(md5_match)]
-
-  unlink(localDir, recursive = TRUE)
-  expect_equal(fileInfo, fileInfoExpected, check.attributes = FALSE)
+  expect_equal(fileInfo, fileInfoExp, check.attributes = FALSE)
 })

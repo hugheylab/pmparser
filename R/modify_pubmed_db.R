@@ -85,6 +85,10 @@ modifyPubmedDb = function(
                 paste(fileInfo[!(md5_match), xml_filename], collapse = '\n'))
     warning(w, .immediate = TRUE)}
 
+  if (nrow(fileInfoKeep) == 0) {
+    message('Nothing to do. Have a splendid day.')
+    return(invisible())}
+
   # process files
   logName1 = sprintf(
     'parse_%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
