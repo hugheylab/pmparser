@@ -1,12 +1,14 @@
 refDir = 'citation_info'
 
 test_that('getCitationInfo', {
-  filename = 'citation_info.rds'
+  filenameCols = 'citation_info_columns.rds'
 
   citationInfoObs = getCitationInfo()
-  citationInfoExp = readRDS(file.path(refDir, filename))
+  citationInfoColsExp = readRDS(file.path(refDir, filenameCols))
 
-  expect_equal(citationInfoExp, citationInfoObs, check.attributes = FALSE)
+  expect_s3_class(citationInfoObs, 'data.table')
+  expect_equal(citationInfoColsExp, colnames(citationInfoObs))
+  expect_equal(1, nrow(citationInfoObs))
 })
 
 test_that('getCitation', {
