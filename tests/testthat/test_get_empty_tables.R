@@ -19,7 +19,6 @@ test_that('writeEmptyTables with tableSuffix', {
   dbtype = 'sqlite'
   dbnameObs = 'write_empty_tables_no_suffix_obs.db'
   dbnameExp = file.path(refDir, 'write_empty_tables_no_suffix.db')
-  tableQuery = 'SELECT name, tbl_name FROM sqlite_master WHERE type = "table"'
 
   withr::local_file(dbnameObs)
 
@@ -28,7 +27,7 @@ test_that('writeEmptyTables with tableSuffix', {
   conExp = withr::local_db_connection(connect(dbtype, dbnameExp))
   conObs = withr::local_db_connection(connect(dbtype, dbnameObs))
 
-  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs), check.attributes = FALSE)
+  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs))
 })
 
 test_that('writeEmptyTables with tableSuffix', {
@@ -36,7 +35,6 @@ test_that('writeEmptyTables with tableSuffix', {
   dbtype = 'sqlite'
   dbnameObs = 'write_empty_tables_with_suffix_obs.db'
   dbnameExp = file.path(refDir, 'write_empty_tables_with_suffix.db')
-  tableQuery = 'SELECT name, tbl_name FROM sqlite_master WHERE type = "table"'
   tableSuffix = 'test'
 
   withr::local_file(dbnameObs)
@@ -46,5 +44,5 @@ test_that('writeEmptyTables with tableSuffix', {
   conExp = withr::local_db_connection(connect(dbtype, dbnameExp))
   conObs = withr::local_db_connection(connect(dbtype, dbnameObs))
 
-  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs), check.attributes = FALSE)
+  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs))
 })

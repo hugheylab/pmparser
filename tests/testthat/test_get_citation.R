@@ -1,5 +1,3 @@
-foreach::registerDoSEQ()
-
 refDir = 'citation_info'
 
 test_that('getCitationInfo', {
