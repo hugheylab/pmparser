@@ -33,8 +33,7 @@ disconnect = function(con) if (!is.null(con)) DBI::dbDisconnect(con)
 
 
 appendTable = function(con, tableName, d) {
-  if (is.null(con) || nrow(d) == 0L) {
-    return(invisible())}
+  if (is.null(con) || nrow(d) == 0L) return(invisible())
   DBI::dbAppendTable(con, tableName, d)}
 
 
@@ -117,11 +116,7 @@ getPkgVersion = function(pkgName = 'pmparser') {
 
 getReadme = function(remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
                      filename = 'README.txt', con = NULL) {
-  if (startsWith(remoteDir, 'ftp://')) {
-    txt = RCurl::getURL(paste(remoteDir, filename, sep = '/'))
-  } else { # was going to use for testing
-    path = file.path(remoteDir, filename)
-    txt = readChar(path, file.info(path)$size)}
+  txt = RCurl::getURL(paste(remoteDir, filename, sep = '/'))
   dReadme = data.table(text = txt)
   if (!is.null(con)) DBI::dbWriteTable(con, 'readme', dReadme, overwrite = TRUE)
   return(dReadme)}
