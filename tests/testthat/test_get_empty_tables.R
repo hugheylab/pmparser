@@ -28,7 +28,7 @@ test_that('writeEmptyTables with tableSuffix', {
   conExp = withr::local_db_connection(connect(dbtype, dbnameExp))
   conObs = withr::local_db_connection(connect(dbtype, dbnameObs))
 
-  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs), check.attributes = FALSE)
+  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs))
 })
 
 test_that('writeEmptyTables with tableSuffix', {
@@ -46,5 +46,5 @@ test_that('writeEmptyTables with tableSuffix', {
   conExp = withr::local_db_connection(connect(dbtype, dbnameExp))
   conObs = withr::local_db_connection(connect(dbtype, dbnameObs))
 
-  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs), check.attributes = FALSE)
+  expect_equal(DBI::dbListTables(conExp), DBI::dbListTables(conObs))
 })
