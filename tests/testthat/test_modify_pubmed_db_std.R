@@ -1,7 +1,7 @@
 foreach::registerDoSEQ()
 
 refDir = 'pubmed_sample'
-localDir = tempdir()
+localDir = tempfile()
 dbtype = 'sqlite'
 nFiles = 1L
 nCitations = Inf
