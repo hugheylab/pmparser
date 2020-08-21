@@ -30,8 +30,8 @@ test_that('modifyPubmedDb create', {
   tableNames = setdiff(tableNames, c('xml_processed', 'citation_version'))
 
   for (tableName in setdiff(tableNames, 'xml_processed')) {
-    expect_equal(DBI::dbGetQuery(conObs, paste(selQuery, tableName)),
-                 DBI::dbGetQuery(conExp, paste(selQuery, tableName)))}
+    expect_equal(DBI::dbReadTable(conObs, tableName),
+                 DBI::dbReadTable(conExp, tableName))}
 })
 
 test_that('modifyPubmedDb update', {
@@ -49,6 +49,6 @@ test_that('modifyPubmedDb update', {
   tableNames = setdiff(tableNames, c('xml_processed', 'citation_version'))
 
   for (tableName in tableNames) {
-    expect_equal(DBI::dbGetQuery(conObs, paste(selQuery, tableName)),
-                 DBI::dbGetQuery(conExp, paste(selQuery, tableName)))}
+    expect_equal(DBI::dbReadTable(conObs, tableName),
+                 DBI::dbReadTable(conExp, tableName))}
 })
