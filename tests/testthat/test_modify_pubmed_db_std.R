@@ -14,7 +14,7 @@ x = file.copy(list.files(refDir, include.dirs = TRUE, full.names = TRUE),
 
 dbBase = 'pmdb_sample_'
 
-test_that('modifyPubmedDb create', {
+test_that('modifyPubmedDb create matches standard', {
   mode = 'create'
   dbnameObs = file.path(localDir, paste0(dbBase, mode, '_obs.db'))
   dbnameExp = file.path(refDir, paste0(dbBase, mode, '.db'))
@@ -28,12 +28,13 @@ test_that('modifyPubmedDb create', {
   tableNames = DBI::dbListTables(conExp)
   tableNames = setdiff(tableNames, c('xml_processed', 'citation_version'))
 
-  for (tableName in setdiff(tableNames, 'xml_processed')) {
+  for (tableName in tableNames) {
     expect_equal(DBI::dbReadTable(conObs, tableName),
-                 DBI::dbReadTable(conExp, tableName))}
+                 DBI::dbReadTable(conExp, tableName),
+                 label = tableName)}
 })
 
-test_that('modifyPubmedDb update', {
+test_that('modifyPubmedDb update matches standard', {
   mode = 'update'
   dbnameObs = file.path(localDir, paste0(dbBase, 'create.db'))
   dbnameExp = file.path(refDir, paste0(dbBase, mode, '.db'))
@@ -49,5 +50,6 @@ test_that('modifyPubmedDb update', {
 
   for (tableName in tableNames) {
     expect_equal(DBI::dbReadTable(conObs, tableName),
-                 DBI::dbReadTable(conExp, tableName))}
+                 DBI::dbReadTable(conExp, tableName),
+                 label = tableName)}
 })
