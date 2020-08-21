@@ -1,7 +1,7 @@
 foreach::registerDoSEQ()
 
 refDir = 'pubmed_sample'
-localDir = 'pubmed'
+localDir = tempdir()
 
 test_that('getPubmedFileInfo', {
   fileInfoExp = data.table::fread(

@@ -1,7 +1,7 @@
 foreach::registerDoSEQ()
 
 refDir = 'pubmed_sample'
-localDir = 'pubmed'
+localDir = tempdir()
 dbtype = 'sqlite'
 nFiles = 1L
 nCitations = Inf
@@ -13,7 +13,6 @@ x = file.copy(list.files(refDir, include.dirs = TRUE, full.names = TRUE),
               localDir, recursive = TRUE, copy.date = TRUE)
 
 dbBase = 'pmdb_sample_'
-selQuery = 'select * from'
 
 test_that('modifyPubmedDb create', {
   mode = 'create'
@@ -30,8 +29,8 @@ test_that('modifyPubmedDb create', {
   tableNames = setdiff(tableNames, c('xml_processed', 'citation_version'))
 
   for (tableName in setdiff(tableNames, 'xml_processed')) {
-    expect_equal(DBI::dbGetQuery(conObs, paste(selQuery, tableName)),
-                 DBI::dbGetQuery(conExp, paste(selQuery, tableName)))}
+    expect_equal(DBI::dbReadTable(conObs, tableName),
+                 DBI::dbReadTable(conExp, tableName))}
 })
 
 test_that('modifyPubmedDb update', {
@@ -49,6 +48,6 @@ test_that('modifyPubmedDb update', {
   tableNames = setdiff(tableNames, c('xml_processed', 'citation_version'))
 
   for (tableName in tableNames) {
-    expect_equal(DBI::dbGetQuery(conObs, paste(selQuery, tableName)),
-                 DBI::dbGetQuery(conExp, paste(selQuery, tableName)))}
+    expect_equal(DBI::dbReadTable(conObs, tableName),
+                 DBI::dbReadTable(conExp, tableName))}
 })
