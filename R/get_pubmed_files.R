@@ -79,8 +79,8 @@ getPubmedFiles = function(
   fTmp = fileInfo[is.na(md5_download)]
   col = 'md5_filename'
   r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
-    utils::download.file(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
-                         file.path(localDir, f$sub_dir, f[[col]]))}
+    download(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+             file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[is.na(md5_download), md5_download := r]
 
   # check md5 sums
@@ -94,8 +94,8 @@ getPubmedFiles = function(
   fTmp = fileInfo[!(md5_match)]
   col = 'xml_filename'
   r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
-    utils::download.file(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
-                         file.path(localDir, f$sub_dir, f[[col]]))}
+    download(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+             file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[!(md5_match), xml_download := r]
 
   # check md5 sums again

@@ -19,6 +19,19 @@ writeLogFile = function(logPath, x = NULL, append = TRUE, ...) {
     y, logPath, append = append, sep = '\t', logical01 = TRUE, ...)}
 
 
+download = function(url, destfile, n = 3L) {
+  i = 1L
+  x = 1L
+  while (i <= n && !identical(x, 0L)) {
+    x = tryCatch({utils::download.file(url, destfile)}, error = function(e) e)
+    if (!identical(x, 0L)) Sys.sleep(stats::runif(1L, 1, 2))
+    i = i + 1L}
+
+  if ('error' %in% class(x)) stop(x)
+  if (x != 0L) stop(sprintf('Download of %s failed %d times. Ruh-roh.', url, n))
+  x}
+
+
 connect = function(dbtype, dbname, ...) {
   dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite'))
   drv = switch(dbtype,
