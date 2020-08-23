@@ -1,7 +1,8 @@
-deleteOldPmidVersions = function(tableSuffix, dryRun, con) {
+deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   emptyTables = getEmptyTables(tableSuffix)
   tableKeep = paste_('pmid_status_keep', tableSuffix)
 
+  con = connect(dbtype, dbname, ...)
   if (DBI::dbExistsTable(con, tableKeep)) {
     DBI::dbRemoveTable(con, tableKeep)}
 
@@ -15,18 +16,23 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, con) {
               tableKeep, tableNow,
               paste(DBI::dbListFields(con, tableNow), collapse = ', '))
   n = DBI::dbExecute(con, q)
+  disconnect(con)
 
   qStart = if (isTRUE(dryRun)) 'select count(*)' else 'delete'
   idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
 
-  d = foreach(tableName = names(emptyTables)[idx], .combine = rbind) %do% {
+  doOp = getDoOp(dbtype)
+  d = doOp(foreach(tableName = names(emptyTables)[idx], .combine = rbind), {
+    con = connect(dbtype, dbname, ...)
     q = sprintf(paste('%s from %s as a where not exists',
                       '(select 1 from %s as b',
                       'where a.pmid = b.pmid and a.version = b.version)'),
                 qStart, tableName, tableKeep)
     n = runStatement(con, q)
-    dNow = data.table(table_name = tableName, nrow_delete = n)}
+    disconnect(con)
+    dNow = data.table(table_name = tableName, nrow_delete = n)})
 
+  con = connect(dbtype, dbname, ...)
   if (isTRUE(dryRun)) {
     DBI::dbRemoveTable(con, tableKeep)
   } else {
@@ -34,6 +40,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, con) {
     q = sprintf('alter table %s rename to %s', tableKeep, tableNow)
     n = DBI::dbExecute(con, q)}
 
+  disconnect(con)
   setattr(d, 'dryRun', dryRun)
   return(d)}
 
@@ -42,7 +49,7 @@ dropPmidVersionColumn = function(tableSuffix, con) {
   emptyTables = getEmptyTables(tableSuffix)
   idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
 
-  if (attr(class(con), 'package') == 'RSQLite') { # thanks, sqlite
+  if (inherits(con, 'SQLiteConnection')) { # thanks, sqlite
     for (tableName in names(emptyTables)[idx]) {
       cols = setdiff(DBI::dbListFields(con, tableName), 'version')
       tableTmp = paste_(tableName, 'tmp')

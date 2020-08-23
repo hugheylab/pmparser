@@ -27,7 +27,7 @@ download = function(url, destfile, n = 3L) {
     if (!identical(x, 0L)) Sys.sleep(stats::runif(1L, 1, 2))
     i = i + 1L}
 
-  if ('error' %in% class(x)) stop(x)
+  if (inherits(x, 'error')) stop(x)
   if (x != 0L) stop(sprintf('Download of %s failed %d times. Ruh-roh.', url, n))
   x}
 
@@ -43,6 +43,9 @@ connect = function(dbtype, dbname, ...) {
 
 
 disconnect = function(con) if (!is.null(con)) DBI::dbDisconnect(con)
+
+
+getDoOp = function(dbtype) if (dbtype == 'sqlite') `%do%` else `%dopar%`
 
 
 appendTable = function(con, tableName, d) {

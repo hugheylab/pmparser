@@ -97,7 +97,7 @@ getCitation = function(
 
   # check the table
   stopifnot(all.equal(colnames(dCitation), c('citing', 'referenced')),
-            all(sapply(dCitation, class) == 'integer'))
+            all(sapply(dCitation, is.integer)))
   setnames(dCitation, c('citing_pmid', 'cited_pmid'))
 
   # send to db

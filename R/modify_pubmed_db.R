@@ -120,16 +120,19 @@ modifyPubmedDb = function(
     writeLogFile(logPath, data.table('add second try to first try'))
     addSourceToTarget(
       sourceSuffix = retrySuffix, targetSuffix = tableSuffix, dryRun = FALSE,
-      con = con)}
+      dbtype = dbtype, dbname = dbname, ...)}
 
   if (mode == 'create') {
     writeLogFile(logPath, data.table('drop unneeded pmid versions'))
-    deleteOldPmidVersions(tableSuffix = tableSuffix, dryRun = FALSE, con = con)
+    deleteOldPmidVersions(
+      tableSuffix = tableSuffix, dryRun = FALSE, dbtype = dbtype,
+      dbname = dbname, ...)
     dropPmidVersionColumn(tableSuffix = tableSuffix, con = con)
   } else {
     writeLogFile(logPath, data.table('add updates to main tables'))
     addSourceToTarget(
-      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE, con = con)}
+      sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE,
+      dbtype = dbtype, dbname = dbname, ...)}
 
   if (nCitations > 0) {
     writeLogFile(logPath, data.table('get citation table'))
@@ -149,13 +152,15 @@ modifyPubmedDb = function(
   invisible()}
 
 
-addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
+addSourceToTarget = function(
+  sourceSuffix, targetSuffix, dryRun, dbtype, dbname, ...) {
   stopifnot(!isEmpty(sourceSuffix))
 
   targetEmpty = getEmptyTables(targetSuffix)
   sourceEmpty = getEmptyTables(sourceSuffix)
 
   # create source table of pmid, xml_filename to keep
+  con = connect(dbtype, dbname, ...)
   sourceKeep = sprintf('pmid_status_%s_keep', sourceSuffix)
   if (DBI::dbExistsTable(con, sourceKeep)) {
     DBI::dbRemoveTable(con, sourceKeep)}
@@ -188,6 +193,7 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
 
   q = sprintf('%s from %s', insertStart, sourceNow)
   nInsert = runStatement(con, q)
+  disconnect(con)
 
   d1 = data.table(source_name = sourceNow, target_name = targetNow,
                   nrows_delete = nDelete, nrows_insert = nInsert)
@@ -197,10 +203,12 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
                 sourceName = setdiff(names(sourceEmpty), sourceNow),
                 .combine = rbind)
 
-  d2 = feo %do% {
+  doOp = getDoOp(dbtype)
+  d2 = doOp(feo, {
+    con = connect(dbtype, dbname, ...) # required if in dopar
     # drop rows in target tables, use subquery to conform to sql standard
     q = sprintf('%s from %s where pmid in (select pmid from %s)',
-                deleteStart[1 + dryRun], targetName, sourceName)
+                deleteStart[1L + dryRun], targetName, sourceName)
     nDelete = runStatement(con, q)
 
     # append source rows to target tables
@@ -213,15 +221,18 @@ addSourceToTarget = function(sourceSuffix, targetSuffix, dryRun, con) {
                       'and a.xml_filename = b.xml_filename'),
                 insertStart, sourceName, sourceKeep)
     nInsert = runStatement(con, q)
+    disconnect(con)
 
     dNow = data.table(source_name = sourceName, target_name = targetName,
-                      nrows_delete = nDelete, nrows_insert = nInsert)}
+                      nrows_delete = nDelete, nrows_insert = nInsert)})
 
+  con = connect(dbtype, dbname, ...)
   DBI::dbRemoveTable(con, sourceKeep)
   if (isFALSE(dryRun)) { # with great power comes great responsibility
     for (sourceName in names(sourceEmpty))
       DBI::dbRemoveTable(con, sourceName)}
 
+  disconnect(con)
   d = rbind(d1, d2)
   setattr(d, 'dryRun', dryRun)
   return(d)}

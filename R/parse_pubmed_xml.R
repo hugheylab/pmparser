@@ -33,7 +33,7 @@ parsePubmedXmlCore = function(
   conNow = if (step %in% names(parseFuncs)) con else NULL
   res = tryCatch({parsePmidStatus(rawXml, filename, conNow, tableSuffix)},
                 error = function(e) e)
-  err = 'error' %in% class(res)
+  err = inherits(res, 'error')
   msg = if (err) trimws(as.character(res)) else NA_character_
   writeLogFile(logPath, data.table(filename, step, err, msg))
 
@@ -47,7 +47,7 @@ parsePubmedXmlCore = function(
   r = foreach(parseFunc = parseFuncs[idx], step = names(parseFuncs)[idx]) %do% {
     res = tryCatch({parseFunc(pmXml, dPmid, con, tableSuffix)},
                    error = function(e) e)
-    err = 'error' %in% class(res)
+    err = inherits(res, 'error')
     msg = if (err) trimws(as.character(res)) else NA_character_
     writeLogFile(logPath, data.table(filename, step, err, msg))}
 
@@ -70,12 +70,10 @@ parsePubmedXml = function(
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
   if (dbtype == 'sqlite' && foreach::getDoParWorkers() > 1) {
-    doOp = `%do%`
     warning(paste('Parsing of XML files cannot run in parallel if using an',
                   'sqlite database. Parsing will run sequentially.'),
-            immediate. = TRUE)
-  } else {
-    doOp = `%dopar%`}
+            immediate. = TRUE)}
+  doOp = getDoOp(dbtype)
 
   writeEmptyTables(tableSuffix, overwrite, dbtype, dbname, ...)
   dLog = data.table(

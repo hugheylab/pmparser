@@ -127,7 +127,8 @@ getTestStandardCitation = function(localDir, tmpDir, nrows) {
     cmd = paste('unzip -p', file.path(tmpDir, zipName)), nrows = 1L)
   setnames(dCitation, colnames(dTmp))
   data.table::fwrite(dCitation, csvPath)
-  utils::zip(zipPath, csvPath)
+  if (file.exists(zipPath)) unlink(zipPath) # prevent appending to zip file
+  utils::zip(zipPath, csvPath, flags = '-j9X') # ignore directory tree
   invisible()}
 
 
