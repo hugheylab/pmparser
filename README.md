@@ -1,6 +1,6 @@
 # pmparser
 
-[![hugheylab](https://circleci.com/gh/hugheylab/pmparser.svg?style=shield&circle-token=74de6617444786304273fe7efed2999a74b2e51a)](https://app.circleci.com/pipelines/github/hugheylab/pmparser)
+[![CircleCI](https://circleci.com/gh/hugheylab/pmparser.svg?style=shield)](https://circleci.com/gh/hugheylab/pmparser)
 [![codecov](https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/pmparser)
 
 `pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection.
