@@ -1,5 +1,7 @@
+# to ensure reproducibility, do not parallelize
+
 localDir = file.path('tests', 'testthat', 'pubmed_sample')
-tmpDir = tempfile() # file.path(parentDir, 'pubmed_tmp')
+tmpDir = tempfile()
 
 nPmidsPerStep = 2L
 emptyXmlPath = file.path('data-raw', 'pubmed20n0000.xml')

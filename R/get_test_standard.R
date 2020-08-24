@@ -124,7 +124,8 @@ getTestStandardCitation = function(localDir, tmpDir, nrows) {
 
   dCitation = getCitation(tmpDir, nrows = nrows)
   dTmp = data.table::fread(
-    cmd = paste('unzip -p', file.path(tmpDir, zipName)), nrows = 1L)
+    cmd = sprintf('unzip -p %s | head -n 2', file.path(tmpDir, zipName)))
+
   setnames(dCitation, colnames(dTmp))
   data.table::fwrite(dCitation, csvPath)
   if (file.exists(zipPath)) unlink(zipPath) # prevent appending to zip file
