@@ -36,10 +36,10 @@ the MD5 sums of the local and remote versions do not match. This should not
 normally be changed from the default.}
 }
 \value{
-Normally, a data.table with columns \code{citing_pmid} and \code{cited_pmid}.
-Beware this is a large table and could swamp the machine's memory. If
-\code{dbname} is not \code{NULL} and the existing citation table and the citation
-file have identical MD5 sums, then the function returns \code{NULL} invisibly.
+If \code{con} is \code{NULL}, the function returns a data.table with columns
+\code{citing_pmid} and \code{cited_pmid}. Beware this is a large table and could
+swamp the machine's memory. If \code{con} is not \code{NULL}, the function returns
+\code{NULL} invisibly.
 }
 \description{
 Get the latest version of the NIH Open Citation Collection from figshare

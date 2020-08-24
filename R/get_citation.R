@@ -38,10 +38,10 @@ getCitationInfo = function(
 #'   the MD5 sums of the local and remote versions do not match. This should not
 #'   normally be changed from the default.
 #'
-#' @return Normally, a data.table with columns `citing_pmid` and `cited_pmid`.
-#'   Beware this is a large table and could swamp the machine's memory. If
-#'   `dbname` is not `NULL` and the existing citation table and the citation
-#'   file have identical MD5 sums, then the function returns `NULL` invisibly.
+#' @return If `con` is `NULL`, the function returns a data.table with columns
+#'   `citing_pmid` and `cited_pmid`. Beware this is a large table and could
+#'   swamp the machine's memory. If `con` is not `NULL`, the function returns
+#'   `NULL` invisibly.
 #'
 #' @examples
 #' \dontrun{
@@ -88,28 +88,54 @@ getCitation = function(
     if (md5Local != md5Remote) {
       stop('Supplied and computed MD5 checksums do not match.')}}
 
-  # read the file
+  cmdHead = if (nrows < Inf) sprintf('| head -n %d', nrows + 1L) else ''
+  dCols = data.table(old = c('citing', 'referenced'),
+                     new = c('citing_pmid', 'cited_pmid'))
+
+  if (is.null(con)) {
+    if (tools::file_ext(filepath) == 'zip') {
+      dCitation = data.table::fread(
+        cmd = sprintf('unzip -p %s %s', filepath, cmdHead))
+    } else {
+      dCitation = data.table::fread(filepath, nrows = nrows)}
+    setnames(dCitation, dCols$old, dCols$new)
+    return(dCitation)}
+
+  # unzip file if necessary, since unark chokes on zip files
+  # use system unzip, since internal method truncates files >= 4GB pre-comp
+  # use head, since unark only knows how to unarchive an entire file
+
   if (tools::file_ext(filepath) == 'zip') {
-    dCitation = data.table::fread(
-      cmd = paste('unzip -p', filepath), nrows = nrows)
+    filepathTmp = tempfile()
+    withr::local_file(filepathTmp)
+    cmd = sprintf('unzip -p %s %s > %s', filepath, cmdHead, filepathTmp)
+    system(cmd)
   } else {
-    dCitation = data.table::fread(filepath, nrows = nrows)}
+    if (nrows < Inf) {
+      filepathTmp = tempfile()
+      withr::local_file(filepathTmp)
+      system(sprintf('head -n %d %s > %s', nrows + 1L, filepath, filepathTmp))
+    } else {
+      filepathTmp = filepath}}
 
-  # check the table
-  stopifnot(all.equal(colnames(dCitation), c('citing', 'referenced')),
-            all(sapply(dCitation, is.integer)))
-  setnames(dCitation, c('citing_pmid', 'cited_pmid'))
+  # unark the file into the db, make sure columns are integers
+  arkdb::unark(
+    filepathTmp, db_con = con, streamable_table = arkdb::streamable_readr_csv(),
+    lines = 1e7, overwrite = overwrite, tablenames = citationName,
+    col_types = readr::cols(citing = 'i', referenced = 'i'))
 
-  # send to db
-  if (!is.null(con)) {
-    DBI::dbWriteTable(con, citationName, dCitation, overwrite = overwrite)
+  # change column names in citation table
+  for (i in 1:nrow(dCols)) {
+    q = sprintf('alter table %s rename column %s to %s', citationName,
+                dCols[i]$old, dCols[i]$new)
+    x = DBI::dbExecute(con, q)}
 
-    dVersion = data.table(
-      md5_computed = md5Remote,
-      pmparser_version = getPkgVersion(),
-      datetime_processed = Sys.time())
+  # add citation_version table
+  dVersion = data.table(
+    md5_computed = md5Remote,
+    pmparser_version = getPkgVersion(),
+    datetime_processed = Sys.time())
 
-    # if we make it to this point, set overwrite to TRUE
-    DBI::dbWriteTable(con, versionName, dVersion, overwrite = TRUE)}
-
-  return(dCitation)}
+  # if we make it to this point, set overwrite to TRUE
+  DBI::dbWriteTable(con, versionName, dVersion, overwrite = TRUE)
+  invisible()}
