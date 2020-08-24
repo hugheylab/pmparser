@@ -42,10 +42,9 @@ jobs:
               -e "message(devtools::check_failures(path = '${PKG_NAME}.Rcheck'))" \
               -e "covr::package_coverage()"
 
-      # Uncomment the following lines once the codecov project is set up to send coverage reports to codecov
-      #- run:
-      #    name: Calculate code coverage
-      #    command: r -e 'covr::codecov()'
+      - run:
+          name: Calculate code coverage
+          command: r -e 'covr::codecov()'
 
       - run:
           name: Deploy to drat
