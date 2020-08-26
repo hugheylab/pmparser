@@ -19,12 +19,9 @@ sudo apt install -y postgresql-12 libpq-dev libmariadbclient-dev
 Rscript -e "install.packages('devtools')"
 Rscript -e "devtools::install_github('r-lib/xml2')"
 
-# once pmparser is on the lab's drat repo
-# Rscript -e "install.packages('BiocManager')"
-# Rscript -e "BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/', ask = FALSE)"
-
-# until then
-Rscript -e "devtools::install('pmparser', dependencies = TRUE)"
+# now that pmparser is on the lab's drat repo
+Rscript -e "install.packages('BiocManager')"
+Rscript -e "BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/', ask = FALSE)"
 
 conda activate
 

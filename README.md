@@ -14,18 +14,24 @@ If you use RStudio, go to Tools -> Global Options... -> Packages -> Add... (unde
 You only have to do this once. Then you can install or update the package by entering:
 
 ```R
+if (!requireNamespace('devtools', quietly = TRUE))
+  install.packages('devtools')
+devtools::install_github('r-lib/xml2')
+
 if (!requireNamespace('BiocManager', quietly = TRUE))
   install.packages('BiocManager')
-
 BiocManager::install('pmparser')
 ```
 
 Alternatively, you can install or update the package by entering:
 
 ```R
+if (!requireNamespace('devtools', quietly = TRUE))
+  install.packages('devtools')
+devtools::install_github('r-lib/xml2')
+
 if (!requireNamespace('BiocManager', quietly = TRUE))
   install.packages('BiocManager')
-
 BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/')
 ```
 
