@@ -6,3 +6,5 @@
 ^docs$
 ^NEWS.md$
 ^data-raw$
+^\.circleci/config\.yml$
+^codecov\.yml$
