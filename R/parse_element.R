@@ -144,7 +144,7 @@ parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
 
-  x2 = xml_find_all(x1, './/ArticleId')
+  x2 = xml_find_all(x1[nIds > 0], './/ArticleId')
   x3 = data.table(
     dPmid[rep.int(1:.N, nIds)],
     id_type = xml_attr(x2, 'IdType'),
@@ -161,7 +161,7 @@ parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
-  x2 = xml_find_all(x1, './/PubMedPubDate')
+  x2 = xml_find_all(x1[nHist > 0], './/PubMedPubDate')
 
   x4 = data.table(
     dPmid[rep.int(1:.N, nHist)],
@@ -182,11 +182,12 @@ parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 parseTitleJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Journal')
+  idx = xml_length(x1) > 0
   x2 = data.table(
-    dPmid,
-    title = xml_text(xml_find_first(pmXml, './/ArticleTitle')),
-    journal_full = xml_text(xml_find_first(x1, './/Title')),
-    journal_abbrev = xml_text(xml_find_first(x1, './/ISOAbbreviation')))
+    dPmid[idx],
+    title = xml_text(xml_find_first(pmXml[idx], './/ArticleTitle')),
+    journal_full = xml_text(xml_find_first(x1[idx], './/Title')),
+    journal_abbrev = xml_text(xml_find_first(x1[idx], './/ISOAbbreviation')))
 
   appendTable(con, paste_('title_journal', tableSuffix), x2)
   return(x2)}
@@ -197,7 +198,8 @@ parseTitleJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
-  x2 = xml_find_all(x1, './/PublicationType')
+  n = xml_length(x1)
+  x2 = xml_find_all(x1[n > 0], './/PublicationType')
 
   x3 = data.table(
     dPmid[rep.int(1:.N, xml_length(x1))],

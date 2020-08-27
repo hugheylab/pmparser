@@ -9,7 +9,8 @@ test_that('getEmptyTables no tableSuffix', {
 
 test_that('getEmptyTables with tableSuffix', {
   emptyTablesObs = getEmptyTables('test')
-  emptyTablesExp = readRDS(file.path(refDir, 'get_empty_tables_with_suffix.rds'))
+  emptyTablesExp = readRDS(
+    file.path(refDir, 'get_empty_tables_with_suffix.rds'))
 
   expect_equal(emptyTablesObs, emptyTablesExp)
 })
@@ -39,7 +40,8 @@ test_that('writeEmptyTables with tableSuffix', {
 
   withr::local_file(dbnameObs)
 
-  writeEmptyTables(tableSuffix = tableSuffix, dbtype = dbtype, dbname = dbnameObs)
+  writeEmptyTables(
+    tableSuffix = tableSuffix, dbtype = dbtype, dbname = dbnameObs)
 
   conExp = withr::local_db_connection(connect(dbtype, dbnameExp))
   conObs = withr::local_db_connection(connect(dbtype, dbnameObs))

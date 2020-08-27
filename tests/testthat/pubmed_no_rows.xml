@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE PubmedArticleSet PUBLIC "-//NLM//DTD PubMedArticle, 1st January 2019//EN" "http://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_190101.dtd">
+<PubmedArticleSet>
+  <PubmedArticle>
+    <MedlineCitation Status="AFU" Owner="NLM">
+      <PMID Version="1">1</PMID>
+    </MedlineCitation>
+  </PubmedArticle>
+  <PubmedArticle>
+    <MedlineCitation Status="AFU" Owner="NLM">
+      <PMID Version="1">2</PMID>
+    </MedlineCitation>
+  </PubmedArticle>
+</PubmedArticleSet>
