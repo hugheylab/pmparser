@@ -1,7 +1,7 @@
 localDir: '.'
 dbtype: 'postgres'
-nFiles: 1
+nFiles: .inf
 retry: TRUE
-nCitations: 1.0e+5
+nCitations: .inf
 # Inf: .inf
 # scientific notation: 1.0e+5
