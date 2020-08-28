@@ -6,7 +6,7 @@ dbtype = 'sqlite'
 nFiles = 1L
 nCitations = Inf
 
-local_file(localDir, recursive = TRUE)
+withr::local_file(localDir)
 if (dir.exists(localDir)) unlink(localDir, recursive = TRUE)
 dir.create(localDir)
 x = file.copy(list.files(refDir, include.dirs = TRUE, full.names = TRUE),

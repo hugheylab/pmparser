@@ -150,14 +150,6 @@ names2 = function(x) {
     nms}}
 
 
-local_file = function(file, ..., .local_envir = parent.frame()) {
-  file_nms = names2(file)
-  unnamed = file_nms == ''
-  file_nms[unnamed] = as.character(file[unnamed])
-  withr::defer(unlink(file_nms, ...), envir = .local_envir)
-  invisible(file)}
-
-
 #' Get Postgres connection parameters
 #'
 #' This is a helper function to get parameters from a .pgpass file. See
