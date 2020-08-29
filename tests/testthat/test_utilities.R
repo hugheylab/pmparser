@@ -1,5 +1,5 @@
 logPath = 'cutter.log'
-local_file(logPath)
+withr::local_file(logPath)
 
 dStart = data.table(xml_filename = 'all', step = 'start', status = 0)
 writeLogFile(logPath, dStart, append = FALSE)
