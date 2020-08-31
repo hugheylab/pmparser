@@ -24,6 +24,7 @@ jobs:
           command: |
             Rscript \
               -e 'devtools::install_github("r-lib/xml2")' \
+              -e 'devtools::install_github("r-lib/withr")' \
               -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
               -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'
 
