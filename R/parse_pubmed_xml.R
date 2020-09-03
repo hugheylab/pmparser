@@ -13,7 +13,8 @@ globalVariables(c(
   'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'version',
   'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
   '..cols', 'tableName', 'copyright', 'descriptor_pos', 'processed', 'N',
-  'equal_contrib', 'sample_base'))
+  'equal_contrib', 'sample_base', 'pub_year', 'pub_month', 'pub_month_tmp1',
+  'pub_month_tmp2', 'pub_day', 'pub_day_tmp'))
 
 
 parsePubmedXmlCore = function(
@@ -80,7 +81,10 @@ parsePubmedXml = function(
     xml_filename = 'all', step = 'start', status = 0, message = NA)
   writeLogFile(logPath, dLog, append = FALSE)
 
-  r = doOp(foreach(filenameNow = unique(xmlInfo$xml_filename)), {
+  feo = foreach(filenameNow = unique(xmlInfo$xml_filename),
+                .options.future = list(scheduling = Inf))
+
+  r = doOp(feo, {
     steps = xmlInfo[xml_filename == filenameNow]$step
     parsePubmedXmlCore(
       xmlDir, filenameNow, steps, logPath, tableSuffix, dbtype, dbname, ...)})

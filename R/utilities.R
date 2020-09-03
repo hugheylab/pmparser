@@ -79,9 +79,10 @@ getParseFuncs = function(steps = 'all') {
   parseFuncs = c(
     pmid_status = parsePmidStatus,
     article_id = parseArticleId,
-    title_journal = parseTitleJournal,
+    article = parseArticle,
+    journal = parseJournal,
     pub_type = parsePubType,
-    pub_date = parsePubDate,
+    pub_history = parsePubHistory,
     mesh = parseMesh,
     keyword = parseKeyword,
     grant = parseGrant,

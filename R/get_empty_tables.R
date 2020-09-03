@@ -7,12 +7,16 @@ getEmptyTables = function(tableSuffix) {
 
     article_id = data.table(id_type = ac, id_value = ac),
 
-    title_journal = data.table(title = ac, journal_full = ac,
-      journal_abbrev = ac),
+    article = data.table(title = ac, pub_date = as.Date(ac), pub_model = ac),
+
+    journal = data.table(
+      journal_name = ac, journal_iso = ac, pub_date = as.Date(ac),
+      pub_year = ac, pub_month = ac, pub_day = ac, medline_date = ac,
+      volume = ac, issue = ac, cited_medium = ac),
 
     pub_type = data.table(type_name = ac, type_id = ac),
 
-    pub_date = data.table(pub_status = ac, pub_date = data.table::as.IDate(ai)),
+    pub_history = data.table(pub_status = ac, pub_date = as.Date(ac)),
 
     mesh_descriptor = data.table(
       descriptor_pos = ac, descriptor_name = ac, descriptor_ui = ac,

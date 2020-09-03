@@ -76,7 +76,7 @@ modifyPubmedDb()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9021</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9022</span>
       </span>
     </div>
 
@@ -124,9 +124,11 @@ These functions should not normally be called directly, as they are called by
 
 <span class='fu'>parseArticleId</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>parsePubDate</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseArticle</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>parseTitleJournal</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parsePubHistory</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>parseJournal</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
 <span class='fu'>parsePubType</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
@@ -193,10 +195,13 @@ columns from <code>dPmid</code> plus the columns specified.</p>
 <p><code>parseArticleId()</code>: a data.table with columns <code>id_type</code> and <code>id_value</code>,
 parsed from the ArticleIdList section. Only <code>id_type</code>s "doi"
 and "pmc" are retained.</p>
-<p><code>parsePubDate()</code>: a data.table with columns  <code>pub_status</code> and <code>pub_date</code>,
+<p><code>parseArticle()</code>: a data.table with columns <code>title</code>, <code>pub_date</code>, and
+<code>pub_model</code>, parsed from the Article section.</p>
+<p><code>parsePubHistory()</code>: a data.table with columns <code>pub_status</code> and <code>pub_date</code>,
 parsed from the History section.</p>
-<p><code>parseTitleJournal()</code>: a data.table with columns <code>title</code>, <code>journal_full</code>,
-and <code>journal_abbrev</code>, parsed from the Journal section.</p>
+<p><code>parseJournal()</code>: a data.table with columns <code>journal_name</code>, <code>journal_iso</code>,
+<code>pub_date</code>, <code>pub_year</code>, <code>pub_month</code>, <code>pub_day</code>, <code>medline_date</code>, <code>volume</code>,
+<code>issue</code>, and <code>cited_medium</code>, parsed from the Journal section.</p>
 <p><code>parsePubType()</code>: a data.table with columns <code>type_name</code> and <code>type_id</code>,
 parsed from the PublicationTypeList section.</p>
 <p><code>parseMesh()</code>: a list of two data.tables parsed from the
@@ -250,9 +255,10 @@ and the fifth data.table does not exist.</p>
 <span class='no'>dPmid</span> <span class='kw'>=</span> <span class='no'>dPmidRaw</span>[<span class='no'>status</span> <span class='kw'>!=</span> <span class='st'>'Deleted'</span>, !<span class='st'>'status'</span>]
 
 <span class='no'>dArticleId</span> <span class='kw'>=</span> <span class='fu'>parseArticleId</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dTitleJournal</span> <span class='kw'>=</span> <span class='fu'>parseTitleJournal</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
+<span class='no'>dArticle</span> <span class='kw'>=</span> <span class='fu'>parseArticle</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
+<span class='no'>dJournal</span> <span class='kw'>=</span> <span class='fu'>parseJournal</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
 <span class='no'>dPubType</span> <span class='kw'>=</span> <span class='fu'>parsePubType</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dPubDate</span> <span class='kw'>=</span> <span class='fu'>parsePubDate</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
+<span class='no'>dPubHistory</span> <span class='kw'>=</span> <span class='fu'>parsePubHistory</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
 <span class='no'>meshList</span> <span class='kw'>=</span> <span class='fu'>parseMesh</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
 <span class='no'>keywordList</span> <span class='kw'>=</span> <span class='fu'>parseKeyword</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
 <span class='no'>grantList</span> <span class='kw'>=</span> <span class='fu'>parseGrant</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
