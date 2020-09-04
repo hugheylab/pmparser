@@ -21,14 +21,19 @@ test_that('parseArticleId', {
   expect_equal(parsedObs, parsedExp$article_id)
 })
 
-test_that('parsePubDate', {
-  parsedObs = parsePubDate(pmXml, dPmid)
-  expect_equal(parsedObs, parsedExp$pub_date)
+test_that('parseArticle', {
+  parsedObs = parseArticle(pmXml, dPmid)
+  expect_equal(parsedObs, parsedExp$article)
 })
 
-test_that('parseTitleJournal', {
-  parsedObs = parseTitleJournal(pmXml, dPmid)
-  expect_equal(parsedObs, parsedExp$title_journal)
+test_that('parsePubHistory', {
+  parsedObs = parsePubHistory(pmXml, dPmid)
+  expect_equal(parsedObs, parsedExp$pub_history)
+})
+
+test_that('parseJournal', {
+  parsedObs = parseJournal(pmXml, dPmid)
+  expect_equal(parsedObs, parsedExp$journal)
 })
 
 test_that('parsePubType', {

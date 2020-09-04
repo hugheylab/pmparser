@@ -18,6 +18,7 @@ byCols = list(
   abstract = NULL,
   abstract_copyright = NULL,
   article_id = NULL,
+  article = 'pmid',
   author = c('pmid', 'author_pos'),
   author_affiliation = c('pmid', 'author_pos', 'affiliation_pos'),
   author_affiliation_identifier = NULL,
@@ -37,9 +38,9 @@ byCols = list(
   mesh_descriptor = NULL,
   mesh_qualifier = NULL,
   pmid_status = 'pmid',
-  pub_date = NULL,
+  pub_history = NULL,
   pub_type = NULL,
-  title_journal = 'pmid',
+  journal = 'pmid',
   xml_processed = 'xml_filename')
 
 test_that('modifyPubmedDb create is unique', {

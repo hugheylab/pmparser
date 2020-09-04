@@ -4,8 +4,9 @@
 \alias{parseElement}
 \alias{parsePmidStatus}
 \alias{parseArticleId}
-\alias{parsePubDate}
-\alias{parseTitleJournal}
+\alias{parseArticle}
+\alias{parsePubHistory}
+\alias{parseJournal}
 \alias{parsePubType}
 \alias{parseMesh}
 \alias{parseKeyword}
@@ -22,9 +23,11 @@ parsePmidStatus(rawXml, filename, con = NULL, tableSuffix = NULL)
 
 parseArticleId(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parsePubDate(pmXml, dPmid, con = NULL, tableSuffix = NULL)
+parseArticle(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
-parseTitleJournal(pmXml, dPmid, con = NULL, tableSuffix = NULL)
+parsePubHistory(pmXml, dPmid, con = NULL, tableSuffix = NULL)
+
+parseJournal(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
 parsePubType(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
@@ -77,11 +80,15 @@ columns from \code{dPmid} plus the columns specified.
 parsed from the ArticleIdList section. Only \code{id_type}s "doi"
 and "pmc" are retained.
 
-\code{parsePubDate()}: a data.table with columns  \code{pub_status} and \code{pub_date},
+\code{parseArticle()}: a data.table with columns \code{title}, \code{pub_date}, and
+\code{pub_model}, parsed from the Article section.
+
+\code{parsePubHistory()}: a data.table with columns \code{pub_status} and \code{pub_date},
 parsed from the History section.
 
-\code{parseTitleJournal()}: a data.table with columns \code{title}, \code{journal_full},
-and \code{journal_abbrev}, parsed from the Journal section.
+\code{parseJournal()}: a data.table with columns \code{journal_name}, \code{journal_iso},
+\code{pub_date}, \code{pub_year}, \code{pub_month}, \code{pub_day}, \code{medline_date}, \code{volume},
+\code{issue}, and \code{cited_medium}, parsed from the Journal section.
 
 \code{parsePubType()}: a data.table with columns \code{type_name} and \code{type_id},
 parsed from the PublicationTypeList section.
@@ -149,9 +156,10 @@ dPmidRaw = pmidStatusList[[2L]]
 dPmid = dPmidRaw[status != 'Deleted', !'status']
 
 dArticleId = parseArticleId(pmXml, dPmid)
-dTitleJournal = parseTitleJournal(pmXml, dPmid)
+dArticle = parseArticle(pmXml, dPmid)
+dJournal = parseJournal(pmXml, dPmid)
 dPubType = parsePubType(pmXml, dPmid)
-dPubDate = parsePubDate(pmXml, dPmid)
+dPubHistory = parsePubHistory(pmXml, dPmid)
 meshList = parseMesh(pmXml, dPmid)
 keywordList = parseKeyword(pmXml, dPmid)
 grantList = parseGrant(pmXml, dPmid)

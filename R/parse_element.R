@@ -30,11 +30,15 @@
 #'   parsed from the ArticleIdList section. Only `id_type`s "doi"
 #'   and "pmc" are retained.
 #'
-#'   `parsePubDate()`: a data.table with columns  `pub_status` and `pub_date`,
+#'   `parseArticle()`: a data.table with columns `title`, `pub_date`, and
+#'   `pub_model`, parsed from the Article section.
+#'
+#'   `parsePubHistory()`: a data.table with columns `pub_status` and `pub_date`,
 #'   parsed from the History section.
 #'
-#'   `parseTitleJournal()`: a data.table with columns `title`, `journal_full`,
-#'   and `journal_abbrev`, parsed from the Journal section.
+#'   `parseJournal()`: a data.table with columns `journal_name`, `journal_iso`,
+#'   `pub_date`, `pub_year`, `pub_month`, `pub_day`, `medline_date`, `volume`,
+#'   `issue`, and `cited_medium`, parsed from the Journal section.
 #'
 #'   `parsePubType()`: a data.table with columns `type_name` and `type_id`,
 #'   parsed from the PublicationTypeList section.
@@ -95,9 +99,10 @@
 #' dPmid = dPmidRaw[status != 'Deleted', !'status']
 #'
 #' dArticleId = parseArticleId(pmXml, dPmid)
-#' dTitleJournal = parseTitleJournal(pmXml, dPmid)
+#' dArticle = parseArticle(pmXml, dPmid)
+#' dJournal = parseJournal(pmXml, dPmid)
 #' dPubType = parsePubType(pmXml, dPmid)
-#' dPubDate = parsePubDate(pmXml, dPmid)
+#' dPubHistory = parsePubHistory(pmXml, dPmid)
 #' meshList = parseMesh(pmXml, dPmid)
 #' keywordList = parseKeyword(pmXml, dPmid)
 #' grantList = parseGrant(pmXml, dPmid)
@@ -157,7 +162,38 @@ parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 
 #' @rdname parseElement
 #' @export
-parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  stopifnot(length(pmXml) == nrow(dPmid))
+  x1 = xml_find_first(pmXml, './/Article')
+  idx = xml_length(x1) > 0
+
+  x2 = data.table(
+    dPmid[idx],
+    title = xml_text(xml_find_first(pmXml[idx], './/ArticleTitle')),
+    pub_model = xml_attr(x1[idx], 'PubModel'))
+
+  x3 = xml_find_first(x1, './/ArticleDate')
+  idx3 = xml_length(x3) > 0
+
+  x4 = data.table(
+    dPmid[idx3],
+    y = xml_text(xml_find_first(x3[idx3], './/Year')),
+    m = xml_text(xml_find_first(x3[idx3], './/Month')),
+    d = xml_text(xml_find_first(x3[idx3], './/Day')))
+
+  x4[, pub_date := as.Date(sprintf('%s-%s-%s', y, m, d))]
+  x4[, c('y', 'm', 'd') := NULL]
+
+  x5 = merge(x2, x4, by = colnames(dPmid), all.x = TRUE, sort = FALSE)
+  setcolorder(x5, c(colnames(dPmid), 'title', 'pub_date', 'pub_model'))
+
+  appendTable(con, paste_('article', tableSuffix), x5)
+  return(x5)}
+
+
+#' @rdname parseElement
+#' @export
+parsePubHistory = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
@@ -170,27 +206,51 @@ parsePubDate = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     m = xml_text(xml_find_all(x2, './/Month')),
     d = xml_text(xml_find_all(x2, './/Day')))
 
-  x4[, pub_date := data.table::as.IDate(sprintf('%s-%s-%s', y, m, d))]
+  x4[, pub_date := as.Date(sprintf('%s-%s-%s', y, m, d))]
   x4[, c('y', 'm', 'd') := NULL]
 
-  appendTable(con, paste_('pub_date', tableSuffix), x4)
+  appendTable(con, paste_('pub_history', tableSuffix), x4)
   return(x4)}
 
 
 #' @rdname parseElement
 #' @export
-parseTitleJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Journal')
   idx = xml_length(x1) > 0
+
   x2 = data.table(
     dPmid[idx],
-    title = xml_text(xml_find_first(pmXml[idx], './/ArticleTitle')),
-    journal_full = xml_text(xml_find_first(x1[idx], './/Title')),
-    journal_abbrev = xml_text(xml_find_first(x1[idx], './/ISOAbbreviation')))
+    journal_name = xml_text(xml_find_first(x1[idx], './/Title')),
+    journal_iso = xml_text(xml_find_first(x1[idx], './/ISOAbbreviation')),
+    pub_year = xml_text(xml_find_first(x1[idx], './/Year')),
+    pub_month = xml_text(xml_find_first(x1[idx], './/Month')),
+    pub_day = xml_text(xml_find_first(x1[idx], './/Day')),
+    medline_date = xml_text(xml_find_first(x1[idx], './/MedlineDate')),
+    volume = xml_text(xml_find_first(x1[idx], './/Volume')),
+    issue = xml_text(xml_find_first(x1[idx], './/Issue')),
+    cited_medium = xml_attr(xml_find_first(x1[idx], 'CitedMedium')))
 
-  appendTable(con, paste_('title_journal', tableSuffix), x2)
-  return(x2)}
+  monthNums = sprintf('%.2d', 1:12)
+  dMonth = data.table(
+    pub_month_tmp1 = c('jan', 'feb', 'mar', 'apr', 'may', 'jun',
+                       'jul', 'aug', 'sep', 'oct', 'nov', 'dec', monthNums),
+    pub_month_tmp2 = rep(monthNums, 2))
+
+  x2[, pub_month_tmp1 := tolower(pub_month)]
+  x3 = merge(x2, dMonth, by = 'pub_month_tmp1', all.x = TRUE, sort = FALSE)
+
+  x3[, pub_day_tmp := pub_day]
+  x3[is.na(pub_day_tmp), pub_day_tmp := '01']
+  x3[!is.na(pub_year) & !is.na(pub_month_tmp2),
+     pub_date := as.Date(
+       sprintf('%s-%s-%s', pub_year, pub_month_tmp2, pub_day_tmp))]
+
+  x3[, c('pub_month_tmp1', 'pub_month_tmp2', 'pub_day_tmp') := NULL]
+  setcolorder(x3, c(colnames(dPmid), 'journal_name', 'journal_iso', 'pub_date'))
+  appendTable(con, paste_('journal', tableSuffix), x3)
+  return(x3)}
 
 
 #' @rdname parseElement
