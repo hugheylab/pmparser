@@ -23,6 +23,9 @@ Rscript -e "devtools::install_github(c('r-lib/withr', 'r-lib/xml2'))"
 Rscript -e "install.packages('BiocManager')"
 Rscript -e "BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/', ask = FALSE)"
 
+# for parallel processing
+Rscript -e "install.packages('doFuture')"
+
 conda activate
 
 # create ~/.pgpass file according to https://www.postgresql.org/docs/9.6/libpq-pgpass.html

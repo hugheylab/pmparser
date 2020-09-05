@@ -1,7 +1,7 @@
 library('doFuture')
 
 registerDoFuture()
-nCores = availableCores() - 2L
+nCores = round(availableCores() * 0.75)
 plan(multisession, workers = nCores)
 data.table::setDTthreads(nCores)
 
