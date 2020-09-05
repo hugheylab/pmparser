@@ -52,7 +52,7 @@ modifyPubmedDb = function(
   logDir = file.path(localDir, 'logs')
   if (!dir.exists(logDir)) dir.create(logDir)
 
-  f = sprintf('%s_db_%s.log', mode, format(Sys.time(), '%Y%m%d_%H%M%S'))
+  f = glue('{mode}_db_{format(Sys.time(), "%Y%m%d_%H%M%S")}.log')
   logPath = file.path(logDir, f)
   writeLogFile(logPath, data.table(step = 'start'), append = FALSE)
 
@@ -80,9 +80,9 @@ modifyPubmedDb = function(
   fileInfoKeep = fileInfo[(md5_match)]
 
   if (nrow(fileInfoKeep) != nrow(fileInfo)) {
+    files = paste(fileInfo[!(md5_match), xml_filename], collapse = '\n')
     w = sprintf(paste('The following xml files did not match their md5 sums',
-                      'and will not be processed:\n%s'),
-                paste(fileInfo[!(md5_match), xml_filename], collapse = '\n'))
+                      'and will not be processed:\n%s'), files)
     warning(w, .immediate = TRUE)}
 
   if (nrow(fileInfoKeep) == 0) {
@@ -90,8 +90,7 @@ modifyPubmedDb = function(
     return(invisible())}
 
   # process files
-  logName1 = sprintf(
-    'parse_%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
+  logName1 = glue('parse_{subDir}_{format(Sys.time(), "%Y%m%d_%H%M%S")}.log')
 
   writeLogFile(logPath, data.table('parse xml files'))
   parsePubmedXml(
@@ -105,8 +104,7 @@ modifyPubmedDb = function(
 
   if (isTRUE(retry) && nrow(dRetry) > 0) {
 
-    logName2 = sprintf(
-      'parse_%s_%s.log', subDir, format(Sys.time(), '%Y%m%d_%H%M%S'))
+    logName2 = glue('parse_{subDir}_{format(Sys.time(), "%Y%m%d_%H%M%S")}.log')
     retrySuffix = paste_(tableSuffix, 'retry')
 
     # retry failed steps
@@ -142,9 +140,9 @@ modifyPubmedDb = function(
 
   dMissing = getMissing(con, '', fileInfoKeep)
   if (nrow(dMissing) > 0) {
-    path = paste0(tools::file_path_sans_ext(logPath), '_missing.csv')
+    path = glue('{tools::file_path_sans_ext(logPath)}_missing.csv')
     data.table::fwrite(dMissing, path)
-    writeLogFile(logPath, data.table(sprintf('finish: see %s', basename(path))))
+    writeLogFile(logPath, data.table(glue('finish: see {basename(path)}')))
   } else {
     writeLogFile(logPath, data.table('finish: good to go'))}
 
@@ -161,19 +159,18 @@ addSourceToTarget = function(
 
   # create source table of pmid, xml_filename to keep
   con = connect(dbtype, dbname, ...)
-  sourceKeep = sprintf('pmid_status_%s_keep', sourceSuffix)
+  sourceKeep = glue('pmid_status_{sourceSuffix}_keep')
   if (DBI::dbExistsTable(con, sourceKeep)) {
     DBI::dbRemoveTable(con, sourceKeep)}
 
   # window functions are for wizards
-  q = sprintf(
-    paste('create table %s as with ranked_pmid_status as',
-          '(select *, row_number() over',
-          '(partition by pmid order by version desc, xml_filename desc) as rn',
-          'from pmid_status_%s)',
-          'select pmid, version, xml_filename',
-          'from ranked_pmid_status where rn = 1'),
-    sourceKeep, sourceSuffix)
+  q = glue(
+    'create table {sourceKeep} as with ranked_pmid_status as
+    (select *, row_number() over
+    (partition by pmid order by version desc, xml_filename desc) as rn
+    from pmid_status_{sourceSuffix})
+    select pmid, version, xml_filename
+    from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
   n = DBI::dbExecute(con, q)
 
   deleteStart = c('delete', 'select count(*)')
@@ -183,15 +180,15 @@ addSourceToTarget = function(
   targetNow = names(targetEmpty)[startsWith(names(targetEmpty), 'xml_processed')]
   sourceNow = names(sourceEmpty)[startsWith(names(sourceEmpty), 'xml_processed')]
 
-  q = sprintf('%s from %s where xml_filename in (select xml_filename from %s)',
-              deleteStart[1 + dryRun], targetNow, sourceNow)
+  q = glue('{deleteStart[1 + dryRun]} from {targetNow} where
+           xml_filename in (select xml_filename from {sourceNow})')
   nDelete = runStatement(con, q)
 
   insertStart = if (isTRUE(dryRun)) insertBase[2L] else
     sprintf(insertBase[1L], targetNow,
             paste0(colnames(targetEmpty[[targetNow]]), collapse = ', '))
 
-  q = sprintf('%s from %s', insertStart, sourceNow)
+  q = glue('{insertStart} from {sourceNow}')
   nInsert = runStatement(con, q)
   disconnect(con)
 
@@ -207,8 +204,8 @@ addSourceToTarget = function(
   d2 = doOp(feo, {
     con = connect(dbtype, dbname, ...) # required if in dopar
     # drop rows in target tables, use subquery to conform to sql standard
-    q = sprintf('%s from %s where pmid in (select pmid from %s)',
-                deleteStart[1L + dryRun], targetName, sourceName)
+    q = glue('{deleteStart[1L + dryRun]} from {targetName}
+             where pmid in (select pmid from {sourceName})')
     nDelete = runStatement(con, q)
 
     # append source rows to target tables
@@ -216,10 +213,9 @@ addSourceToTarget = function(
       sprintf(insertBase[1L], targetName,
               paste0('a.', DBI::dbListFields(con, targetName), collapse = ', '))
 
-    q = sprintf(paste('%s from %s as a inner join %s as b',
-                      'on a.pmid = b.pmid and a.version = b.version',
-                      'and a.xml_filename = b.xml_filename'),
-                insertStart, sourceName, sourceKeep)
+    q = glue('{insertStart} from {sourceName} as a inner join {sourceKeep} as b
+             on a.pmid = b.pmid and a.version = b.version
+             and a.xml_filename = b.xml_filename')
     nInsert = runStatement(con, q)
     disconnect(con)
 

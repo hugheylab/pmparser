@@ -1,10 +1,10 @@
 getRemoteFilenames = function(url, pattern) {
   raw = RCurl::getURL(url)
   x = strsplit(raw, '\\n')[[1L]]
-  m = regexpr(paste0(pattern, '$'), x)
+  m = regexpr(glue('{pattern}$'), x)
   filenames = regmatches(x, m)
   d = data.table(
-    xml_filename = filenames, md5_filename = paste0(filenames, '.md5'))
+    xml_filename = filenames, md5_filename = glue('{filenames}.md5'))
   return(d)}
 
 
@@ -14,7 +14,7 @@ getPubmedFileInfo = function(
   pattern = 'pubmed.*\\.xml\\.gz'
 
   dRemote = foreach(subDir = subDirs, .combine = rbind) %do% {
-    dNow = getRemoteFilenames(paste0(remoteDir, subDir, '/'), pattern)
+    dNow = getRemoteFilenames(glue('{remoteDir}/{subDir}/'), pattern)
     dNow[, sub_dir := subDir]}
 
   dEmpty = data.table(
@@ -25,7 +25,7 @@ getPubmedFileInfo = function(
     dLocal = dEmpty
   } else {
     dLocal = foreach(subDir = subDirs, .combine = rbind) %do% {
-      filenames = dir(file.path(localDir, subDir), paste0(pattern, '$'))
+      filenames = dir(file.path(localDir, subDir), glue('{pattern}$'))
 
       if (length(filenames) == 0) {
         dNow = dEmpty
@@ -79,7 +79,7 @@ getPubmedFiles = function(
   fTmp = fileInfo[is.na(md5_download)]
   col = 'md5_filename'
   r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
-    download(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+    download(glue('{remoteDir}/{f$sub_dir}/{f[[col]]}'),
              file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[is.na(md5_download), md5_download := r]
 
@@ -94,7 +94,7 @@ getPubmedFiles = function(
   fTmp = fileInfo[!(md5_match)]
   col = 'xml_filename'
   r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
-    download(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+    download(glue('{remoteDir}{f$sub_dir}/{f[[col]]}'),
              file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[!(md5_match), xml_download := r]
 

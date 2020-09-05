@@ -1,5 +1,6 @@
 #' @importFrom data.table data.table := setcolorder setnames setattr
 #' @importFrom foreach foreach %do% %dopar%
+#' @importFrom glue glue glue_sql
 #' @importFrom xml2 xml_find_all xml_find_first xml_text xml_attr xml_length xml_integer
 NULL
 
@@ -71,8 +72,8 @@ parsePubmedXml = function(
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 
   if (dbtype == 'sqlite' && foreach::getDoParWorkers() > 1) {
-    warning(paste('Parsing of XML files cannot run in parallel if using an',
-                  'sqlite database. Parsing will run sequentially.'),
+    warning(glue('Parsing of XML files cannot run in parallel if using an \\
+                  sqlite database. Parsing will run sequentially.'),
             immediate. = TRUE)}
   doOp = getDoOp(dbtype)
 

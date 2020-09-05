@@ -15,7 +15,7 @@ test_that('getCitation', {
   nrows = 50L
 
   dCitationExp = data.table::fread(
-    cmd = paste('unzip -p', file.path(refDir, filename)), nrows = nrows)
+    cmd = glue('unzip -p {file.path(refDir, filename)}'), nrows = nrows)
   setnames(dCitationExp, c('citing_pmid', 'cited_pmid'))
 
   dCitationObs = getCitation(

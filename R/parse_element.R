@@ -182,6 +182,7 @@ parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     d = xml_text(xml_find_first(x3[idx3], './/Day')))
 
   x4[, pub_date := as.Date(sprintf('%s-%s-%s', y, m, d))]
+  # x4[, pub_date := as.Date(glue('{y}-{m}-{d}'), .envir = x4)]
   x4[, c('y', 'm', 'd') := NULL]
 
   x5 = merge(x2, x4, by = colnames(dPmid), all.x = TRUE, sort = FALSE)

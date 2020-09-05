@@ -1,6 +1,6 @@
 Package: pmparser
 Title: Create and maintain a relational database of data from PubMed/MEDLINE
-Version: 0.0.0.9023
+Version: 0.0.0.9024
 Authors@R: as.person(c(
   "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
   "Josh Schoenbachler <joshschoenbachler@gmail.com> [aut]",
@@ -8,6 +8,7 @@ Authors@R: as.person(c(
 Description: Provides a simple interface for extracting various elements from
   the publicly available PubMed XML files, incorporating PubMed's regular
   updates, and combining the data with the NIH Open Citation Collection.
+URL: https://github.com/hugheylab/pmparser
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
@@ -19,6 +20,7 @@ Imports:
   data.table (>= 1.12.2),
   DBI (>= 1.1.0),
   foreach (>= 1.5.0),
+  glue (>= 1.4.2),
   iterators (>= 1.0.12),
   jsonlite (>= 1.7.0),
   RCurl (>= 1.98),
@@ -29,7 +31,7 @@ Imports:
   withr (>= 2.2.0.9000),
   xml2 (>= 1.3.2.9001)
 Suggests:
-    doFuture (>= 0.9.0),
-    testthat (>= 2.3.2),
-    covr
+  doFuture (>= 0.9.0),
+  testthat (>= 2.3.2),
+  covr
 SystemRequirements: head, unzip

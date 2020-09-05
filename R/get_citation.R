@@ -3,12 +3,12 @@ getCitationInfo = function(
   baseUrl = 'https://api.figshare.com/v2') {
 
   #getting content from icite collection
-  iciteUrl = sprintf('%s/collections/%d/articles', baseUrl, collectionId)
+  iciteUrl = glue('{baseUrl}/collections/{collectionId}/articles')
   iciteJson = data.table(jsonlite::fromJSON(iciteUrl))
 
   #extracting content from most recent icite snapshot
   latestId = iciteJson[published_date == max(published_date)]$id
-  latestUrl = sprintf('%s/articles/%d/files', baseUrl, latestId)
+  latestUrl = glue('{baseUrl}/articles/{latestId}/files')
   latestJson = data.table(jsonlite::fromJSON(latestUrl))
 
   citationInfo = latestJson[name == filename]
@@ -88,14 +88,14 @@ getCitation = function(
     if (md5Local != md5Remote) {
       stop('Supplied and computed MD5 checksums do not match.')}}
 
-  cmdHead = if (nrows < Inf) sprintf('| head -n %d', nrows + 1L) else ''
+  cmdHead = if (nrows < Inf) glue('| head -n {nrows + 1L}') else ''
   dCols = data.table(old = c('citing', 'referenced'),
                      new = c('citing_pmid', 'cited_pmid'))
 
   if (is.null(con)) {
     if (tools::file_ext(filepath) == 'zip') {
       dCitation = data.table::fread(
-        cmd = sprintf('unzip -p %s %s', filepath, cmdHead))
+        cmd = glue('unzip -p {filepath} {cmdHead}'))
     } else {
       dCitation = data.table::fread(filepath, nrows = nrows)}
     setnames(dCitation, dCols$old, dCols$new)
@@ -108,13 +108,13 @@ getCitation = function(
   if (tools::file_ext(filepath) == 'zip') {
     filepathTmp = tempfile()
     withr::local_file(filepathTmp)
-    cmd = sprintf('unzip -p %s %s > %s', filepath, cmdHead, filepathTmp)
+    cmd = glue('unzip -p {filepath} {cmdHead} > {filepathTmp}')
     system(cmd)
   } else {
     if (nrows < Inf) {
       filepathTmp = tempfile()
       withr::local_file(filepathTmp)
-      system(sprintf('head -n %d %s > %s', nrows + 1L, filepath, filepathTmp))
+      system(glue('head -n {nrows + 1L} {filepath} > {filepathTmp}'))
     } else {
       filepathTmp = filepath}}
 
@@ -126,8 +126,8 @@ getCitation = function(
 
   # change column names in citation table
   for (i in 1:nrow(dCols)) {
-    q = sprintf('alter table %s rename column %s to %s', citationName,
-                dCols[i]$old, dCols[i]$new)
+    q = glue_sql('alter table {`citationName`} rename column \\
+                 {`dCols[i]$old`} to {`dCols[i]$new`}', .con = con)
     x = DBI::dbExecute(con, q)}
 
   # add citation_version table

@@ -45,7 +45,7 @@ byCols = list(
 
 test_that('modifyPubmedDb create is unique', {
   mode = 'create'
-  dbname = file.path(localDir, paste0(dbBase, mode, '_obs.db'))
+  dbname = file.path(localDir, glue('{dbBase}{mode}_obs.db'))
 
   modifyPubmedDb(
     localDir = localDir, dbname = dbname, dbtype = dbtype,
@@ -61,7 +61,7 @@ test_that('modifyPubmedDb create is unique', {
 
 test_that('modifyPubmedDb update is unique', {
   mode = 'update'
-  dbname = file.path(localDir, paste0(dbBase, 'create.db'))
+  dbname = file.path(localDir, glue('{dbBase}create.db'))
 
   modifyPubmedDb(
     localDir = localDir, dbname = dbname, dbtype = dbtype,

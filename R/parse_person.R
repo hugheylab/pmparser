@@ -4,7 +4,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
   personType = match.arg(personType)
   personPre = paste0(toupper(substring(personType, 1, 1)),
                      substring(personType, 2))
-  personPos = sprintf('%s_pos', personType)
+  personPos = glue('{personType}_pos')
 
   dPmidNow = dPmid[, .(pmid, version)] # add filename back at the end
   cols = c(colnames(dPmidNow), 'person_pos')
@@ -12,8 +12,8 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
   ac = as.character()
 
   # get persons
-  x2 = xml_find_all(pmXml, sprintf('.//%s', personPre))
-  x3 = xml_find_first(pmXml, sprintf('.//%sList', personPre))
+  x2 = xml_find_all(pmXml, glue('.//{personPre}'))
+  x3 = xml_find_first(pmXml, glue('.//{personPre}List'))
   nPersons = xml_length(x3)
   # above line may break if InvestigatorList gets an identifier
 

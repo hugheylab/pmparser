@@ -4,8 +4,8 @@ refDir = 'pubmed_sample'
 subDir = 'updatefiles'
 fileBase = 'pubmed20n1016'
 
-parsedExp = readRDS(file.path(refDir, paste0(fileBase, '.rds')))
-xmlPath = file.path(refDir, subDir, paste0(fileBase, '.xml.gz'))
+parsedExp = readRDS(file.path(refDir, glue('{fileBase}.rds')))
+xmlPath = file.path(refDir, subDir, glue('{fileBase}.xml.gz'))
 rawXml = xml2::read_xml(xmlPath)
 
 pmidStatus = parsePmidStatus(rawXml, 'sorry for the convenience')
