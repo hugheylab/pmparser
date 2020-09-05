@@ -1,20 +1,20 @@
 getRemoteFilenames = function(url, pattern) {
   raw = RCurl::getURL(url)
-  filenames = unlist(stringr::str_extract_all(raw, pattern))
-  d = data.table(xml_filename = filenames,
-                 md5_filename = paste0(filenames, '.md5'))
+  x = strsplit(raw, '\\n')[[1L]]
+  m = regexpr(paste0(pattern, '$'), x)
+  filenames = regmatches(x, m)
+  d = data.table(
+    xml_filename = filenames, md5_filename = paste0(filenames, '.md5'))
   return(d)}
 
 
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
-
   pattern = 'pubmed.*\\.xml\\.gz'
 
   dRemote = foreach(subDir = subDirs, .combine = rbind) %do% {
-    dNow = getRemoteFilenames(paste0(remoteDir, subDir, '/'),
-                              paste0(pattern, '(?=\n)'))
+    dNow = getRemoteFilenames(paste0(remoteDir, subDir, '/'), pattern)
     dNow[, sub_dir := subDir]}
 
   dEmpty = data.table(
