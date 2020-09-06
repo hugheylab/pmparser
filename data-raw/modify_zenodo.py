@@ -23,6 +23,13 @@ def createDeposition(tokenPath, sandbox = True):
   r = requests.post(baseUrl, params = params, json = {})
   return r
 
+def getDeposition(depoId, tokenPath, sandbox = True):
+  token = getToken(tokenPath)
+  params = {'access_token': token}
+  baseUrl = getBaseUrl(sandbox)
+  r = requests.get(f'{baseUrl}/{depoId}', params = params, json = {})
+  return r
+
 def uploadFileToDeposition(rDepo, filePath, tokenPath):
   token = getToken(tokenPath)
   params = {'access_token': token}
@@ -58,7 +65,7 @@ def parse_args():
   parser.add_argument('-f', '--filePath', required = True)
   parser.add_argument('-t', '--tokenPath', required = True)
   parser.add_argument('-m', '--mode', default = 'create',
-                      choices = ['create', 'update'])
+                      choices = ['create', 'upload', 'update'])
   parser.add_argument('-d', '--depoId')
   parser.add_argument('-s', '--sandbox', action = 'store_true')
   return parser.parse_args()
@@ -66,6 +73,10 @@ def parse_args():
 def main(filePath, tokenPath, mode = 'create', depoId = None, sandbox = True):
   if mode == 'create':
     r1 = createDeposition(tokenPath, sandbox)
+    r2 = uploadFileToDeposition(r1, filePath, tokenPath)
+    return r2
+  elif mode == 'upload':
+    r1 = getDeposition(depoId, tokenPath, sandbox)
     r2 = uploadFileToDeposition(r1, filePath, tokenPath)
     return r2
   elif mode == 'update' and depoId is not None:
