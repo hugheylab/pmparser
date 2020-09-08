@@ -76,7 +76,7 @@ registered, such as with doFuture::registerDoFuture()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9025</span>
       </span>
     </div>
 
@@ -129,14 +129,14 @@ registered, such as with <code><a href='https://rdrr.io/pkg/doFuture/man/registe
     </div>
 
     <pre class="usage"><span class='fu'>modifyPubmedDb</span>(
-  <span class='no'>localDir</span>,
-  <span class='no'>dbname</span>,
-  <span class='kw'>dbtype</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"postgres"</span>, <span class='st'>"mariadb"</span>, <span class='st'>"mysql"</span>, <span class='st'>"sqlite"</span>),
-  <span class='kw'>nFiles</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>retry</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>nCitations</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"create"</span>, <span class='st'>"update"</span>),
-  <span class='no'>...</span>
+  <span class='kw'>localDir</span>,
+  <span class='kw'>dbname</span>,
+  dbtype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"postgres"</span>, <span class='st'>"clickhouse"</span>, <span class='st'>"mariadb"</span>, <span class='st'>"mysql"</span>, <span class='st'>"sqlite"</span>),
+  nFiles = <span class='fl'>Inf</span>,
+  retry = <span class='fl'>TRUE</span>,
+  nCitations = <span class='fl'>Inf</span>,
+  mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"create"</span>, <span class='st'>"update"</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -152,7 +152,7 @@ registered, such as with <code><a href='https://rdrr.io/pkg/doFuture/man/registe
     </tr>
     <tr>
       <th>dbtype</th>
-      <td><p>Type of database, either 'postgres', 'mariadb', 'mysql', or
+      <td><p>Type of database, either 'postgres', 'clickhouse' 'mariadb', 'mysql', or
 'sqlite'. Due to the large size of the database, SQLite is recommended only
 for small-scale testing.</p></td>
     </tr>
@@ -190,9 +190,11 @@ folder in <code>localDir</code>.</p>
     <div class='dont-index'><p><code><a href='parseElement.html'>parsePmidStatus()</a></code>, <code><a href='getCitation.html'>getCitation()</a></code>, <code><a href='getPgParams.html'>getPgParams()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>modifyPubmedDb</span>(<span class='st'>'.'</span>, <span class='st'>'pmdb'</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>'create'</span>)
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>modifyPubmedDb</span>(<span class='st'>'.'</span>, <span class='st'>'pmdb'</span>, mode = <span class='st'>'create'</span>)
+}
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -208,7 +210,7 @@ folder in <code>localDir</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

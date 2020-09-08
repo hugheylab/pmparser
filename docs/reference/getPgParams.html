@@ -73,7 +73,7 @@ here for details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9025</span>
       </span>
     </div>
 
@@ -122,7 +122,7 @@ here for details." />
 <a href='https://www.postgresql.org/docs/9.6/libpq-pgpass.html'>here</a> for details.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getPgParams</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"~/.pgpass"</span>)</pre>
+    <pre class="usage"><span class='fu'>getPgParams</span>(path = <span class='st'>"~/.pgpass"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +141,9 @@ here for details." />
     <div class='dont-index'><p><code><a href='modifyPubmedDb.html'>modifyPubmedDb()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>pg</span> <span class='kw'>=</span> <span class='fu'>getPgParams</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'pgpass'</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'pmparser'</span>))</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>pg</span> <span class='op'>=</span> <span class='fu'>getPgParams</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='st'>'pgpass'</span>, package = <span class='st'>'pmparser'</span>))
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -157,7 +159,7 @@ here for details." />
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
