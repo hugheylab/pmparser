@@ -69,23 +69,23 @@ getTestStandardXml = function(
     sampleXml = getSampleXml(parsed, dSample, emptyXmlPath)
 
     nowDir = file.path(localDir, f$sub_dir)
-    xmlPath = file.path(nowDir, paste0(f$sample_base, '.xml.gz'))
+    xmlPath = file.path(nowDir, glue('{f$sample_base}.xml.gz'))
     if (!dir.exists(nowDir)) dir.create(nowDir, recursive = TRUE)
     xml2::write_xml(sampleXml, xmlPath)
 
-    tx = sprintf('MD5(%s.xml.gz)= %s', f$sample_base, tools::md5sum(xmlPath))
-    writeLines(tx, paste0(xmlPath, '.md5'))}
+    tx = glue('MD5({f$sample_base}.xml.gz)= {tools::md5sum(xmlPath)}')
+    writeLines(tx, glue('{xmlPath}.md5'))}
 
   invisible()}
 
 
 getTestStandardParsed = function(localDir, dFile) {
   r = foreach(f = iterators::iter(dFile, by = 'row')) %do% {
-    xmlPath = file.path(localDir, f$sub_dir, paste0(f$sample_base, '.xml.gz'))
+    xmlPath = file.path(localDir, f$sub_dir, glue('{f$sample_base}.xml.gz'))
     parsed = parseAll(xmlPath)
     parsed$pmid_status = parsed$pmid_status[[2L]]
     saveRDS(parsed[names(parsed) != 'deleted'],
-            file.path(localDir, paste0(f$sample_base, '.rds')))}
+            file.path(localDir, glue('{f$sample_base}.rds')))}
   invisible()}
 
 
@@ -119,12 +119,12 @@ getTestStandardCsv = function(localDir, offset) {
 getTestStandardCitation = function(localDir, tmpDir, nrows) {
   zipName = formals(getCitation)$filename
   zipPath = file.path(localDir, zipName)
-  csvPath = paste0(tools::file_path_sans_ext(zipPath), '.csv')
+  csvPath = glue('{tools::file_path_sans_ext(zipPath)}.csv')
   withr::local_file(csvPath)
 
   dCitation = getCitation(tmpDir, nrows = nrows)
   dTmp = data.table::fread(
-    cmd = sprintf('unzip -p %s | head -n 2', file.path(tmpDir, zipName)))
+    cmd = glue('unzip -p {file.path(tmpDir, zipName)} | head -n 2'))
 
   setnames(dCitation, colnames(dTmp))
   data.table::fwrite(dCitation, csvPath)
@@ -135,8 +135,8 @@ getTestStandardCitation = function(localDir, tmpDir, nrows) {
 
 getTestStandardDb = function(localDir, dbnamePre, nFiles) {
   withr::local_envvar(c('TESTTHAT' = 'true'))
-  dbCreate = file.path(localDir, paste0(dbnamePre, '_create.db'))
-  dbUpdate = file.path(localDir, paste0(dbnamePre, '_update.db'))
+  dbCreate = file.path(localDir, glue('{dbnamePre}_create.db'))
+  dbUpdate = file.path(localDir, glue('{dbnamePre}_update.db'))
   if (file.exists(dbCreate)) unlink(dbCreate)
   if (file.exists(dbUpdate)) unlink(dbUpdate)
 

@@ -8,13 +8,11 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
 
   tableNow = names(emptyTables)[startsWith(names(emptyTables), 'pmid_status')]
 
-  q = sprintf(paste('create table %s as with ranked_pmid_status as',
-                    '(select *, row_number() over',
-                    '(partition by pmid order by version desc) as rn',
-                    'from %s)',
-                    'select %s from ranked_pmid_status where rn = 1'),
-              tableKeep, tableNow,
-              paste(DBI::dbListFields(con, tableNow), collapse = ', '))
+  q = glue(
+    'create table {tableKeep} as with ranked_pmid_status as
+    (select *, row_number() over (partition by pmid order by version desc) as rn
+    from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
+    cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))
   n = DBI::dbExecute(con, q)
   disconnect(con)
 
@@ -24,10 +22,9 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   doOp = getDoOp(dbtype)
   d = doOp(foreach(tableName = names(emptyTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
-    q = sprintf(paste('%s from %s as a where not exists',
-                      '(select 1 from %s as b',
-                      'where a.pmid = b.pmid and a.version = b.version)'),
-                qStart, tableName, tableKeep)
+    q = glue('{qStart} from {tableName} as a where not exists
+             (select 1 from {tableKeep} as b
+             where a.pmid = b.pmid and a.version = b.version)')
     n = runStatement(con, q)
     disconnect(con)
     dNow = data.table(table_name = tableName, nrow_delete = n)})
@@ -37,7 +34,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
     DBI::dbRemoveTable(con, tableKeep)
   } else {
     DBI::dbRemoveTable(con, tableNow)
-    q = sprintf('alter table %s rename to %s', tableKeep, tableNow)
+    q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}', .con = con)
     n = DBI::dbExecute(con, q)}
 
   disconnect(con)
@@ -54,17 +51,18 @@ dropPmidVersionColumn = function(tableSuffix, con) {
       cols = setdiff(DBI::dbListFields(con, tableName), 'version')
       tableTmp = paste_(tableName, 'tmp')
 
-      q = sprintf('create table %s as select %s from %s',
-                  tableTmp, paste(cols, collapse = ', '), tableName)
+      q = glue('create table {tableTmp} as select {cols} from {tableName}',
+               cols = paste(cols, collapse = ', '))
       x = DBI::dbExecute(con, q)
       DBI::dbRemoveTable(con, tableName)
 
-      q = sprintf('alter table %s rename to %s', tableTmp, tableName)
+      q = glue_sql('alter table {`tableTmp`} rename to {`tableName`}',
+                   .con = con)
       x = DBI::dbExecute(con, q)}
 
   } else {
     for (tableName in names(emptyTables)[idx]) {
-      q = sprintf('alter table %s drop column version', tableName)
+      q = glue_sql('alter table {`tableName`} drop column version', .con = con)
       x = DBI::dbExecute(con, q)}}
 
   invisible()}

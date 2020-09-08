@@ -16,8 +16,8 @@ dbBase = 'pmdb_sample_'
 
 test_that('modifyPubmedDb create matches standard', {
   mode = 'create'
-  dbnameObs = file.path(localDir, paste0(dbBase, mode, '_obs.db'))
-  dbnameExp = file.path(refDir, paste0(dbBase, mode, '.db'))
+  dbnameObs = file.path(localDir, glue('{dbBase}{mode}_obs.db'))
+  dbnameExp = file.path(refDir, glue('{dbBase}{mode}.db'))
 
   modifyPubmedDb(
     localDir = localDir, dbname = dbnameObs, dbtype = dbtype,
@@ -36,8 +36,8 @@ test_that('modifyPubmedDb create matches standard', {
 
 test_that('modifyPubmedDb update matches standard', {
   mode = 'update'
-  dbnameObs = file.path(localDir, paste0(dbBase, 'create.db'))
-  dbnameExp = file.path(refDir, paste0(dbBase, mode, '.db'))
+  dbnameObs = file.path(localDir, glue('{dbBase}create.db'))
+  dbnameExp = file.path(refDir, glue('{dbBase}{mode}.db'))
 
   modifyPubmedDb(
     localDir = localDir, dbname = dbnameObs, dbtype = dbtype,

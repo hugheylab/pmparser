@@ -28,7 +28,7 @@ download = function(url, destfile, n = 3L) {
     i = i + 1L}
 
   if (inherits(x, 'error')) stop(x)
-  if (x != 0L) stop(sprintf('Download of %s failed %d times. Ruh-roh.', url, n))
+  if (x != 0L) stop(glue('Download of {url} failed {n} times. Ruh-roh.'))
   x}
 
 
@@ -68,8 +68,8 @@ getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
     xmlInfo = unique(data.table(xmlFiles)[, .(xml_filename, step)])
 
   } else {
-    stop(paste('xmlFiles must be NULL, a character vector of filenames,',
-               'or a data.frame with columns xml_filename and step.'))}
+    stop(glue('xmlFiles must be NULL, a character vector of filenames, \\
+               or a data.frame with columns xml_filename and step.'))}
 
   stopifnot(all(file.exists(file.path(xmlDir, xmlInfo$xml_filename))))
   return(xmlInfo)}
@@ -133,7 +133,7 @@ getPkgVersion = function(pkgName = 'pmparser') {
 
 getReadme = function(remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
                      filename = 'README.txt', con = NULL) {
-  txt = RCurl::getURL(paste(remoteDir, filename, sep = '/'))
+  txt = RCurl::getURL(glue('{remoteDir}/{filename}'))
   dReadme = data.table(text = txt)
   if (!is.null(con)) DBI::dbWriteTable(con, 'readme', dReadme, overwrite = TRUE)
   return(dReadme)}

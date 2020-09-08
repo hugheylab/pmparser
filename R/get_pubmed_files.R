@@ -1,20 +1,20 @@
 getRemoteFilenames = function(url, pattern) {
   raw = RCurl::getURL(url)
-  filenames = unlist(stringr::str_extract_all(raw, pattern))
-  d = data.table(xml_filename = filenames,
-                 md5_filename = paste0(filenames, '.md5'))
+  x = strsplit(raw, '\\n')[[1L]]
+  m = regexpr(glue('{pattern}$'), x)
+  filenames = regmatches(x, m)
+  d = data.table(
+    xml_filename = filenames, md5_filename = glue('{filenames}.md5'))
   return(d)}
 
 
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
-
   pattern = 'pubmed.*\\.xml\\.gz'
 
   dRemote = foreach(subDir = subDirs, .combine = rbind) %do% {
-    dNow = getRemoteFilenames(paste0(remoteDir, subDir, '/'),
-                              paste0(pattern, '(?=\n)'))
+    dNow = getRemoteFilenames(glue('{remoteDir}/{subDir}/'), pattern)
     dNow[, sub_dir := subDir]}
 
   dEmpty = data.table(
@@ -25,7 +25,7 @@ getPubmedFileInfo = function(
     dLocal = dEmpty
   } else {
     dLocal = foreach(subDir = subDirs, .combine = rbind) %do% {
-      filenames = dir(file.path(localDir, subDir), paste0(pattern, '$'))
+      filenames = dir(file.path(localDir, subDir), glue('{pattern}$'))
 
       if (length(filenames) == 0) {
         dNow = dEmpty
@@ -79,7 +79,7 @@ getPubmedFiles = function(
   fTmp = fileInfo[is.na(md5_download)]
   col = 'md5_filename'
   r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
-    download(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+    download(glue('{remoteDir}/{f$sub_dir}/{f[[col]]}'),
              file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[is.na(md5_download), md5_download := r]
 
@@ -94,7 +94,7 @@ getPubmedFiles = function(
   fTmp = fileInfo[!(md5_match)]
   col = 'xml_filename'
   r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
-    download(paste0(remoteDir, f$sub_dir, '/', f[[col]]),
+    download(glue('{remoteDir}{f$sub_dir}/{f[[col]]}'),
              file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[!(md5_match), xml_download := r]
 
