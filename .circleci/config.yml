@@ -44,7 +44,7 @@ jobs:
 
       - run:
           name: Calculate code coverage
-          command: r -e 'covr::codecov()'
+          command: r -e 'trycatch(sign("hello"),  error = function(e) print(paste(c("Error when sending to codecov- ", e))))'
 
       - run:
           name: Deploy to drat
