@@ -7,7 +7,7 @@
 modifyPubmedDb(
   localDir,
   dbname,
-  dbtype = c("postgres", "mariadb", "mysql", "sqlite"),
+  dbtype = c("postgres", "clickhouse", "mariadb", "mysql", "sqlite"),
   nFiles = Inf,
   retry = TRUE,
   nCitations = Inf,
@@ -20,7 +20,7 @@ modifyPubmedDb(
 
 \item{dbname}{Name of database.}
 
-\item{dbtype}{Type of database, either 'postgres', 'mariadb', 'mysql', or
+\item{dbtype}{Type of database, either 'postgres', 'clickhouse' 'mariadb', 'mysql', or
 'sqlite'. Due to the large size of the database, SQLite is recommended only
 for small-scale testing.}
 

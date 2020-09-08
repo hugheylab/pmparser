@@ -8,7 +8,7 @@
 #'
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
-#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
+#' @param dbtype Type of database, either 'postgres', 'clickhouse' 'mariadb', 'mysql', or
 #'   'sqlite'. Due to the large size of the database, SQLite is recommended only
 #'   for small-scale testing.
 #' @param nFiles Maximum number of xml files to parse that are not already in
@@ -32,7 +32,7 @@
 #'
 #' @export
 modifyPubmedDb = function(
-  localDir, dbname, dbtype = c('postgres', 'mariadb', 'mysql', 'sqlite'),
+  localDir, dbname, dbtype = c('postgres', 'clickhouse', 'mariadb', 'mysql', 'sqlite'),
   nFiles = Inf, retry = TRUE, nCitations = Inf, mode = c('create', 'update'),
   ...) {
 
