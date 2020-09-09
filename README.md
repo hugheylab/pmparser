@@ -3,11 +3,7 @@
 [![CircleCI](https://circleci.com/gh/hugheylab/pmparser.svg?style=shield)](https://circleci.com/gh/hugheylab/pmparser)
 [![codecov](https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/pmparser)
 
-`pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection.
-
-PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008109).
-
-For a detailed description of `pmparser` and PMDB, check out the [preprint](doi:here).
+`pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008109). For a detailed description of `pmparser` and PMDB, check out the [preprint](https://doi.org/10.1101/2020.09.07.285924).
 
 ## Installation
 
