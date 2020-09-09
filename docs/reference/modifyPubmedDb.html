@@ -76,7 +76,7 @@ registered, such as with doFuture::registerDoFuture()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9025</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9026</span>
       </span>
     </div>
 
@@ -131,7 +131,7 @@ registered, such as with <code><a href='https://rdrr.io/pkg/doFuture/man/registe
     <pre class="usage"><span class='fu'>modifyPubmedDb</span>(
   <span class='kw'>localDir</span>,
   <span class='kw'>dbname</span>,
-  dbtype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"postgres"</span>, <span class='st'>"mariadb"</span>, <span class='st'>"mysql"</span>, <span class='st'>"sqlite"</span>),
+  dbtype = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"postgres"</span>, <span class='st'>"mariadb"</span>, <span class='st'>"mysql"</span>, <span class='st'>"sqlite"</span>, <span class='st'>"clickhouse"</span>),
   nFiles = <span class='fl'>Inf</span>,
   retry = <span class='fl'>TRUE</span>,
   nCitations = <span class='fl'>Inf</span>,
@@ -152,9 +152,11 @@ registered, such as with <code><a href='https://rdrr.io/pkg/doFuture/man/registe
     </tr>
     <tr>
       <th>dbtype</th>
-      <td><p>Type of database, either 'postgres', 'mariadb', 'mysql', or
-'sqlite'. Due to the large size of the database, SQLite is recommended only
-for small-scale testing.</p></td>
+      <td><p>Type of database, either 'postgres', 'mariadb', 'mysql',
+'sqlite', or 'clickhouse'. Make sure to install the corresponding DBI
+driver package first: RPostgres, RMariaDB (for both 'mariadb' and 'mysql'),
+RSQLite, or RClickhouse. Due to the large size of the database, SQLite is
+recommended only for small-scale testing.</p></td>
     </tr>
     <tr>
       <th>nFiles</th>

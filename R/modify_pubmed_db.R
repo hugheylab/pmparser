@@ -8,9 +8,11 @@
 #'
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
-#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
-#'   'sqlite'. Due to the large size of the database, SQLite is recommended only
-#'   for small-scale testing.
+#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql',
+#'   'sqlite', or 'clickhouse'. Make sure to install the corresponding DBI
+#'   driver package first: RPostgres, RMariaDB (for both 'mariadb' and 'mysql'),
+#'   RSQLite, or RClickhouse. Due to the large size of the database, SQLite is
+#'   recommended only for small-scale testing.
 #' @param nFiles Maximum number of xml files to parse that are not already in
 #'   the database. This should not normally be changed from the default.
 #' @param retry Logical indicating whether to retry parsing steps that fail.
@@ -32,7 +34,8 @@
 #'
 #' @export
 modifyPubmedDb = function(
-  localDir, dbname, dbtype = c('postgres', 'mariadb', 'mysql', 'sqlite'),
+  localDir, dbname,
+  dbtype = c('postgres', 'mariadb', 'mysql', 'sqlite', 'clickhouse'),
   nFiles = Inf, retry = TRUE, nCitations = Inf, mode = c('create', 'update'),
   ...) {
 

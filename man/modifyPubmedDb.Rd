@@ -7,7 +7,7 @@
 modifyPubmedDb(
   localDir,
   dbname,
-  dbtype = c("postgres", "mariadb", "mysql", "sqlite"),
+  dbtype = c("postgres", "mariadb", "mysql", "sqlite", "clickhouse"),
   nFiles = Inf,
   retry = TRUE,
   nCitations = Inf,
@@ -20,9 +20,11 @@ modifyPubmedDb(
 
 \item{dbname}{Name of database.}
 
-\item{dbtype}{Type of database, either 'postgres', 'mariadb', 'mysql', or
-'sqlite'. Due to the large size of the database, SQLite is recommended only
-for small-scale testing.}
+\item{dbtype}{Type of database, either 'postgres', 'mariadb', 'mysql',
+'sqlite', or 'clickhouse'. Make sure to install the corresponding DBI
+driver package first: RPostgres, RMariaDB (for both 'mariadb' and 'mysql'),
+RSQLite, or RClickhouse. Due to the large size of the database, SQLite is
+recommended only for small-scale testing.}
 
 \item{nFiles}{Maximum number of xml files to parse that are not already in
 the database. This should not normally be changed from the default.}
