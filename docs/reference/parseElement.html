@@ -76,7 +76,7 @@ modifyPubmedDb()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9025</span>
       </span>
     </div>
 
@@ -128,35 +128,35 @@ These functions should not normally be called directly, as they are called by
 <code><a href='modifyPubmedDb.html'>modifyPubmedDb()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>parsePmidStatus</span>(<span class='no'>rawXml</span>, <span class='no'>filename</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>parsePmidStatus</span>(<span class='kw'>rawXml</span>, <span class='kw'>filename</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseArticleId</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseArticleId</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseArticle</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseArticle</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parsePubHistory</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parsePubHistory</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseJournal</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseJournal</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parsePubType</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parsePubType</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseMesh</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseMesh</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseKeyword</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseKeyword</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseGrant</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseGrant</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseChemical</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseChemical</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseDataBank</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseDataBank</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseComment</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseComment</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseAbstract</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseAbstract</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseAuthor</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>parseAuthor</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)
 
-<span class='fu'>parseInvestigator</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>, <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>parseInvestigator</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>, con = <span class='kw'>NULL</span>, tableSuffix = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -251,31 +251,33 @@ and the fifth data.table does not exist.</p>
     <div class='dont-index'><p><code><a href='getCitation.html'>getCitation()</a></code>, <code><a href='modifyPubmedDb.html'>modifyPubmedDb()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>'data.table'</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>'xml2'</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='http://r-datatable.com'>'data.table'</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'><a href='https://xml2.r-lib.org'>'xml2'</a></span>)
 
-<span class='no'>filename</span> <span class='kw'>=</span> <span class='st'>'pubmed20n1016.xml.gz'</span>
-<span class='no'>rawXml</span> <span class='kw'>=</span> <span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_xml</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='no'>filename</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'pmparser'</span>))
+<span class='kw'>filename</span> <span class='op'>=</span> <span class='st'>'pubmed20n1016.xml.gz'</span>
+<span class='kw'>rawXml</span> <span class='op'>=</span> <span class='fu'><a href='http://xml2.r-lib.org/reference/read_xml.html'>read_xml</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>'extdata'</span>, <span class='kw'>filename</span>, package = <span class='st'>'pmparser'</span>))
 
-<span class='no'>pmidStatusList</span> <span class='kw'>=</span> <span class='fu'>parsePmidStatus</span>(<span class='no'>rawXml</span>, <span class='no'>filename</span>)
-<span class='no'>pmXml</span> <span class='kw'>=</span> <span class='no'>pmidStatusList</span><span class='kw'>[[</span><span class='fl'>1L</span>]]
-<span class='no'>dPmidRaw</span> <span class='kw'>=</span> <span class='no'>pmidStatusList</span><span class='kw'>[[</span><span class='fl'>2L</span>]]
-<span class='no'>dPmid</span> <span class='kw'>=</span> <span class='no'>dPmidRaw</span>[<span class='no'>status</span> <span class='kw'>!=</span> <span class='st'>'Deleted'</span>, !<span class='st'>'status'</span>]
+<span class='kw'>pmidStatusList</span> <span class='op'>=</span> <span class='fu'>parsePmidStatus</span>(<span class='kw'>rawXml</span>, <span class='kw'>filename</span>)
+<span class='kw'>pmXml</span> <span class='op'>=</span> <span class='kw'>pmidStatusList</span>[[<span class='fl'>1L</span>]]
+<span class='kw'>dPmidRaw</span> <span class='op'>=</span> <span class='kw'>pmidStatusList</span>[[<span class='fl'>2L</span>]]
+<span class='kw'>dPmid</span> <span class='op'>=</span> <span class='kw'>dPmidRaw</span>[<span class='kw'>status</span> != <span class='st'>'Deleted'</span>, <span class='op'>!</span><span class='st'>'status'</span>]
 
-<span class='no'>dArticleId</span> <span class='kw'>=</span> <span class='fu'>parseArticleId</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dArticle</span> <span class='kw'>=</span> <span class='fu'>parseArticle</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dJournal</span> <span class='kw'>=</span> <span class='fu'>parseJournal</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dPubType</span> <span class='kw'>=</span> <span class='fu'>parsePubType</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dPubHistory</span> <span class='kw'>=</span> <span class='fu'>parsePubHistory</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>meshList</span> <span class='kw'>=</span> <span class='fu'>parseMesh</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>keywordList</span> <span class='kw'>=</span> <span class='fu'>parseKeyword</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>grantList</span> <span class='kw'>=</span> <span class='fu'>parseGrant</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dChemical</span> <span class='kw'>=</span> <span class='fu'>parseChemical</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dDataBank</span> <span class='kw'>=</span> <span class='fu'>parseDataBank</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>dComment</span> <span class='kw'>=</span> <span class='fu'>parseComment</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>abstractList</span> <span class='kw'>=</span> <span class='fu'>parseAbstract</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>authorList</span> <span class='kw'>=</span> <span class='fu'>parseAuthor</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)
-<span class='no'>investigatorList</span> <span class='kw'>=</span> <span class='fu'>parseInvestigator</span>(<span class='no'>pmXml</span>, <span class='no'>dPmid</span>)</div></pre>
+<span class='kw'>dArticleId</span> <span class='op'>=</span> <span class='fu'>parseArticleId</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dArticle</span> <span class='op'>=</span> <span class='fu'>parseArticle</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dJournal</span> <span class='op'>=</span> <span class='fu'>parseJournal</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dPubType</span> <span class='op'>=</span> <span class='fu'>parsePubType</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dPubHistory</span> <span class='op'>=</span> <span class='fu'>parsePubHistory</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>meshList</span> <span class='op'>=</span> <span class='fu'>parseMesh</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>keywordList</span> <span class='op'>=</span> <span class='fu'>parseKeyword</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>grantList</span> <span class='op'>=</span> <span class='fu'>parseGrant</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dChemical</span> <span class='op'>=</span> <span class='fu'>parseChemical</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dDataBank</span> <span class='op'>=</span> <span class='fu'>parseDataBank</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>dComment</span> <span class='op'>=</span> <span class='fu'>parseComment</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>abstractList</span> <span class='op'>=</span> <span class='fu'>parseAbstract</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>authorList</span> <span class='op'>=</span> <span class='fu'>parseAuthor</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>investigatorList</span> <span class='op'>=</span> <span class='fu'>parseInvestigator</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -291,7 +293,7 @@ and the fifth data.table does not exist.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

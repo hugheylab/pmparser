@@ -77,7 +77,7 @@ modifyPubmedDb()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9024</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9025</span>
       </span>
     </div>
 
@@ -131,13 +131,13 @@ should not normally be called directly, as it is called by
     </div>
 
     <pre class="usage"><span class='fu'>getCitation</span>(
-  <span class='no'>localDir</span>,
-  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"open_citation_collection.zip"</span>,
-  <span class='kw'>nrows</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>tableSuffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>con</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>checkMd5</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>localDir</span>,
+  filename = <span class='st'>"open_citation_collection.zip"</span>,
+  nrows = <span class='fl'>Inf</span>,
+  tableSuffix = <span class='kw'>NULL</span>,
+  overwrite = <span class='fl'>FALSE</span>,
+  con = <span class='kw'>NULL</span>,
+  checkMd5 = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -190,9 +190,11 @@ swamp the machine's memory. If <code>con</code> is not <code>NULL</code>, the fu
     <div class='dont-index'><p><code><a href='parseElement.html'>parsePmidStatus()</a></code>, <code><a href='modifyPubmedDb.html'>modifyPubmedDb()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>dCitation</span> <span class='kw'>=</span> <span class='fu'>getCitation</span>(<span class='st'>'.'</span>)
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>dCitation</span> <span class='op'>=</span> <span class='fu'>getCitation</span>(<span class='st'>'.'</span>)
+}
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -208,7 +210,7 @@ swamp the machine's memory. If <code>con</code> is not <code>NULL</code>, the fu
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

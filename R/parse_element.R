@@ -310,7 +310,7 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
         xml_attr(x, 'MajorTopicYN'))))
   } else {
     x6 = data.table(
-      x3[, colnames(dPmid), with = FALSE], descriptor_pos = ai,
+      x3[0L, colnames(dPmid), with = FALSE], descriptor_pos = ai,
       qualifier_name = ac, qualifier_ui = ac, qualifier_major_topic = ac)}
 
   r = list(x3, x6)
