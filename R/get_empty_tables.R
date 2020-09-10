@@ -18,6 +18,8 @@ getEmptyTables = function(tableSuffix) {
 
     pub_history = data.table(pub_status = ac, pub_date = as.Date(ac)),
 
+    mesh_list = data.table(indexing_method = ac),
+
     mesh_descriptor = data.table(
       descriptor_pos = ac, descriptor_name = ac, descriptor_ui = ac,
       descriptor_major_topic = ac),

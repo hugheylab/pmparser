@@ -15,7 +15,7 @@ globalVariables(c(
   'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
   '..cols', 'tableName', 'copyright', 'descriptor_pos', 'processed', 'N',
   'equal_contrib', 'sample_base', 'pub_year', 'pub_month', 'pub_month_tmp1',
-  'pub_month_tmp2', 'pub_day', 'pub_day_tmp'))
+  'pub_month_tmp2', 'pub_day', 'pub_day_tmp', 'indexing_method'))
 
 
 parsePubmedXmlCore = function(

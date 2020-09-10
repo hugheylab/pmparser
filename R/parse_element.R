@@ -43,14 +43,15 @@
 #'   `parsePubType()`: a data.table with columns `type_name` and `type_id`,
 #'   parsed from the PublicationTypeList section.
 #'
-#'   `parseMesh()`: a list of two data.tables parsed from the
-#'   MeshHeadingList section. The first with columns `descriptor_pos`,
+#'   `parseMesh()`: a list of three data.tables parsed mostly from the
+#'   MeshHeadingList section. The first has column `indexing_method` (parsed
+#'   from the MedlineCitation section), the second has columns `descriptor_pos`,
 #'   `descriptor_name`, `descriptor_ui`, and `descriptor_major_topic`, the
-#'   second with columns `descriptor_pos`, `qualifier_name`, `qualifier_ui`, and
+#'   third has columns `descriptor_pos`, `qualifier_name`, `qualifier_ui`, and
 #'   `qualifier_major_topic`.
 #'
 #'   `parseKeyword()`: a list of two data.tables parsed from the KeywordList
-#'   section. The first with column `list_owner`, the second with columns
+#'   section. The first has column `list_owner`, the second has columns
 #'   `keyword_name` and `major_topic`.
 #'
 #'   `parseGrant()`: a list of two data.tables parsed from the GrantList
@@ -103,15 +104,15 @@
 #' dJournal = parseJournal(pmXml, dPmid)
 #' dPubType = parsePubType(pmXml, dPmid)
 #' dPubHistory = parsePubHistory(pmXml, dPmid)
-#' meshList = parseMesh(pmXml, dPmid)
-#' keywordList = parseKeyword(pmXml, dPmid)
-#' grantList = parseGrant(pmXml, dPmid)
+#' meshRes = parseMesh(pmXml, dPmid)
+#' keywordRes = parseKeyword(pmXml, dPmid)
+#' grantRes = parseGrant(pmXml, dPmid)
 #' dChemical = parseChemical(pmXml, dPmid)
 #' dDataBank = parseDataBank(pmXml, dPmid)
 #' dComment = parseComment(pmXml, dPmid)
-#' abstractList = parseAbstract(pmXml, dPmid)
-#' authorList = parseAuthor(pmXml, dPmid)
-#' investigatorList = parseInvestigator(pmXml, dPmid)
+#' abstractRes = parseAbstract(pmXml, dPmid)
+#' authorRes = parseAuthor(pmXml, dPmid)
+#' investigatorRes = parseInvestigator(pmXml, dPmid)
 #'
 #' @seealso [getCitation()], [modifyPubmedDb()]
 #'
@@ -281,6 +282,12 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_first(pmXml, './/MeshHeadingList')
   nDescPerPmid = xml_length(x1)
 
+  x7 = data.table(
+    dPmid,
+    indexing_method = xml_attr(
+      xml_find_first(pmXml, 'MedlineCitation'), 'IndexingMethod'))
+  x7 = x7[!is.na(indexing_method)]
+
   x2 = xml_find_all(x1[nDescPerPmid > 0], './/DescriptorName')
   x3 = data.table(
     dPmid[rep.int(1:.N, nDescPerPmid)],
@@ -313,9 +320,9 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
       x3[0L, colnames(dPmid), with = FALSE], descriptor_pos = ai,
       qualifier_name = ac, qualifier_ui = ac, qualifier_major_topic = ac)}
 
-  r = list(x3, x6)
-  names(r) = c(paste_('mesh_descriptor', tableSuffix),
-               paste_('mesh_qualifier', tableSuffix))
+  r = list(x7, x3, x6)
+  names(r) = paste_(
+    c('mesh_list', 'mesh_descriptor', 'mesh_qualifier'), tableSuffix)
 
   for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
@@ -340,8 +347,8 @@ parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     major_topic = xml_attr(x3, 'MajorTopicYN'))
 
   r = list(x2, x4)
-  names(r) = c(paste_('keyword_list', tableSuffix),
-               paste_('keyword_item', tableSuffix)) # consistent with grant_item
+  # consistent with grant_item
+  names(r) = paste_(c('keyword_list', 'keyword_item'), tableSuffix)
 
   for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}
@@ -368,8 +375,8 @@ parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     country = xml_text(xml_find_first(x3, './/Country')))
 
   r = list(x2, x4)
-  names(r) = c(paste_('grant_list', tableSuffix),
-               paste_('grant_item', tableSuffix)) # avoid reserved word
+  # avoid reserved word
+  names(r) = paste_(c('grant_list', 'grant_item'), tableSuffix)
 
   for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
   return(r)}

@@ -1,6 +1,6 @@
 Package: pmparser
 Title: Create and maintain a relational database of data from PubMed/MEDLINE
-Version: 0.0.0.9025
+Version: 0.0.0.9026
 Authors@R: as.person(c(
   "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
   "Josh Schoenbachler <joshschoenbachler@gmail.com> [aut]",
