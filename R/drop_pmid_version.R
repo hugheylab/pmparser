@@ -8,11 +8,18 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
 
   tableNow = names(emptyTables)[startsWith(names(emptyTables), 'pmid_status')]
 
-  q = glue(
-    'create table {tableKeep} as with ranked_pmid_status as
-    (select *, row_number() over (partition by pmid order by version desc) as rn
-    from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
-    cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))
+  if(dbtype == 'clickhouse'){
+    q = glue(
+      'create table {tableKeep} as with ranked_pmid_status as
+      (select *, rowNumberInAllBlocks() from (select pmid order by version desc) as rn
+      from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
+      cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))}
+  else{
+    q = glue(
+      'create table {tableKeep} as with ranked_pmid_status as
+      (select *, row_number() over (partition by pmid order by version desc) as rn
+      from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
+      cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))}
   n = DBI::dbExecute(con, q)
   disconnect(con)
 

@@ -163,14 +163,27 @@ addSourceToTarget = function(
   if (DBI::dbExistsTable(con, sourceKeep)) {
     DBI::dbRemoveTable(con, sourceKeep)}
 
-  # window functions are for wizards
-  q = glue(
-    'create table {sourceKeep} as with ranked_pmid_status as
-    (select *, row_number() over
-    (partition by pmid order by version desc, xml_filename desc) as rn
-    from pmid_status_{sourceSuffix})
-    select pmid, version, xml_filename
-    from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+
+  if(dbtype == 'clickhouse'){
+    # no window functions for clickhouse
+    q = glue(
+      'create table {sourceKeep} as with ranked_pmid_status as
+      (select *, rowNumberInAllBlocks() from
+      (select pmid order by version desc, xml_filename desc) as rn
+      from pmid_status_{sourceSuffix})
+      select pmid, version, xml_filename
+      from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+  }
+  else{
+    # window functions are for wizards (and not for ClickHouse users)
+    q = glue(
+      'create table {sourceKeep} as with ranked_pmid_status as
+      (select *, row_number() over
+      (partition by pmid order by version desc, xml_filename desc) as rn
+      from pmid_status_{sourceSuffix})
+      select pmid, version, xml_filename
+      from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+  }
   n = DBI::dbExecute(con, q)
 
   deleteStart = c('delete', 'select count(*)')

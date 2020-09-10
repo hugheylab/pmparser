@@ -41,8 +41,7 @@ connect = function(dbtype, dbname, ...) {
                mysql = RMariaDB::MariaDB(),
                sqlite = RSQLite::SQLite())
   if(dbtype == 'clickhouse'){
-    return(DBI::dbConnect(drv, db = dbname, ...))
-  }
+    return(DBI::dbConnect(drv, db = dbname, ...))}
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
 
 
