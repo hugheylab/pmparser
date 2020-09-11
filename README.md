@@ -5,7 +5,7 @@
 
 `pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection.
 
-PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008110).
+PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008109).
 
 For a detailed description of `pmparser` and PMDB, check out the [preprint](doi:here).
 
