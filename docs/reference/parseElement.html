@@ -76,7 +76,7 @@ modifyPubmedDb()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9025</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9026</span>
       </span>
     </div>
 
@@ -212,13 +212,14 @@ parsed from the History section.</p>
 <code>issue</code>, and <code>cited_medium</code>, parsed from the Journal section.</p>
 <p><code>parsePubType()</code>: a data.table with columns <code>type_name</code> and <code>type_id</code>,
 parsed from the PublicationTypeList section.</p>
-<p><code>parseMesh()</code>: a list of two data.tables parsed from the
-MeshHeadingList section. The first with columns <code>descriptor_pos</code>,
+<p><code>parseMesh()</code>: a list of three data.tables parsed mostly from the
+MeshHeadingList section. The first has column <code>indexing_method</code> (parsed
+from the MedlineCitation section), the second has columns <code>descriptor_pos</code>,
 <code>descriptor_name</code>, <code>descriptor_ui</code>, and <code>descriptor_major_topic</code>, the
-second with columns <code>descriptor_pos</code>, <code>qualifier_name</code>, <code>qualifier_ui</code>, and
+third has columns <code>descriptor_pos</code>, <code>qualifier_name</code>, <code>qualifier_ui</code>, and
 <code>qualifier_major_topic</code>.</p>
 <p><code>parseKeyword()</code>: a list of two data.tables parsed from the KeywordList
-section. The first with column <code>list_owner</code>, the second with columns
+section. The first has column <code>list_owner</code>, the second has columns
 <code>keyword_name</code> and <code>major_topic</code>.</p>
 <p><code>parseGrant()</code>: a list of two data.tables parsed from the GrantList
 section. The first has column <code>complete</code>, the second has columns
@@ -267,15 +268,15 @@ and the fifth data.table does not exist.</p>
 <span class='kw'>dJournal</span> <span class='op'>=</span> <span class='fu'>parseJournal</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
 <span class='kw'>dPubType</span> <span class='op'>=</span> <span class='fu'>parsePubType</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
 <span class='kw'>dPubHistory</span> <span class='op'>=</span> <span class='fu'>parsePubHistory</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
-<span class='kw'>meshList</span> <span class='op'>=</span> <span class='fu'>parseMesh</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
-<span class='kw'>keywordList</span> <span class='op'>=</span> <span class='fu'>parseKeyword</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
-<span class='kw'>grantList</span> <span class='op'>=</span> <span class='fu'>parseGrant</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>meshRes</span> <span class='op'>=</span> <span class='fu'>parseMesh</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>keywordRes</span> <span class='op'>=</span> <span class='fu'>parseKeyword</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>grantRes</span> <span class='op'>=</span> <span class='fu'>parseGrant</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
 <span class='kw'>dChemical</span> <span class='op'>=</span> <span class='fu'>parseChemical</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
 <span class='kw'>dDataBank</span> <span class='op'>=</span> <span class='fu'>parseDataBank</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
 <span class='kw'>dComment</span> <span class='op'>=</span> <span class='fu'>parseComment</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
-<span class='kw'>abstractList</span> <span class='op'>=</span> <span class='fu'>parseAbstract</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
-<span class='kw'>authorList</span> <span class='op'>=</span> <span class='fu'>parseAuthor</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
-<span class='kw'>investigatorList</span> <span class='op'>=</span> <span class='fu'>parseInvestigator</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>abstractRes</span> <span class='op'>=</span> <span class='fu'>parseAbstract</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>authorRes</span> <span class='op'>=</span> <span class='fu'>parseAuthor</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
+<span class='kw'>investigatorRes</span> <span class='op'>=</span> <span class='fu'>parseInvestigator</span>(<span class='kw'>pmXml</span>, <span class='kw'>dPmid</span>)
 
 </div></pre>
   </div>

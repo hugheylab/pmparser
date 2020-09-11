@@ -93,14 +93,15 @@ parsed from the History section.
 \code{parsePubType()}: a data.table with columns \code{type_name} and \code{type_id},
 parsed from the PublicationTypeList section.
 
-\code{parseMesh()}: a list of two data.tables parsed from the
-MeshHeadingList section. The first with columns \code{descriptor_pos},
+\code{parseMesh()}: a list of three data.tables parsed mostly from the
+MeshHeadingList section. The first has column \code{indexing_method} (parsed
+from the MedlineCitation section), the second has columns \code{descriptor_pos},
 \code{descriptor_name}, \code{descriptor_ui}, and \code{descriptor_major_topic}, the
-second with columns \code{descriptor_pos}, \code{qualifier_name}, \code{qualifier_ui}, and
+third has columns \code{descriptor_pos}, \code{qualifier_name}, \code{qualifier_ui}, and
 \code{qualifier_major_topic}.
 
 \code{parseKeyword()}: a list of two data.tables parsed from the KeywordList
-section. The first with column \code{list_owner}, the second with columns
+section. The first has column \code{list_owner}, the second has columns
 \code{keyword_name} and \code{major_topic}.
 
 \code{parseGrant()}: a list of two data.tables parsed from the GrantList
@@ -160,15 +161,15 @@ dArticle = parseArticle(pmXml, dPmid)
 dJournal = parseJournal(pmXml, dPmid)
 dPubType = parsePubType(pmXml, dPmid)
 dPubHistory = parsePubHistory(pmXml, dPmid)
-meshList = parseMesh(pmXml, dPmid)
-keywordList = parseKeyword(pmXml, dPmid)
-grantList = parseGrant(pmXml, dPmid)
+meshRes = parseMesh(pmXml, dPmid)
+keywordRes = parseKeyword(pmXml, dPmid)
+grantRes = parseGrant(pmXml, dPmid)
 dChemical = parseChemical(pmXml, dPmid)
 dDataBank = parseDataBank(pmXml, dPmid)
 dComment = parseComment(pmXml, dPmid)
-abstractList = parseAbstract(pmXml, dPmid)
-authorList = parseAuthor(pmXml, dPmid)
-investigatorList = parseInvestigator(pmXml, dPmid)
+abstractRes = parseAbstract(pmXml, dPmid)
+authorRes = parseAuthor(pmXml, dPmid)
+investigatorRes = parseInvestigator(pmXml, dPmid)
 
 }
 \seealso{
