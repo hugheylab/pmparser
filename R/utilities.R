@@ -47,6 +47,7 @@ connect = function(dbtype, dbname, ...) {
 
   drv = switch(dbtype,
                postgres = RPostgres::Postgres(),
+               clickhouse = RClickhouse::clickhouse(),
                mariadb = RMariaDB::MariaDB(),
                mysql = RMariaDB::MariaDB(),
                sqlite = RSQLite::SQLite(),
