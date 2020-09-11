@@ -135,10 +135,10 @@ runStatement = function(con, q) {
     res = DBI::dbSendQuery(con, q)
     n = DBI::dbFetch(res)[[1L]]
     DBI::dbClearResult(res)
-  } else if (grepl('^(delete|insert)', q)) { # for reals
+  } else if (grepl('^(delete|insert|alter table)', q)) { # for reals
     n = DBI::dbExecute(con, q)
   } else {
-    stop('Statement must start with "select count", "delete", or "insert".')}
+    stop('Statement must start with "select count", "delete", "insert", or "alter table".')}
   return(n)}
 
 

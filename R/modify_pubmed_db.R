@@ -199,8 +199,12 @@ addSourceToTarget = function(
   targetNow = names(targetEmpty)[startsWith(names(targetEmpty), 'xml_processed')]
   sourceNow = names(sourceEmpty)[startsWith(names(sourceEmpty), 'xml_processed')]
 
-  q = glue('{deleteStart[1 + dryRun]} from {targetNow} where
-           xml_filename in (select xml_filename from {sourceNow})')
+  if(!dryRun && dbtype == 'clickhouse'){
+    q = glue('alter table {targetNow} delete where
+             xml_filename in (select xml_filename from {sourceNow})')
+  } else {
+    q = glue('{deleteStart[1 + dryRun]} from {targetNow} where
+             xml_filename in (select xml_filename from {sourceNow})')}
   nDelete = runStatement(con, q)
 
   insertStart = if (isTRUE(dryRun)) insertBase[2L] else
@@ -223,8 +227,12 @@ addSourceToTarget = function(
   d2 = doOp(feo, {
     con = connect(dbtype, dbname, ...) # required if in dopar
     # drop rows in target tables, use subquery to conform to sql standard
-    q = glue('{deleteStart[1L + dryRun]} from {targetName}
-             where pmid in (select pmid from {sourceName})')
+    if(!dryRun && dbtype == 'clickhouse'){
+      q = glue('alter table {targetName} delete
+               where pmid in (select pmid from {sourceName})')
+    } else {
+      q = glue('{deleteStart[1L + dryRun]} from {targetName}
+               where pmid in (select pmid from {sourceName})')}
     nDelete = runStatement(con, q)
 
     # append source rows to target tables

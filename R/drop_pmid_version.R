@@ -35,9 +35,14 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   doOp = getDoOp(dbtype)
   d = doOp(foreach(tableName = names(emptyTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
-    q = glue('{qStart} from {tableName} as a where not exists
-             (select 1 from {tableKeep} as b
-             where a.pmid = b.pmid and a.version = b.version)')
+    if(dbtype == 'clickhouse'){
+      q = glue('alter table {tableName} as a delete where not exists
+               (select 1 from {tableKeep} as b
+               where a.pmid = b.pmid and a.version = b.version)')
+    } else {
+      q = glue('{qStart} from {tableName} as a where not exists
+               (select 1 from {tableKeep} as b
+               where a.pmid = b.pmid and a.version = b.version)')}
     n = runStatement(con, q)
     disconnect(con)
     dNow = data.table(table_name = tableName, nrow_delete = n)})
