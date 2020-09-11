@@ -13,8 +13,8 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
       'create table {tableKeep} as with ranked_pmid_status as
       (select *, rowNumberInAllBlocks() from (select pmid order by version desc) as rn
       from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
-      cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))}
-  else{
+      cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))
+    } else {
     q = glue(
       'create table {tableKeep} as with ranked_pmid_status as
       (select *, row_number() over (partition by pmid order by version desc) as rn

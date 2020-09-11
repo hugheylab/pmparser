@@ -168,13 +168,14 @@ addSourceToTarget = function(
     # no window functions for clickhouse
     q = glue(
       'create table {sourceKeep} as with ranked_pmid_status as
-      (select *, rowNumberInAllBlocks() from
-      (select pmid order by version desc, xml_filename desc) as rn
-      from pmid_status_{sourceSuffix})
+      (select *, rn from
+      (select pmid, arrayEnumerate(groupArray(verFile)) as index_list from
+      (select pmid, concat(version, xml_filename) as verFile from pmid_status_{sourceSuffix} order by version desc, xml_filename desc)
+      group by pmid)
+      array join index_list as rn)
       select pmid, version, xml_filename
       from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
-  }
-  else{
+  } else {
     # window functions are for wizards (and not for ClickHouse users)
     q = glue(
       'create table {sourceKeep} as with ranked_pmid_status as
