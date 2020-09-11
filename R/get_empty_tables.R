@@ -107,6 +107,9 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
   for (i in 1:length(emptyTables)) {
+    if(dbtype == 'clickhouse'){
+      emptyTables[[i]] = rbind(emptyTables[[i]], as.list(rep.int(0, ncol(emptyTables[[i]]))))
+    }
     DBI::dbWriteTable(con, names(emptyTables)[i],
                       emptyTables[[i]], overwrite = TRUE)}
 
