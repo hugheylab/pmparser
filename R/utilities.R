@@ -33,16 +33,28 @@ download = function(url, destfile, n = 3L) {
 
 
 connect = function(dbtype, dbname, ...) {
-  dbtype = match.arg(dbtype, c('postgres', 'clickhouse', 'mariadb', 'mysql', 'sqlite'))
+  dbtype = match.arg(
+    dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite', 'clickhouse'))
+  pkgName = switch(dbtype,
+                   postgres = 'RPostgres',
+                   mariadb = 'RMariaDB',
+                   mysql = 'RMariaDB',
+                   sqlite = 'RSQLite',
+                   clickhouse = 'RClickhouse')
+
+  if (!requireNamespace(pkgName, quietly = TRUE)) {
+    stop(glue('To use dbtype "{dbtype}", install the {pkgName} package.'))}
+
   drv = switch(dbtype,
                postgres = RPostgres::Postgres(),
                clickhouse = RClickhouse::clickhouse(),
                mariadb = RMariaDB::MariaDB(),
                mysql = RMariaDB::MariaDB(),
-               sqlite = RSQLite::SQLite())
-  if(dbtype == 'clickhouse'){
-    return(DBI::dbConnect(drv, db = dbname, ...))
-  }
+               sqlite = RSQLite::SQLite(),
+               clickhouse = RClickhouse::clickhouse())
+
+  if (dbtype == 'clickhouse') {
+    return(DBI::dbConnect(drv, db = dbname, ...))}
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
 
 
