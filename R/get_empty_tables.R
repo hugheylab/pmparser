@@ -130,7 +130,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
         if(length(dateTimeIdxs) > 0L){
           valDT = valDT[1,(dateTimeCols) := as.POSIXct('1900-1-1')]}
       } else {
-        valDT = as.data.table(valList)}
+        valDT = data.table::as.data.table(valList)}
       emptyTables[[i]] = rbind(emptyTables[[i]], valDT)
       DBI::dbWriteTable(con, names(emptyTables)[i],
                         emptyTables[[i]], overwrite = TRUE, engine = "MergeTree")
