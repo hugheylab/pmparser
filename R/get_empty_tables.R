@@ -132,10 +132,15 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
       } else {
         valDT = data.table::as.data.table(valList)}
       emptyTables[[i]] = rbind(emptyTables[[i]], valDT)
-      DBI::dbWriteTable(con, names(emptyTables)[i],
+      tableName = names(emptyTables)[i]
+      DBI::dbWriteTable(con, tableName,
                         emptyTables[[i]], overwrite = TRUE, engine = "MergeTree ORDER BY tuple()")
-      q = glue('alter table {names(emptyTables)[i]} delete
-               where pmid = 0')
+      if(tableName == 'xml_processed'){
+        q = glue('alter table {names(emptyTables)[i]} delete
+               where xml_filename = 0')
+      } else{
+        q = glue('alter table {names(emptyTables)[i]} delete
+                 where pmid = 0')}
       nDelete = runStatement(con, q)
     } else {
       DBI::dbWriteTable(con, names(emptyTables)[i],
