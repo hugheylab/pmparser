@@ -135,7 +135,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
       DBI::dbWriteTable(con, names(emptyTables)[i],
                         emptyTables[[i]], overwrite = TRUE, engine = "MergeTree ORDER BY tuple()")
       q = glue('alter table {names(emptyTables)[i]} delete
-               where pmid = 0)')
+               where pmid = 0')
       nDelete = runStatement(con, q)
     } else {
       DBI::dbWriteTable(con, names(emptyTables)[i],
