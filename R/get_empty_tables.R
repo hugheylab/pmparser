@@ -137,7 +137,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                         emptyTables[[i]], overwrite = TRUE, engine = "MergeTree ORDER BY tuple()")
       if(tableName == 'xml_processed'){
         q = glue('alter table {names(emptyTables)[i]} delete
-               where xml_filename = 0')
+               where xml_filename = "0"')
       } else{
         q = glue('alter table {names(emptyTables)[i]} delete
                  where pmid = 0')}
