@@ -106,14 +106,38 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                        function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
-  if(dbtype == 'clickhouse'){
-    emptyTables = lapply(emptyTables, function(x) rbind(x, as.list(rep.int(0L, ncol(x)))))
-  }
+  classTypes = c(class(character()), class(as.integer()), class(as.Date('1900-1-1')))
 
+  `%notin%` = Negate(`%in%`)
   for (i in 1:length(emptyTables)) {
+    if(dbtype == 'clickhouse'){
+      valList = as.list(rep.int(0L, ncol(emptyTables[[i]])))
+      names(valList) = names(emptyTables[[i]])
+      dtTypes = sapply(emptyTables[[i]], class)
+      dateIdxs = which(as.vector(dtTypes) == 'Date')
+      dateTimeIdxs = which(as.vector(dtTypes) %notin% classTypes)
+      if(length(dateIdxs) > 0L || length(dateTimeIdxs) > 0L){
+        allCols = colnames(emptyTables[[i]])
+        if(length(dateIdxs) > 0L){
+          dateCols = allCols[[dateIdxs]]
+          valList[[dateIdxs]] = NULL}
+        if(length(dateTimeIdxs) > 0L){
+          dateTimeCols = allCols[[dateTimeIdxs]]
+          valList[[dateTimeIdxs]] = NULL}
+        valDT = as.data.table(valList)
+        if(length(dateIdxs) > 0L){
+          valDT = valDT[1,(dateCols) := as.Date('1900-1-1')]}
+        if(length(dateTimeIdxs) > 0L){
+          valDT = valDT[1,(dateTimeCols) := as.POSIXct('1900-1-1')]}
+      } else {
+        valDT = as.data.table(valList)}
+      emptyTables[[i]] = rbind(emptyTables[[i]], valDT)
+      DBI::dbWriteTable(con, names(emptyTables)[i],
+                        emptyTables[[i]], overwrite = TRUE)
+    } else {
+      DBI::dbWriteTable(con, names(emptyTables)[i],
+                        emptyTables[[i]], overwrite = TRUE)}}
 
-    DBI::dbWriteTable(con, names(emptyTables)[i],
-                      emptyTables[[i]], overwrite = TRUE)}
 
   disconnect(con)
   invisible()}
