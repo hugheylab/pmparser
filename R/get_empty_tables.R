@@ -124,7 +124,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
         if(length(dateTimeIdxs) > 0L){
           dateTimeCols = allCols[[dateTimeIdxs]]
           valList[[dateTimeIdxs]] = NULL}
-        valDT = as.data.table(valList)
+        valDT = data.table::as.data.table(valList)
         if(length(dateIdxs) > 0L){
           valDT = valDT[1,(dateCols) := as.Date('1900-1-1')]}
         if(length(dateTimeIdxs) > 0L){
