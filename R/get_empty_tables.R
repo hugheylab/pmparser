@@ -106,10 +106,12 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                        function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
+  if(dbtype == 'clickhouse'){
+    emptyTables = lapply(emptyTables, function(x) rbind(x, as.list(rep.int(0L, ncol(x)))))
+  }
+
   for (i in 1:length(emptyTables)) {
-    if(dbtype == 'clickhouse'){
-      emptyTables[[i]] = rbind(emptyTables[[i]], as.list(rep.int(0L, ncol(emptyTables[[i]]))))
-    }
+
     DBI::dbWriteTable(con, names(emptyTables)[i],
                       emptyTables[[i]], overwrite = TRUE)}
 
