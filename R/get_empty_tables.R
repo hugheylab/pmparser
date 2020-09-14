@@ -133,7 +133,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
         valDT = data.table::as.data.table(valList)}
       emptyTables[[i]] = rbind(emptyTables[[i]], valDT)
       DBI::dbWriteTable(con, names(emptyTables)[i],
-                        emptyTables[[i]], overwrite = TRUE, engine = "MergeTree")
+                        emptyTables[[i]], overwrite = TRUE, engine = "MergeTree ORDER BY tuple()")
     } else {
       DBI::dbWriteTable(con, names(emptyTables)[i],
                         emptyTables[[i]], overwrite = TRUE)}}
