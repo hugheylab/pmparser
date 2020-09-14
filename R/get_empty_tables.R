@@ -106,42 +106,10 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                        function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tablesExist) || isTRUE(overwrite))
 
-  classTypes = c(class(character()), class(as.integer()), class(as.Date('1900-1-1')))
-
-  `%notin%` = Negate(`%in%`)
   for (i in 1:length(emptyTables)) {
     if(dbtype == 'clickhouse'){
-      valList = as.list(rep.int(0L, ncol(emptyTables[[i]])))
-      names(valList) = names(emptyTables[[i]])
-      dtTypes = sapply(emptyTables[[i]], class)
-      dateIdxs = which(as.vector(dtTypes) == 'Date')
-      dateTimeIdxs = which(as.vector(dtTypes) %notin% classTypes)
-      if(length(dateIdxs) > 0L || length(dateTimeIdxs) > 0L){
-        allCols = colnames(emptyTables[[i]])
-        if(length(dateIdxs) > 0L){
-          dateCols = allCols[[dateIdxs]]
-          valList[[dateIdxs]] = NULL}
-        if(length(dateTimeIdxs) > 0L){
-          dateTimeCols = allCols[[dateTimeIdxs]]
-          valList[[dateTimeIdxs]] = NULL}
-        valDT = data.table::as.data.table(valList)
-        if(length(dateIdxs) > 0L){
-          valDT = valDT[1,(dateCols) := as.Date('1900-1-1')]}
-        if(length(dateTimeIdxs) > 0L){
-          valDT = valDT[1,(dateTimeCols) := as.POSIXct('1900-1-1')]}
-      } else {
-        valDT = data.table::as.data.table(valList)}
-      emptyTables[[i]] = rbind(emptyTables[[i]], valDT)
-      tableName = names(emptyTables)[i]
       DBI::dbWriteTable(con, tableName,
                         emptyTables[[i]], overwrite = TRUE, engine = "MergeTree ORDER BY tuple()")
-      if(tableName == 'xml_processed'){
-        q = glue('alter table {names(emptyTables)[i]} delete
-               where not(isNull(xml_filename))')
-      } else{
-        q = glue('alter table {names(emptyTables)[i]} delete
-                 where pmid = 0')}
-      nDelete = runStatement(con, q)
     } else {
       DBI::dbWriteTable(con, names(emptyTables)[i],
                         emptyTables[[i]], overwrite = TRUE)}}
