@@ -94,7 +94,9 @@ getEmptyTables = function(tableSuffix) {
   names(r) = paste_(names(r), tableSuffix)
   return(r)}
 
+classTypes = c(class(character()), class(as.integer()), class(as.Date('1900-1-1')))
 
+`%notin%` = Negate(`%in%`)
 writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
                             dbtype = 'postgres', dbname = NULL, ...) {
   if (is.null(dbname)) return(invisible())
