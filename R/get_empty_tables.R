@@ -108,7 +108,7 @@ writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
 
   for (i in 1:length(emptyTables)) {
     if(dbtype == 'clickhouse'){
-      DBI::dbWriteTable(con, tableName,
+      DBI::dbWriteTable(con, names(emptyTables)[i],
                         emptyTables[[i]], overwrite = TRUE, engine = "MergeTree ORDER BY tuple()")
     } else {
       DBI::dbWriteTable(con, names(emptyTables)[i],
