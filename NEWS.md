@@ -1,3 +1,6 @@
+# pmparser 0.0.0.9027
+* Removed obsolete copyright column from the abstract table. 
+
 # pmparser 0.0.0.9026
 * `parseMesh` now returns an additional table containing the IndexingMethod attribute.
 

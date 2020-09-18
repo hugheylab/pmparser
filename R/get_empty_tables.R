@@ -48,7 +48,7 @@ getEmptyTables = function(tableSuffix) {
     abstract_copyright = data.table(copyright = ac),
 
     abstract = data.table(
-      text = ac, label = ac, nlm_category = ac, copyright = ac),
+      text = ac, label = ac, nlm_category = ac),
 
     author = data.table(
       author_pos = ai, last_name = ac, fore_name = ac, initials = ac,
