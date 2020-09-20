@@ -9,8 +9,10 @@
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
 #' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
-#'   'sqlite'. Due to the large size of the database, SQLite is recommended only
-#'   for small-scale testing.
+#'   'sqlite'. Make sure to install the corresponding DBI driver package first:
+#'   RPostgres, RMariaDB (for both 'mariadb' and 'mysql'), or RSQLite. Due to
+#'   the large size of the database, SQLite is recommended only for small-scale
+#'   testing.
 #' @param nFiles Maximum number of xml files to parse that are not already in
 #'   the database. This should not normally be changed from the default.
 #' @param retry Logical indicating whether to retry parsing steps that fail.

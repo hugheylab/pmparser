@@ -1,3 +1,7 @@
+# pmparser 0.0.0.9028
+* `getCitation` now uses `vroom` for `arkdb::unark`.
+* Moved DBI driver packages to Suggests to reduce dependencies.
+
 # pmparser 0.0.0.9027
 * Removed obsolete copyright column from the abstract table. 
 
@@ -8,4 +12,4 @@
 * Fixed rare case of a parsing function returning a data.table with `NA` in columns instead of a data.table with no rows.
 
 # pmparser 0.0.0.9024
-* Switched to using `glue` under the hood
+* Switched to using `glue` under the hood.

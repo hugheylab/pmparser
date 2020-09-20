@@ -120,9 +120,9 @@ getCitation = function(
 
   # unark the file into the db, make sure columns are integers
   arkdb::unark(
-    filepathTmp, db_con = con, streamable_table = arkdb::streamable_readr_csv(),
+    filepathTmp, db_con = con, streamable_table = arkdb::streamable_vroom(),
     lines = 1e7, overwrite = overwrite, tablenames = citationName,
-    col_types = readr::cols(citing = 'i', referenced = 'i'))
+    col_types = vroom::cols(citing = 'i', referenced = 'i'))
 
   # change column names in citation table
   for (i in 1:nrow(dCols)) {

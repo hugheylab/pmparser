@@ -1,6 +1,6 @@
 Package: pmparser
 Title: Create and maintain a relational database of data from PubMed/MEDLINE
-Version: 0.0.0.9027
+Version: 0.0.0.9028
 Authors@R: as.person(c(
   "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
   "Josh Schoenbachler <joshschoenbachler@gmail.com> [aut]",
@@ -16,7 +16,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: R (>= 3.6)
 Imports:
-  arkdb (>= 0.0.5),
+  arkdb (>= 0.0.6),
   data.table (>= 1.12.2),
   DBI (>= 1.1.0),
   foreach (>= 1.5.0),
@@ -24,14 +24,14 @@ Imports:
   iterators (>= 1.0.12),
   jsonlite (>= 1.7.0),
   RCurl (>= 1.98),
-  readr (>= 1.3.1),
-  RMariaDB (>= 1.0.9),
-  RPostgres (>= 1.2.0),
-  RSQLite (>= 2.2.0),
+  vroom (>= 1.3.1),
   withr (>= 2.2.0.9000),
   xml2 (>= 1.3.2.9001)
 Suggests:
   doFuture (>= 0.9.0),
+  RMariaDB (>= 1.0.9),
+  RPostgres (>= 1.2.0),
+  RSQLite (>= 2.2.0),
   testthat (>= 2.3.2),
   covr
 SystemRequirements: head, unzip

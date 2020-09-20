@@ -76,7 +76,7 @@ registered, such as with doFuture::registerDoFuture()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9027</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9028</span>
       </span>
     </div>
 
@@ -153,8 +153,10 @@ registered, such as with <code><a href='https://rdrr.io/pkg/doFuture/man/registe
     <tr>
       <th>dbtype</th>
       <td><p>Type of database, either 'postgres', 'mariadb', 'mysql', or
-'sqlite'. Due to the large size of the database, SQLite is recommended only
-for small-scale testing.</p></td>
+'sqlite'. Make sure to install the corresponding DBI driver package first:
+RPostgres, RMariaDB (for both 'mariadb' and 'mysql'), or RSQLite. Due to
+the large size of the database, SQLite is recommended only for small-scale
+testing.</p></td>
     </tr>
     <tr>
       <th>nFiles</th>
