@@ -77,7 +77,7 @@ parsePubmedXml = function(
             immediate. = TRUE)}
   doOp = getDoOp(dbtype)
 
-  writeEmptyTables(tableSuffix, overwrite, dbtype, dbname, ...)
+  createParsingTables(tableSuffix, overwrite, dbtype, dbname, ...)
   dLog = data.table(
     xml_filename = 'all', step = 'start', status = 0, message = NA)
   writeLogFile(logPath, dLog, append = FALSE)

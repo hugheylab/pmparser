@@ -17,21 +17,21 @@ unlink(tmpDir, recursive = TRUE)
 
 ########################################
 
-localDir = file.path('tests', 'testthat', 'empty_tables')
+localDir = file.path('tests', 'testthat', 'parsing_tables')
 dbtype = 'sqlite'
 
 tableSuffix = NULL
-emptyTables = pmparser:::getEmptyTables(tableSuffix)
-saveRDS(emptyTables, file.path(localDir, 'get_empty_tables_no_suffix.rds'))
+parTables = pmparser:::getParsingTables(tableSuffix)
+saveRDS(parTables, file.path(localDir, 'get_parsing_tables_no_suffix.rds'))
 
-pmparser:::writeEmptyTables(
+pmparser:::createParsingTables(
   tableSuffix, overwrite = TRUE, dbtype = dbtype,
-  dbname = file.path(localDir, 'write_empty_tables_no_suffix.db'))
+  dbname = file.path(localDir, 'create_parsing_tables_no_suffix.db'))
 
 tableSuffix = 'dejavu'
-emptyTables = pmparser:::getEmptyTables(tableSuffix)
-saveRDS(emptyTables, file.path(localDir, 'get_empty_tables_with_suffix.rds'))
+parTables = pmparser:::getParsingTables(tableSuffix)
+saveRDS(parTables, file.path(localDir, 'get_parsing_tables_with_suffix.rds'))
 
-pmparser:::writeEmptyTables(
+pmparser:::createParsingTables(
   tableSuffix, overwrite = TRUE, dbtype = dbtype,
-  dbname = file.path(localDir, 'write_empty_tables_with_suffix.db'))
+  dbname = file.path(localDir, 'create_parsing_tables_with_suffix.db'))
