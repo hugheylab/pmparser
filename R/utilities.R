@@ -60,7 +60,8 @@ getDoOp = function(dbtype) if (dbtype == 'sqlite') `%do%` else `%dopar%`
 
 appendTable = function(con, tableName, d) {
   if (is.null(con) || nrow(d) == 0L) return(invisible())
-  DBI::dbAppendTable(con, tableName, d)}
+  # for some reason dbWriteTable is faster than dbAppendTable
+  DBI::dbWriteTable(con, tableName, d, append = TRUE)}
 
 
 getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
@@ -182,3 +183,57 @@ getPgParams = function(path = '~/.pgpass') {
   x3 = data.table::rbindlist(lapply(x2, as.list))
   setnames(x3, c('hostname', 'port', 'database', 'username', 'password'))
   x3}
+
+
+writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
+  # will be inefficient if file is compressed
+  if (DBI::dbExistsTable(con, tableName)) {
+    if (isTRUE(overwrite)) {
+      DBI::dbRemoveTable(con, tableName)
+    } else {
+      stop(glue('Table {tableName} exists and overwrite is not TRUE.'))}}
+
+  # get total number of lines
+  n = R.utils::countLines(path)
+
+  # read first row to get data types, but don't send it to database
+  d = data.table::fread(path, nrows = 1L)
+  createEmptyTable(con, tableName, d)
+
+  # append in chunks, fread handles last chunk where nrows > remaining rows
+  for (i in seq(1L, n - 1L, nRowsPerChunk)) {
+    dNow = data.table::fread(path, skip = i, nrows = nRowsPerChunk)
+    setnames(dNow, colnames(d))
+    appendTable(con, tableName, dNow)}
+
+  invisible()}
+
+
+getClickhouseDataTypes = function(d, nullable = TRUE) {
+  r = c('logical', 'integer', 'numeric', 'character', 'Date', 'POSIXct')
+  ch = c('UInt8', 'Int32', 'Float64', 'String', 'Date', 'DateTime')
+  rIdx = lapply(d, function(x) inherits(x, r, which = TRUE))
+  dataTypesTmp = sapply(rIdx, function(i) ch[i == 1L])
+
+  if (!isTRUE(nullable)) {
+    return(dataTypesTmp)
+  } else {
+    dataTypes = glue('Nullable({dataTypesTmp})')
+    dataTypes[dataTypesTmp == 'DateTime'] = 'DateTime'
+    return(dataTypes)}}
+
+
+createEmptyTable = function(con, tableName, d) {
+  if (inherits(con, 'ClickhouseConnection')) {
+    createEmptyTableClickhouse(con, tableName, d)
+  } else {
+    DBI::dbCreateTable(con, tableName, d[0L])}
+  invisible(0L)}
+
+
+createEmptyTableClickhouse = function(con, tableName, d, nullable = TRUE) {
+  dataTypes = getClickhouseDataTypes(d, nullable = nullable)
+  q = glue(
+    'create table {tableName} ({z}) ENGINE = MergeTree() order by tuple()',
+    z = paste(colnames(d), dataTypes, collapse = ', '))
+  DBI::dbExecute(con, q)}
