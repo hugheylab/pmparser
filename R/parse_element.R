@@ -125,7 +125,7 @@ NULL
 parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
   x1 = xml_find_all(xml_find_all(rawXml, './/DeleteCitation'), './/PMID')
   x2 = data.table(pmid = xml_integer(x1)) # could have zero rows
-  x2[, `:=`(version = 999, # ugly, but should work
+  x2[, `:=`(version = 999L, # ugly, but should work
             xml_filename = filename,
             status = 'Deleted')]
 

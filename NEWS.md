@@ -1,3 +1,7 @@
+# pmparser 0.0.0.9029
+* `getCitation` now uses `fread` to write table in chunks, ~3.3x faster.
+* Switched from `dbAppendTable` to `dbWriteTable(..., append = TRUE)` for inexplicable speed increase.
+
 # pmparser 0.0.0.9028
 * `getCitation` now uses `vroom` for `arkdb::unark`.
 * Moved DBI driver packages to Suggests to reduce dependencies.

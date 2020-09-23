@@ -55,7 +55,7 @@ getCitation = function(
   localDir, filename = 'open_citation_collection.zip', nrows = Inf,
   tableSuffix = NULL, overwrite = FALSE, con = NULL, checkMd5 = TRUE) {
 
-  filepath = file.path(localDir, filename)
+  path = file.path(localDir, filename)
   tableBase = 'citation'
   citationName = paste_(tableBase, tableSuffix)
   versionName = paste_(tableBase, 'version', tableSuffix)
@@ -77,14 +77,14 @@ getCitation = function(
     message('Citation table in database is already up-to-date.')
     return(invisible())}
 
-  if (file.exists(filepath)) {
-    md5Local = tools::md5sum(filepath)
+  if (file.exists(path)) {
+    md5Local = tools::md5sum(path)
   } else {
     md5Local = ''}
 
   if (md5Local != md5Remote && isTRUE(checkMd5)) {
-    utils::download.file(citationInfo$download_url, filepath, mode = 'wb')
-    md5Local = tools::md5sum(filepath)
+    utils::download.file(citationInfo$download_url, path, mode = 'wb')
+    md5Local = tools::md5sum(path)
     if (md5Local != md5Remote) {
       stop('Supplied and computed MD5 checksums do not match.')}}
 
@@ -93,36 +93,40 @@ getCitation = function(
                      new = c('citing_pmid', 'cited_pmid'))
 
   if (is.null(con)) {
-    if (tools::file_ext(filepath) == 'zip') {
+    if (tools::file_ext(path) == 'zip') {
       dCitation = data.table::fread(
-        cmd = glue('unzip -p {filepath} {cmdHead}'))
+        cmd = glue('unzip -p {path} {cmdHead}'))
     } else {
-      dCitation = data.table::fread(filepath, nrows = nrows)}
+      dCitation = data.table::fread(path, nrows = nrows)}
     setnames(dCitation, dCols$old, dCols$new)
     return(dCitation)}
 
-  # unzip file if necessary, since unark chokes on zip files
+  # unzip file, since unark chokes on zip files and chunking is more efficient
   # use system unzip, since internal method truncates files >= 4GB pre-comp
   # use head, since unark only knows how to unarchive an entire file
 
-  if (tools::file_ext(filepath) == 'zip') {
-    filepathTmp = tempfile()
-    withr::local_file(filepathTmp)
-    cmd = glue('unzip -p {filepath} {cmdHead} > {filepathTmp}')
+  if (tools::file_ext(path) == 'zip') {
+    pathTmp = tempfile()
+    withr::local_file(pathTmp)
+    cmd = glue('unzip -p {path} {cmdHead} > {pathTmp}')
     system(cmd)
   } else {
     if (nrows < Inf) {
-      filepathTmp = tempfile()
-      withr::local_file(filepathTmp)
-      system(glue('head -n {nrows + 1L} {filepath} > {filepathTmp}'))
+      pathTmp = tempfile()
+      withr::local_file(pathTmp)
+      system(glue('head -n {nrows + 1L} {path} > {pathTmp}'))
     } else {
-      filepathTmp = filepath}}
+      pathTmp = path}}
+
+  writeTableInChunks(
+    path = pathTmp, con = con, nRowsPerChunk = 1e7, overwrite = overwrite,
+    tableName = citationName)
 
   # unark the file into the db, make sure columns are integers
-  arkdb::unark(
-    filepathTmp, db_con = con, streamable_table = arkdb::streamable_vroom(),
-    lines = 1e7, overwrite = overwrite, tablenames = citationName,
-    col_types = vroom::cols(citing = 'i', referenced = 'i'))
+  # arkdb::unark(
+  #   pathTmp, db_con = con, streamable_table = arkdb::streamable_vroom(),
+  #   lines = 1e7, overwrite = overwrite, tablenames = citationName,
+  #   col_types = vroom::cols(citing = 'i', referenced = 'i'))
 
   # change column names in citation table
   for (i in 1:nrow(dCols)) {
