@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9028</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9029</span>
       </span>
     </div>
 
@@ -114,6 +114,15 @@
       <small>Source: <a href='https://github.com/hugheylab/pmparser/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="pmparser-0009029" class="section level1">
+<h1 class="page-header" data-toc-text="0.0.0.9029">
+<a href="#pmparser-0009029" class="anchor"></a>pmparser 0.0.0.9029</h1>
+<ul>
+<li>
+<code>getCitation</code> now uses <code>fread</code> to write table in chunks, ~3.3x faster.</li>
+<li>Switched from <code>dbAppendTable</code> to <code>dbWriteTable(..., append = TRUE)</code> for inexplicable speed increase.</li>
+</ul>
+</div>
     <div id="pmparser-0009028" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.0.9028">
 <a href="#pmparser-0009028" class="anchor"></a>pmparser 0.0.0.9028</h1>
