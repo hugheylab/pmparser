@@ -34,7 +34,7 @@
 #'
 #' @export
 modifyPubmedDb = function(
-  localDir, dbname, dbtype = c('postgres', 'mariadb', 'mysql', 'sqlite'),
+  localDir, dbname, dbtype = c('postgres', 'mariadb', 'mysql', 'sqlite', 'clickhouse'),
   nFiles = Inf, retry = TRUE, nCitations = Inf, mode = c('create', 'update'),
   ...) {
 
