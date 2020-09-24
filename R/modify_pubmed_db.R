@@ -165,14 +165,29 @@ addSourceToTarget = function(
   if (DBI::dbExistsTable(con, sourceKeep)) {
     DBI::dbRemoveTable(con, sourceKeep)}
 
-  # window functions are for wizards
-  q = glue(
-    'create table {sourceKeep} as with ranked_pmid_status as
-    (select *, row_number() over
-    (partition by pmid order by version desc, xml_filename desc) as rn
-    from pmid_status_{sourceSuffix})
-    select pmid, version, xml_filename
-    from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+  if(dbtype == 'clickhouse'){
+    # no window functions for clickhouse
+    q = glue(
+      'create table {sourceKeep} as with ranked_pmid_status as
+      (select pmid, ver_file[1] as xml_filename, toInt32(ver_file[2]) as version
+      from (select pmid, splitByChar(\':\', max(concat(xml_filename, \':\', toString(version)))) as ver_file
+      from pmid_status group by pmid) as a
+      inner join (select *, rowNumberInAllBlocks() as rn
+      from pmid_status order by version desc, xml_filename desc) as b
+      on a.rn = b.rn
+      order by pmid)
+      select pmid, version, xml_filename
+      from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+  } else {
+    # window functions are for wizards (and not for ClickHouse users)
+    q = glue(
+      'create table {sourceKeep} as with ranked_pmid_status as
+      (select *, row_number() over
+      (partition by pmid order by version desc, xml_filename desc) as rn
+      from pmid_status_{sourceSuffix})
+      select pmid, version, xml_filename
+      from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+  }
   n = DBI::dbExecute(con, q)
 
   deleteStart = c('delete', 'select count(*)')
@@ -182,8 +197,12 @@ addSourceToTarget = function(
   targetNow = names(targetEmpty)[startsWith(names(targetEmpty), 'xml_processed')]
   sourceNow = names(sourceEmpty)[startsWith(names(sourceEmpty), 'xml_processed')]
 
-  q = glue('{deleteStart[1 + dryRun]} from {targetNow} where
-           xml_filename in (select xml_filename from {sourceNow})')
+  if(!dryRun && dbtype == 'clickhouse'){
+    q = glue('alter table {targetNow} delete where
+             xml_filename in (select xml_filename from {sourceNow})')
+  } else {
+    q = glue('{deleteStart[1 + dryRun]} from {targetNow} where
+             xml_filename in (select xml_filename from {sourceNow})')}
   nDelete = runStatement(con, q)
 
   insertStart = if (isTRUE(dryRun)) insertBase[2L] else
@@ -206,8 +225,12 @@ addSourceToTarget = function(
   d2 = doOp(feo, {
     con = connect(dbtype, dbname, ...) # required if in dopar
     # drop rows in target tables, use subquery to conform to sql standard
-    q = glue('{deleteStart[1L + dryRun]} from {targetName}
-             where pmid in (select pmid from {sourceName})')
+    if(!dryRun && dbtype == 'clickhouse'){
+      q = glue('alter table {targetName} delete
+               where pmid in (select pmid from {sourceName})')
+    } else {
+      q = glue('{deleteStart[1L + dryRun]} from {targetName}
+               where pmid in (select pmid from {sourceName})')}
     nDelete = runStatement(con, q)
 
     # append source rows to target tables

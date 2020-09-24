@@ -60,6 +60,18 @@ getDoOp = function(dbtype) if (dbtype == 'sqlite') `%do%` else `%dopar%`
 
 appendTable = function(con, tableName, d) {
   if (is.null(con) || nrow(d) == 0L) return(invisible())
+  if(inherits(con, what='ClickhouseConnection')){
+    if(nrow(d) == 1L && any(is.na(d[1]))){
+      columns = colnames(d)
+      for(column in columns){
+        if(is.na(d[[column]])){
+          if (is.logical(d[[column]])) val = 0
+          else if (is.integer(d[[column]])) val = -1L
+          else if (is.numeric(d[[column]])) val = -1
+          else if (inherits(d[[column]], "POSIXct")) val = as.Date('1900-01-01')
+          else if (inherits(d[[column]], "Date")) val = as.Date('1900-01-01')
+          else val = as.character(NA)
+          d[[column]] = val}}}}
   # for some reason dbWriteTable is faster than dbAppendTable
   DBI::dbWriteTable(con, tableName, d, append = TRUE)}
 
@@ -131,10 +143,10 @@ runStatement = function(con, q) {
     res = DBI::dbSendQuery(con, q)
     n = DBI::dbFetch(res)[[1L]]
     DBI::dbClearResult(res)
-  } else if (grepl('^(delete|insert)', q)) { # for reals
+  } else if (grepl('^(delete|insert|alter table))', q)) { # for reals
     n = DBI::dbExecute(con, q)
   } else {
-    stop('Statement must start with "select count", "delete", or "insert".')}
+    stop('Statement must start with "select count", "delete", "insert", or "alter table".')}
   return(n)}
 
 

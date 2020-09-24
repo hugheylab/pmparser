@@ -8,11 +8,25 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
 
   tableNow = names(parTables)[startsWith(names(parTables), 'pmid_status')]
 
-  q = glue(
-    'create table {tableKeep} as with ranked_pmid_status as
-    (select *, row_number() over (partition by pmid order by version desc) as rn
-    from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
-    cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))
+  if(dbtype == 'clickhouse'){
+    qTmp = glue(
+      'create table {tableKeep} engine = "MergeTree" order by tuple() as
+        (select {cols} from
+          (select pmid, arrayJoin(topK(1)(rn)) as rn
+          from (select *, rowNumberInAllBlocks() as rn
+          from pmid_status order by version desc) as a
+          group by pmid) as a
+        inner join (select *, rowNumberInAllBlocks() as rn
+          from pmid_status order by version desc) as b
+        on a.rn = b.rn
+        order by pmid)',
+      cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))
+  } else {
+    q = glue(
+      'create table {tableKeep} as with ranked_pmid_status as
+      (select *, row_number() over (partition by pmid order by version desc) as rn
+      from {tableNow}) select {cols} from ranked_pmid_status where rn = 1',
+      cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))}
   n = DBI::dbExecute(con, q)
   disconnect(con)
 
@@ -22,9 +36,14 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   doOp = getDoOp(dbtype)
   d = doOp(foreach(tableName = names(parTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
-    q = glue('{qStart} from {tableName} as a where not exists
-             (select 1 from {tableKeep} as b
-             where a.pmid = b.pmid and a.version = b.version)')
+    if(dbtype == 'clickhouse'){
+      q = glue('alter table {tableName} as a delete where not exists
+               (select 1 from {tableKeep} as b
+               where a.pmid = b.pmid and a.version = b.version)')
+    } else {
+      q = glue('{qStart} from {tableName} as a where not exists
+               (select 1 from {tableKeep} as b
+               where a.pmid = b.pmid and a.version = b.version)')}
     n = runStatement(con, q)
     disconnect(con)
     dNow = data.table(table_name = tableName, nrow_delete = n)})
