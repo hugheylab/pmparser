@@ -1,4 +1,4 @@
-getEmptyTables = function(tableSuffix) {
+getParsingTables = function(tableSuffix) {
   ac = as.character()
   ai = as.integer()
 
@@ -97,20 +97,21 @@ getEmptyTables = function(tableSuffix) {
   return(r)}
 
 
-writeEmptyTables = function(tableSuffix = NULL, overwrite = FALSE,
-                            dbtype = 'postgres', dbname = NULL, ...) {
+createParsingTables = function(
+  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL,
+  ...) {
   if (is.null(dbname)) return(invisible())
 
   con = connect(dbtype, dbname, ...)
-  emptyTables = getEmptyTables(tableSuffix)
+  parTables = getParsingTables(tableSuffix)
 
-  tablesExist = sapply(names(emptyTables),
-                       function(x) DBI::dbExistsTable(con, x))
-  stopifnot(!any(tablesExist) || isTRUE(overwrite))
+  tableExists = sapply(
+    names(parTables), function(x) DBI::dbExistsTable(con, x))
+  stopifnot(!any(tableExists) || isTRUE(overwrite))
 
-  for (i in 1:length(emptyTables)) {
-    DBI::dbWriteTable(con, names(emptyTables)[i],
-                      emptyTables[[i]], overwrite = TRUE)}
+  for (i in 1:length(parTables)) {
+    if (tableExists[i]) DBI::dbRemoveTable(con, names(parTables)[i])
+    createTable(con, names(parTables)[i], parTables[[i]])}
 
   disconnect(con)
   invisible()}

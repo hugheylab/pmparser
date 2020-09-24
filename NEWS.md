@@ -1,3 +1,6 @@
+# pmparser 0.0.0.9030
+* Renamed internal functions for consistency and clarity.
+
 # pmparser 0.0.0.9029
 * `getCitation` now uses `fread` to write table in chunks, ~3.3x faster.
 * Switched from `dbAppendTable` to `dbWriteTable(..., append = TRUE)` for inexplicable speed increase.

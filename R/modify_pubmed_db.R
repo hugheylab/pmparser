@@ -156,8 +156,8 @@ addSourceToTarget = function(
   sourceSuffix, targetSuffix, dryRun, dbtype, dbname, ...) {
   stopifnot(!isEmpty(sourceSuffix))
 
-  targetEmpty = getEmptyTables(targetSuffix)
-  sourceEmpty = getEmptyTables(sourceSuffix)
+  targetEmpty = getParsingTables(targetSuffix)
+  sourceEmpty = getParsingTables(sourceSuffix)
 
   # create source table of pmid, xml_filename to keep
   con = connect(dbtype, dbname, ...)

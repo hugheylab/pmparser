@@ -198,7 +198,7 @@ writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
 
   # read first row to get data types, but don't send it to database
   d = data.table::fread(path, nrows = 1L)
-  createEmptyTable(con, tableName, d)
+  createTable(con, tableName, d)
 
   # append in chunks, fread handles last chunk where nrows > remaining rows
   for (i in seq(1L, n - 1L, nRowsPerChunk)) {
@@ -223,15 +223,16 @@ getClickhouseDataTypes = function(d, nullable = TRUE) {
     return(dataTypes)}}
 
 
-createEmptyTable = function(con, tableName, d) {
+createTable = function(con, tableName, d) {
+  # writes 0 rows
   if (inherits(con, 'ClickhouseConnection')) {
-    createEmptyTableClickhouse(con, tableName, d)
+    createTableClickhouse(con, tableName, d)
   } else {
-    DBI::dbCreateTable(con, tableName, d[0L])}
+    DBI::dbCreateTable(con, tableName, d)}
   invisible(0L)}
 
 
-createEmptyTableClickhouse = function(con, tableName, d, nullable = TRUE) {
+createTableClickhouse = function(con, tableName, d, nullable = TRUE) {
   dataTypes = getClickhouseDataTypes(d, nullable = nullable)
   q = glue(
     'create table {tableName} ({z}) ENGINE = MergeTree() order by tuple()',

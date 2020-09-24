@@ -1,12 +1,12 @@
 deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
-  emptyTables = getEmptyTables(tableSuffix)
+  parTables = getParsingTables(tableSuffix)
   tableKeep = paste_('pmid_status_keep', tableSuffix)
 
   con = connect(dbtype, dbname, ...)
   if (DBI::dbExistsTable(con, tableKeep)) {
     DBI::dbRemoveTable(con, tableKeep)}
 
-  tableNow = names(emptyTables)[startsWith(names(emptyTables), 'pmid_status')]
+  tableNow = names(parTables)[startsWith(names(parTables), 'pmid_status')]
 
   q = glue(
     'create table {tableKeep} as with ranked_pmid_status as
@@ -17,10 +17,10 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   disconnect(con)
 
   qStart = if (isTRUE(dryRun)) 'select count(*)' else 'delete'
-  idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
+  idx = !grepl('^(pmid_status|xml_processed)', names(parTables))
 
   doOp = getDoOp(dbtype)
-  d = doOp(foreach(tableName = names(emptyTables)[idx], .combine = rbind), {
+  d = doOp(foreach(tableName = names(parTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
     q = glue('{qStart} from {tableName} as a where not exists
              (select 1 from {tableKeep} as b
@@ -43,11 +43,11 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
 
 
 dropPmidVersionColumn = function(tableSuffix, con) {
-  emptyTables = getEmptyTables(tableSuffix)
-  idx = !grepl('^(pmid_status|xml_processed)', names(emptyTables))
+  parTables = getParsingTables(tableSuffix)
+  idx = !grepl('^(pmid_status|xml_processed)', names(parTables))
 
   if (inherits(con, 'SQLiteConnection')) { # thanks, sqlite
-    for (tableName in names(emptyTables)[idx]) {
+    for (tableName in names(parTables)[idx]) {
       cols = setdiff(DBI::dbListFields(con, tableName), 'version')
       tableTmp = paste_(tableName, 'tmp')
 
@@ -61,7 +61,7 @@ dropPmidVersionColumn = function(tableSuffix, con) {
       x = DBI::dbExecute(con, q)}
 
   } else {
-    for (tableName in names(emptyTables)[idx]) {
+    for (tableName in names(parTables)[idx]) {
       q = glue_sql('alter table {`tableName`} drop column version', .con = con)
       x = DBI::dbExecute(con, q)}}
 
