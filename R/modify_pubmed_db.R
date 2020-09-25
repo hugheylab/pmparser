@@ -168,16 +168,16 @@ addSourceToTarget = function(
   if(dbtype == 'clickhouse'){
     # no window functions for clickhouse
     q = glue(
-      'create table {sourceKeep} as with ranked_pmid_status as
-      (select pmid, ver_file[1] as xml_filename, toInt32(ver_file[2]) as version
-      from (select pmid, splitByChar(\':\', max(concat(xml_filename, \':\', toString(version)))) as ver_file
-      from pmid_status group by pmid) as a
-      inner join (select *, rowNumberInAllBlocks() as rn
-      from pmid_status order by version desc, xml_filename desc) as b
-      on a.rn = b.rn
-      order by pmid)
-      select pmid, version, xml_filename
-      from ranked_pmid_status where rn = 1') # glue_sql doesn't work for these
+      'create table {sourceKeep} engine = "MergeTree" order by tuple() as
+        (select * from
+          (select pmid, arrayJoin(topK(1)(rn)) as rn
+          from (select *, rowNumberInAllBlocks() as rn
+          from pmid_status order by version desc, xml_filename desc) as a
+          group by pmid) as a
+        inner join (select *, rowNumberInAllBlocks() as rn
+          from pmid_status order by version desc, xml_filename desc) as b
+        on a.rn = b.rn
+        order by pmid)') # glue_sql doesn't work for these
   } else {
     # window functions are for wizards (and not for ClickHouse users)
     q = glue(

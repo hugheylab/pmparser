@@ -81,7 +81,8 @@ appendTable = function(con, tableName, d) {
       colClasses = colClasses[colClasses == 'Date']
 
       for(column in names(colClasses)){
-        data.table::set(d, i = which(is.na(d[[column]])), j = column, as.Date('0001-01-01'))}}}
+        if(any(is.na(d[[column]]))){
+          data.table::set(d, i = which(is.na(d[[column]])), j = column, as.Date('0001-01-01'))}}}}
   # for some reason dbWriteTable is faster than dbAppendTable
   DBI::dbWriteTable(con, tableName, d, append = TRUE)}
 
@@ -153,7 +154,7 @@ runStatement = function(con, q) {
     res = DBI::dbSendQuery(con, q)
     n = DBI::dbFetch(res)[[1L]]
     DBI::dbClearResult(res)
-  } else if (grepl('^(delete|insert|alter table))', q)) { # for reals
+  } else if (grepl('^(delete|insert|alter)', q)) { # for reals
     n = DBI::dbExecute(con, q)
   } else {
     stop('Statement must start with "select count", "delete", "insert", or "alter table".')}
