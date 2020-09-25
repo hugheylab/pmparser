@@ -9,7 +9,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   tableNow = names(parTables)[startsWith(names(parTables), 'pmid_status')]
 
   if(dbtype == 'clickhouse'){
-    qTmp = glue(
+    q = glue(
       'create table {tableKeep} engine = "MergeTree" order by tuple() as
         (select {cols} from
           (select pmid, arrayJoin(topK(1)(rn)) as rn
