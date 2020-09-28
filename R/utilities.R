@@ -78,7 +78,7 @@ appendTable = function(con, tableName, d) {
       for (j in 1:ncol(d)) {
         if (inherits(d[[j]], 'Date')) {
           data.table::set(
-            d, i = which(is.na(d[[j]])), j = j, value = as.Date('0001-01-01'))}}}}
+            d, i = which(is.na(d[[j]])), j = j, value = as.Date('2100-01-01'))}}}}
   # for some reason dbWriteTable is faster than dbAppendTable
   DBI::dbWriteTable(con, tableName, d, append = TRUE)}
 
