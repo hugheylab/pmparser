@@ -52,7 +52,10 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
     DBI::dbRemoveTable(con, tableKeep)
   } else {
     DBI::dbRemoveTable(con, tableNow)
-    q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}', .con = con)
+    if(dbtype =='clickhouse'){
+      q = glue_sql('rename table {`tableKeep`} to {`tableNow`}', .con = con)
+    } else{
+      q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}', .con = con)}
     n = DBI::dbExecute(con, q)}
 
   disconnect(con)
