@@ -239,6 +239,7 @@ getClickhouseDataTypes = function(d, nullable = TRUE) {
   } else {
     dataTypes = glue('Nullable({dataTypesTmp})')
     dataTypes[dataTypesTmp == 'DateTime'] = 'DateTime'
+    dataTypes[dataTypesTmp == 'Date'] = 'Date'
     return(dataTypes)}}
 
 
