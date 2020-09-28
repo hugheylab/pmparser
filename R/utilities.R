@@ -70,8 +70,8 @@ appendTable = function(con, tableName, d) {
           if (is.logical(d[[column]])) val = 0
           else if (is.integer(d[[column]])) val = -1L
           else if (is.numeric(d[[column]])) val = -1
-          else if (inherits(d[[column]], "POSIXct")) val = as.Date('1900-01-01')
-          else if (inherits(d[[column]], "Date")) val = as.Date('1900-01-01')
+          else if (inherits(d[[column]], "POSIXct")) val = as.Date('2100-01-01')
+          else if (inherits(d[[column]], "Date")) val = as.Date('2100-01-01')
           else val = as.character(NA)
           d[[column]] = val}}
     } else {
