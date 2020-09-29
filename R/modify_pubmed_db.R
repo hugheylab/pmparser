@@ -172,10 +172,10 @@ addSourceToTarget = function(
         (select * from
           (select pmid, arrayJoin(topK(1)(rn)) as rn
           from (select *, rowNumberInAllBlocks() as rn
-          from pmid_status order by version desc, xml_filename desc) as a
+          from pmid_status_{sourceSuffix} order by version desc, xml_filename desc) as a
           group by pmid) as a
         inner join (select *, rowNumberInAllBlocks() as rn
-          from pmid_status order by version desc, xml_filename desc) as b
+          from pmid_status_{sourceSuffix} order by version desc, xml_filename desc) as b
         on a.rn = b.rn
         order by pmid)') # glue_sql doesn't work for these
   } else {
