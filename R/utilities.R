@@ -246,7 +246,7 @@ createTableClickhouse = function(con, tableName, d, nullable = TRUE) {
 
 setNAToSpecial = function(d) {
   naDateVal = as.Date('2100-01-01')
-  if (nrow(d) == 1L && any(is.na(d[1]))){
+  if (nrow(d) == 1L && any(is.na(d))){
     columns = colnames(d)
     for(column in columns){
       if (is.na(d[[column]])){
