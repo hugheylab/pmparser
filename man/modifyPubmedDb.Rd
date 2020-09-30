@@ -7,7 +7,7 @@
 modifyPubmedDb(
   localDir,
   dbname,
-  dbtype = c("postgres", "mariadb", "mysql", "sqlite"),
+  dbtype = c("postgres", "mariadb", "mysql", "sqlite", "clickhouse"),
   nFiles = Inf,
   retry = TRUE,
   nCitations = Inf,
@@ -20,11 +20,11 @@ modifyPubmedDb(
 
 \item{dbname}{Name of database.}
 
-\item{dbtype}{Type of database, either 'postgres', 'mariadb', 'mysql', or
-'sqlite'. Make sure to install the corresponding DBI driver package first:
-RPostgres, RMariaDB (for both 'mariadb' and 'mysql'), or RSQLite. Due to
-the large size of the database, SQLite is recommended only for small-scale
-testing.}
+\item{dbtype}{Type of database, either 'postgres', 'mariadb', 'mysql',
+'sqlite', or 'clickhouse'. Make sure to install the corresponding DBI
+driver package first: RPostgres, RMariaDB (for both 'mariadb' and 'mysql'),
+RSQLite, or RClickhouse. Due to the large size of the database, SQLite
+is recommended only for small-scale testing.}
 
 \item{nFiles}{Maximum number of xml files to parse that are not already in
 the database. This should not normally be changed from the default.}
@@ -42,6 +42,14 @@ baseline files or to update the database using the update files.}
 \value{
 \code{NULL}, invisibly. Tab-delimited log files will be created in a logs
 folder in \code{localDir}.
+
+Be aware that when using a ClickHouse database, date columns have some caveats.
+ClickHouse databases only support date values from 1970-01-01 - 2106-01-01 and
+stores them as an unsigned 16 bit integer. Due to how RClickhouse currently
+handles date columns, any date prior to 1970-01-01 will underflow the integer
+to a different date instead of just setting the date to be the minimum value.
+One other caveat is that RClickhouse doesn't currently work with using
+Nullable date columns in tables, so we save any dates marked as NA as 2100-01-01.
 }
 \description{
 This function downloads PubMed/MEDLINE XML files, parses them, and adds the
