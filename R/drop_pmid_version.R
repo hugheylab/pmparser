@@ -8,9 +8,9 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
 
   tableNow = names(parTables)[startsWith(names(parTables), 'pmid_status')]
 
-  if(dbtype == 'clickhouse'){
+  if (dbtype == 'clickhouse'){
     q = glue(
-      'create table {tableKeep} engine = "MergeTree" order by tuple() as
+      'create table {tableKeep} engine = MergeTree() order by tuple() as
         (select {cols} from
           (select pmid, arrayJoin(topK(1)(rn)) as rn
           from (select *, rowNumberInAllBlocks() as rn
@@ -36,9 +36,9 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   doOp = getDoOp(dbtype)
   d = doOp(foreach(tableName = names(parTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
-    if(dbtype == 'clickhouse'){
-      q = glue('alter table {tableName} delete where concat(toString(pmid), \':\', toString(version)) not in
-               (select concat(toString(pmid), \':\', toString(version)) from {tableKeep})')
+    if (dbtype == 'clickhouse'){
+      q = glue('alter table {tableName} delete where concat(toString(pmid), ":", toString(version)) not in
+               (select concat(toString(pmid), ":", toString(version)) from {tableKeep})')
     } else {
       q = glue('{qStart} from {tableName} as a where not exists
                (select 1 from {tableKeep} as b
@@ -52,7 +52,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
     DBI::dbRemoveTable(con, tableKeep)
   } else {
     DBI::dbRemoveTable(con, tableNow)
-    if(dbtype =='clickhouse'){
+    if (dbtype =='clickhouse'){
       q = glue_sql('rename table {`tableKeep`} to {`tableNow`}', .con = con)
     } else{
       q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}', .con = con)}

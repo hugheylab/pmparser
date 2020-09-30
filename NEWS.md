@@ -1,3 +1,6 @@
+# pmparser 0.0.0.9031
+* Adds ClickHouse functionality.
+
 # pmparser 0.0.0.9030
 * Renamed internal functions for consistency and clarity.
 

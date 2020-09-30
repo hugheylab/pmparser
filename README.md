@@ -17,7 +17,7 @@ You only have to do this once. Then you can install or update the package by ent
 ```R
 if (!requireNamespace('devtools', quietly = TRUE))
   install.packages('devtools')
-devtools::install_github(c('r-lib/withr', 'r-lib/xml2'))
+devtools::install_github(c('r-lib/withr', 'r-lib/xml2', 'IMSMWU/RClickhouse'))
 
 if (!requireNamespace('BiocManager', quietly = TRUE))
   install.packages('BiocManager')
@@ -29,7 +29,7 @@ Alternatively, you can install or update the package by entering:
 ```R
 if (!requireNamespace('devtools', quietly = TRUE))
   install.packages('devtools')
-devtools::install_github(c('r-lib/withr', 'r-lib/xml2'))
+devtools::install_github(c('r-lib/withr', 'r-lib/xml2', 'IMSMWU/RClickhouse'))
 
 if (!requireNamespace('BiocManager', quietly = TRUE))
   install.packages('BiocManager')

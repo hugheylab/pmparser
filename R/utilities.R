@@ -62,23 +62,8 @@ getDoOp = function(dbtype) if (dbtype == 'sqlite') `%do%` else `%dopar%`
 
 appendTable = function(con, tableName, d) {
   if (is.null(con) || nrow(d) == 0L) return(invisible())
-  if(inherits(con, what='ClickhouseConnection')){
-    if(nrow(d) == 1L && any(is.na(d[1]))){
-      columns = colnames(d)
-      for(column in columns){
-        if(is.na(d[[column]])){
-          if (is.logical(d[[column]])) val = 0
-          else if (is.integer(d[[column]])) val = -1L
-          else if (is.numeric(d[[column]])) val = -1
-          else if (inherits(d[[column]], "POSIXct")) val = as.Date('2100-01-01')
-          else if (inherits(d[[column]], "Date")) val = as.Date('2100-01-01')
-          else val = as.character(NA)
-          d[[column]] = val}}
-    } else {
-      for (j in 1:ncol(d)) {
-        if (inherits(d[[j]], 'Date')) {
-          data.table::set(
-            d, i = which(is.na(d[[j]])), j = j, value = as.Date('2100-01-01'))}}}}
+  if (inherits(con, what='ClickhouseConnection')){
+    d = setNAToSpecial(d)}
   # for some reason dbWriteTable is faster than dbAppendTable
   DBI::dbWriteTable(con, tableName, d, append = TRUE)}
 
@@ -258,3 +243,23 @@ createTableClickhouse = function(con, tableName, d, nullable = TRUE) {
     'create table {tableName} ({z}) ENGINE = MergeTree() order by tuple()',
     z = paste(colnames(d), dataTypes, collapse = ', '))
   DBI::dbExecute(con, q)}
+
+setNAToSpecial = function(d) {
+  if (nrow(d) == 1L && any(is.na(d[1]))){
+    columns = colnames(d)
+    for(column in columns){
+      if (is.na(d[[column]])){
+        if (is.logical(d[[column]])) val = 0
+        else if (is.integer(d[[column]])) val = -1L
+        else if (is.numeric(d[[column]])) val = -1
+        else if (inherits(d[[column]], "POSIXct")) val = as.Date('2100-01-01')
+        else if (inherits(d[[column]], "Date")) val = as.Date('2100-01-01')
+        else val = as.character(NA)
+        d[[column]] = val}}
+  } else {
+    for (j in 1:ncol(d)) {
+      if (inherits(d[[j]], 'Date')) {
+        data.table::set(
+          d, i = which(is.na(d[[j]])), j = j, value = as.Date('2100-01-01'))}}}
+  return(d)
+}
