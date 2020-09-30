@@ -8,11 +8,11 @@
 #'
 #' @param localDir Directory in which to download the files from PubMed.
 #' @param dbname Name of database.
-#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql', or
-#'   'sqlite'. Make sure to install the corresponding DBI driver package first:
-#'   RPostgres, RMariaDB (for both 'mariadb' and 'mysql'), or RSQLite. Due to
-#'   the large size of the database, SQLite is recommended only for small-scale
-#'   testing.
+#' @param dbtype Type of database, either 'postgres', 'mariadb', 'mysql',
+#'   'sqlite', or 'clickhouse'. Make sure to install the corresponding DBI
+#'   driver package first: RPostgres, RMariaDB (for both 'mariadb' and 'mysql'),
+#'   RSQLite, or RClickhouse. Due to the large size of the database, SQLite
+#'   is recommended only for small-scale testing.
 #' @param nFiles Maximum number of xml files to parse that are not already in
 #'   the database. This should not normally be changed from the default.
 #' @param retry Logical indicating whether to retry parsing steps that fail.
@@ -24,6 +24,14 @@
 #'
 #' @return `NULL`, invisibly. Tab-delimited log files will be created in a logs
 #'   folder in `localDir`.
+#'
+#'   Be aware that when using a ClickHouse database, date columns have some caveats.
+#'   ClickHouse databases only support date values from 1970-01-01 - 2106-01-01 and
+#'   stores them as an unsigned 16 bit integer. Due to how RClickhouse currently
+#'   handles date columns, any date prior to 1970-01-01 will underflow the integer
+#'   to a different date instead of just setting the date to be the minimum value.
+#'   One other caveat is that RClickhouse doesn't currently work with using
+#'   Nullable date columns in tables, so we save any dates marked as NA as 2100-01-01.
 #'
 #' @examples
 #' \dontrun{
@@ -165,7 +173,7 @@ addSourceToTarget = function(
   if (DBI::dbExistsTable(con, sourceKeep)) {
     DBI::dbRemoveTable(con, sourceKeep)}
 
-  if(dbtype == 'clickhouse'){
+  if (dbtype == 'clickhouse'){
     # no window functions for clickhouse
     q = glue(
       'create table {sourceKeep} engine = MergeTree() order by tuple() as
