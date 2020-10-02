@@ -78,9 +78,8 @@ getPubmedFiles = function(
   # download md5 files
   fTmp = fileInfo[is.na(md5_download)]
   col = 'md5_filename'
-  feo = foreach(
-    f = iterators::iter(fTmp, by = 'row'), .combine = c, .export = 'remoteDir')
-  r = feo %dopar% {
+  r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
+    remoteDir;
     download(glue('{remoteDir}/{f$sub_dir}/{f[[col]]}'),
              file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[is.na(md5_download), md5_download := r]
@@ -95,9 +94,8 @@ getPubmedFiles = function(
   # download xml files
   fTmp = fileInfo[!(md5_match)]
   col = 'xml_filename'
-  feo = foreach(
-    f = iterators::iter(fTmp, by = 'row'), .combine = c, .export = 'remoteDir')
-  r = feo %dopar% {
+  r = foreach(f = iterators::iter(fTmp, by = 'row'), .combine = c) %dopar% {
+    remoteDir;
     download(glue('{remoteDir}{f$sub_dir}/{f[[col]]}'),
              file.path(localDir, f$sub_dir, f[[col]]))}
   fileInfo[!(md5_match), xml_download := r]

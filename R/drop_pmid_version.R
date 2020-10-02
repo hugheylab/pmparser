@@ -22,6 +22,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   doOp = getDoOp(dbtype)
   d = doOp(foreach(tableName = names(parTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
+    qStart; tableName; tableKeep; # so glue works in dopar
     q = glue('{qStart} from {tableName} as a where not exists
              (select 1 from {tableKeep} as b
              where a.pmid = b.pmid and a.version = b.version)')
