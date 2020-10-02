@@ -23,7 +23,7 @@ jobs:
           name: Install dependencies
           command: |
             Rscript \
-              -e 'devtools::install_github(c("r-lib/withr", "r-lib/xml2"))' \
+              -e 'devtools::install_github(c("r-lib/xml2"))' \
               -e 'repos = BiocManager::repositories("https://hugheylab.github.io/drat/")' \
               -e 'devtools::install_dev_deps(dependencies = TRUE, repos = repos, upgrade = TRUE)'
 

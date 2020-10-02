@@ -1,3 +1,7 @@
+# pmparser 0.0.0.9031
+* `%dopar%` loops in `getPubmedFiles` now work despite doFuture and glue issue.
+* Use updated version of withr on CRAN.
+
 # pmparser 0.0.0.9030
 * Renamed internal functions for consistency and clarity.
 

@@ -77,7 +77,7 @@ modifyPubmedDb()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9030</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9031</span>
       </span>
     </div>
 
@@ -130,15 +130,15 @@ should not normally be called directly, as it is called by
 <code><a href='modifyPubmedDb.html'>modifyPubmedDb()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getCitation</span>(
-  <span class='kw'>localDir</span>,
-  filename = <span class='st'>"open_citation_collection.zip"</span>,
-  nrows = <span class='fl'>Inf</span>,
-  tableSuffix = <span class='kw'>NULL</span>,
-  overwrite = <span class='fl'>FALSE</span>,
-  con = <span class='kw'>NULL</span>,
-  checkMd5 = <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>getCitation</span><span class='op'>(</span>
+  <span class='va'>localDir</span>,
+  filename <span class='op'>=</span> <span class='st'>"open_citation_collection.zip"</span>,
+  nrows <span class='op'>=</span> <span class='cn'>Inf</span>,
+  tableSuffix <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  con <span class='op'>=</span> <span class='cn'>NULL</span>,
+  checkMd5 <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,9 +190,9 @@ swamp the machine's memory. If <code>con</code> is not <code>NULL</code>, the fu
     <div class='dont-index'><p><code><a href='parseElement.html'>parsePmidStatus()</a></code>, <code><a href='modifyPubmedDb.html'>modifyPubmedDb()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='kw'>dCitation</span> <span class='op'>=</span> <span class='fu'>getCitation</span>(<span class='st'>'.'</span>)
-}
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>dCitation</span> <span class='op'>=</span> <span class='fu'>getCitation</span><span class='op'>(</span><span class='st'>'.'</span><span class='op'>)</span>
+<span class='op'>}</span>
 
 </div></pre>
   </div>
