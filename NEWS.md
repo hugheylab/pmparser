@@ -1,3 +1,6 @@
+# pmparser 0.0.0.9033
+* Suppress irrelevant warnings from future.
+
 # pmparser 0.0.0.9032
 * `%dopar%` loops in other places now work with doFuture.
 
