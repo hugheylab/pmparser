@@ -85,7 +85,7 @@ dropPmidVersionColumn = function(tableSuffix, con) {
   else if (inherits(con, 'ClickhouseConnection')) {
     q = ''
     for (tableName in names(parTables)[idx]) {
-      q = glue_sql('{`q`}\nalter table {`tableName`} drop column version;', .con = con)}
+      q = glue('{`q`}\nalter table {`tableName`} drop column version;')}
     x = DBI::dbExecute(con, q)
   } else {
     for (tableName in names(parTables)[idx]) {
