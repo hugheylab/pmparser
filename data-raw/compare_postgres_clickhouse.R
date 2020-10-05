@@ -29,5 +29,6 @@ for(table in tables){
     warning(glue('{table} is not equal: \n{allEq}\n'))
   }
 }
+warnings()
 pmparser:::disconnect(conP)
 pmparser:::disconnect(conC)
