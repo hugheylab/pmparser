@@ -63,7 +63,7 @@ getDoOp = function(dbtype) if (dbtype == 'sqlite') `%do%` else `%dopar%`
 appendTable = function(con, tableName, d) {
   if (is.null(con) || nrow(d) == 0L) return(invisible())
   if (inherits(con, what='ClickhouseConnection')){
-    setNAToSpecial(d)}
+    d = setNAToSpecial(d)}
   # for some reason dbWriteTable is faster than dbAppendTable
   DBI::dbWriteTable(con, tableName, d, append = TRUE)}
 
