@@ -86,7 +86,7 @@ dropPmidVersionColumn = function(tableSuffix, con) {
     q = ''
     for (tableName in names(parTables)[idx]) {
       q = glue('{`q`}\nalter table {`tableName`} drop column version;')}
-    x = DBI::dbExecute(con, q)
+    x = DBI::dbGetQuery(con, q)
   } else {
     for (tableName in names(parTables)[idx]) {
       q = glue_sql('alter table {`tableName`} drop column version', .con = con)
