@@ -37,8 +37,8 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   d = doOp(foreach(tableName = names(parTables)[idx], .combine = rbind), {
     con = connect(dbtype, dbname, ...)
     if (dbtype == 'clickhouse'){
-      q = glue('alter table {tableName} delete where concat(toString(pmid), ":", toString(version)) not in
-               (select concat(toString(pmid), ":", toString(version)) from {tableKeep})')
+      q = glue("alter table {tableName} delete where concat(toString(pmid), ':', toString(version)) not in
+               (select concat(toString(pmid), ':', toString(version)) from {tableKeep})")
     } else {
       q = glue('{qStart} from {tableName} as a where not exists
                (select 1 from {tableKeep} as b
