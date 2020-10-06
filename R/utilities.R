@@ -57,7 +57,7 @@ connect = function(dbtype, dbname, ...) {
 disconnect = function(con) if (!is.null(con)) DBI::dbDisconnect(con)
 
 
-getDoOp = function(dbtype) if (dbtype == 'sqlite') `%do%` else `%dopar%`
+getDoOp = function(dbtype) if (dbtype == 'sqlite' || dbtype == 'clickhouse') `%do%` else `%dopar%`
 
 
 appendTable = function(con, tableName, d) {
