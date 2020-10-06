@@ -11,15 +11,12 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   if (dbtype == 'clickhouse'){
     q = glue(
       'create table {tableKeep} engine = MergeTree() order by tuple() as
-        (select {cols} from
-          (select pmid, arrayJoin(topK(1)(rn)) as rn
-          from (select *, rowNumberInAllBlocks() as rn
-          from pmid_status order by version desc) as a
-          group by pmid) as a
-        inner join (select *, rowNumberInAllBlocks() as rn
-          from pmid_status order by version desc) as b
-        on a.rn = b.rn
-        order by pmid)',
+        select pmid, version, xml_filename, status from
+        	(select pmid, max(assumeNotNull(version)) as version from {tableNow}
+        		group by pmid) as a
+        	inner join
+        	(select pmid, version, xml_filename, status from {tableNow}) as b
+        	on a.pmid = b.pmid and a.version = b.version order by pmid',
       cols = paste(DBI::dbListFields(con, tableNow), collapse = ', '))
   } else {
     q = glue(

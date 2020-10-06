@@ -176,16 +176,11 @@ addSourceToTarget = function(
   if (dbtype == 'clickhouse'){
     # no window functions for clickhouse
     q = glue(
-      'create table {sourceKeep} engine = MergeTree() order by tuple() as
-        (select * from
-          (select pmid, arrayJoin(topK(1)(rn)) as rn
-          from (select *, rowNumberInAllBlocks() as rn
-          from pmid_status_{sourceSuffix} order by version desc, xml_filename desc) as a
-          group by pmid) as a
-        inner join (select *, rowNumberInAllBlocks() as rn
-          from pmid_status_{sourceSuffix} order by version desc, xml_filename desc) as b
-        on a.rn = b.rn
-        order by pmid)') # glue_sql doesn't work for these
+      "create table {sourceKeep} engine = MergeTree() order by tuple() as
+        (select pmid, ver_file[1] as xml_filename, toInt32(ver_file[2]) as version
+        from (select pmid, splitByChar(':', max(concat(assumeNotNull(xml_filename), ':', toString(assumeNotNull(version))))) as ver_file
+        from pmid_status_{sourceSuffix} group by pmid)
+        order by pmid)") # glue_sql doesn't work for these
   } else {
     # window functions are for wizards (and not for ClickHouse users)
     q = glue(
@@ -205,7 +200,7 @@ addSourceToTarget = function(
   targetNow = names(targetEmpty)[startsWith(names(targetEmpty), 'xml_processed')]
   sourceNow = names(sourceEmpty)[startsWith(names(sourceEmpty), 'xml_processed')]
 
-  if (!dryRun && dbtype == 'clickhouse'){
+  if (!isTRUE(dryRun) && dbtype == 'clickhouse'){
     q = glue('alter table {targetNow} delete where
              xml_filename in (select xml_filename from {sourceNow})')
   } else {
@@ -233,7 +228,7 @@ addSourceToTarget = function(
   d2 = doOp(feo, {
     con = connect(dbtype, dbname, ...) # required if in dopar
     # drop rows in target tables, use subquery to conform to sql standard
-    if (!dryRun && dbtype == 'clickhouse'){
+    if (!isTRUE(dryRun) && dbtype == 'clickhouse'){
       q = glue('alter table {targetName} delete
                where pmid in (select pmid from {sourceName})')
     } else {
