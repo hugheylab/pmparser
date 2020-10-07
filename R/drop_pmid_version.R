@@ -43,6 +43,31 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
     n = runStatement(con, q)
     disconnect(con)
     dNow = data.table(table_name = tableName, nrow_delete = n)})
+  if (dbtype == 'clickhouse'){
+    con = connect(dbtype, dbname, ...)
+    hungMutations = DBI::dbGetQuery(con, 'select * from system.mutations where is_done=0')
+    disconnect(con)
+    if(nrow(hungMutations) > 0L){
+      con = connect(dbtype, dbname, ...)
+      DBI::dbExecute(con, 'kill mutation where is_done=0')
+      tablesHung = hungMutations$table
+      d = d[!(table_name %in% tablesHung)]
+      disconnect(con)
+      d2 = doOp(foreach(tableName = tablesHung, .combine = rbind), {
+        con = connect(dbtype, dbname, ...)
+        if (dbtype == 'clickhouse'){
+          q = glue("alter table {tableName} delete where concat(toString(pmid), ':', toString(version)) not in
+               (select concat(toString(pmid), ':', toString(version)) from {tableKeep})")
+        } else {
+          q = glue('{qStart} from {tableName} as a where not exists
+               (select 1 from {tableKeep} as b
+               where a.pmid = b.pmid and a.version = b.version)')}
+        n = runStatement(con, q)
+        disconnect(con)
+        dNow = data.table(table_name = tableName, nrow_delete = n)})
+      d = rbind(d,)
+    }
+  }
 
   con = connect(dbtype, dbname, ...)
   if (isTRUE(dryRun)) {
@@ -90,7 +115,7 @@ dropPmidVersionColumn = function(tableSuffix, con) {
     # x = DBI::dbGetQuery(con, q)
     for (tableName in names(parTables)[idx]) {
       tNameDB = paste0(dbname, '.', tableName)
-      system2('clickhouse-client', args = c('--query', sprintf('"alter table %s drop column version;"', tNameDB)))
+      system2('clickhouse-client', args = c('--query', sprintf('"ALTER TABLE %s DROP COLUMN IF EXISTS version SETTINGS mutations_sync = 2;"', tNameDB)))
     }
   } else {
     for (tableName in names(parTables)[idx]) {
