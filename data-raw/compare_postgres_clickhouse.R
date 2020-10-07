@@ -15,7 +15,8 @@ for(table in tables){
 
   dtC = as.data.table(DBI::dbReadTable(conC, table))
   for(colname in colnames(dtC)){
-    if(inherits(dtC[[colname]], 'Date') || (colname == 'version' && table != 'pmid_status')){
+    # if(inherits(dtC[[colname]], 'Date') || (colname == 'version' && table != 'pmid_status')){
+    if(inherits(dtC[[colname]], 'Date')){
       dtC[[colname]] = NULL
     }
   }

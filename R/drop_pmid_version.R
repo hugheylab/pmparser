@@ -80,12 +80,18 @@ dropPmidVersionColumn = function(tableSuffix, con) {
 
   }
   else if (inherits(con, 'ClickhouseConnection')) {
+    dbInfo = DBI::dbGetInfo(con)
+    dbname = dbInfo$dbname
     # Removing Clickhouse version column drop to ensure data is the same.
 
     # q = ''
     # for (tableName in names(parTables)[idx]) {
     #   q = glue('{`q`}\nalter table {`tableName`} drop column version;')}
     # x = DBI::dbGetQuery(con, q)
+    for (tableName in names(parTables)[idx]) {
+      tNameDB = paste0(dbname, '.', tableName)
+      system2('clickhouse-client', args = c('--query', sprintf('"alter table %s drop column version;"', tNameDB)))
+    }
   } else {
     for (tableName in names(parTables)[idx]) {
       q = glue_sql('alter table {`tableName`} drop column version', .con = con)
