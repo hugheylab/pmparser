@@ -65,7 +65,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
         n = runStatement(con, q)
         disconnect(con)
         dNow = data.table(table_name = tableName, nrow_delete = n)})
-      d = rbind(d,)
+      d = rbind(d, d2)
     }
   }
 
