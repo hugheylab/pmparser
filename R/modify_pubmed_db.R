@@ -205,7 +205,7 @@ addSourceToTarget = function(
   # loop over remaining tables
   feo = foreach(targetName = setdiff(names(targetEmpty), targetNow),
                 sourceName = setdiff(names(sourceEmpty), sourceNow),
-                .combine = rbind)
+                .combine = rbind, .options.future = list(scheduling = Inf))
 
   doOp = getDoOp(dbtype)
   d2 = doOp(feo, {

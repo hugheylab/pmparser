@@ -1,3 +1,6 @@
+# pmparser 0.0.0.9034
+* Explicitly set doFuture chunking for all dopar loops.
+
 # pmparser 0.0.0.9033
 * Suppress irrelevant warnings from future.
 

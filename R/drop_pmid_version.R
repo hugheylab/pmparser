@@ -19,8 +19,11 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   qStart = if (isTRUE(dryRun)) 'select count(*)' else 'delete'
   idx = !grepl('^(pmid_status|xml_processed)', names(parTables))
 
+  feo = foreach(tableName = names(parTables)[idx], .combine = rbind,
+                .options.future = list(scheduling = Inf))
+
   doOp = getDoOp(dbtype)
-  d = doOp(foreach(tableName = names(parTables)[idx], .combine = rbind), {
+  d = doOp(feo, {
     con = connect(dbtype, dbname, ...)
     qStart; tableName; tableKeep; # so glue works in dopar
     q = glue('{qStart} from {tableName} as a where not exists
