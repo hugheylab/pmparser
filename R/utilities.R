@@ -33,12 +33,13 @@ download = function(url, destfile, n = 3L) {
 
 
 connect = function(dbtype, dbname, ...) {
-  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite', 'bigquery'))
+  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite', 'clickhouse', 'bigquery'))
   pkgName = switch(dbtype,
                    postgres = 'RPostgres',
                    mariadb = 'RMariaDB',
                    mysql = 'RMariaDB',
                    sqlite = 'RSQLite',
+                   clickhouse = 'RClickhouse',
                    bigquery = 'bigrquery')
 
   if (!requireNamespace(pkgName, quietly = TRUE)) {
@@ -49,6 +50,7 @@ connect = function(dbtype, dbname, ...) {
                mariadb = RMariaDB::MariaDB(),
                mysql = RMariaDB::MariaDB(),
                sqlite = RSQLite::SQLite(),
+               clickhouse = RClickhouse::clickhouse(),
                bigquery = bigrquery::bigquery())
 
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
@@ -222,6 +224,7 @@ getClickhouseDataTypes = function(d, nullable = TRUE) {
   } else {
     dataTypes = glue('Nullable({dataTypesTmp})')
     dataTypes[dataTypesTmp == 'DateTime'] = 'DateTime'
+    dataTypes[dataTypesTmp == 'Date'] = 'Date'
     return(dataTypes)}}
 
 
@@ -242,3 +245,27 @@ createTableClickhouse = function(con, tableName, d, nullable = TRUE) {
     'create table {tableName} ({z}) ENGINE = MergeTree() order by tuple()',
     z = paste(colnames(d), dataTypes, collapse = ', '))
   DBI::dbExecute(con, q)}
+
+setNAToSpecial = function(d) {
+  naDateVal = as.Date('2100-01-01')
+  priorDateVal = as.Date('2075-01-01')
+  if (nrow(d) == 1L && any(is.na(d))){
+    columns = colnames(d)
+    for(column in columns){
+      if (is.na(d[[column]])){
+        if (is.logical(d[[column]])) val = 0
+        else if (is.integer(d[[column]])) val = -1L
+        else if (is.numeric(d[[column]])) val = -1
+        else if (inherits(d[[column]], 'POSIXct')) val = naDateVal
+        else if (inherits(d[[column]], 'Date')) val = naDateVal
+        else val = as.character(NA)
+        d[, (column) := val]}}
+  } else {
+    for (j in 1:ncol(d)) {
+      if (inherits(d[[j]], 'Date')) {
+        data.table::set(
+          d, i = which(is.na(d[[j]])), j = j, value = naDateVal)
+        data.table::set(
+          d, i = which(d[[j]] < as.Date('1970-01-01')), j = j, value = priorDateVal)}}}
+  return(invisible(d))
+}
