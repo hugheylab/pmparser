@@ -33,12 +33,13 @@ download = function(url, destfile, n = 3L) {
 
 
 connect = function(dbtype, dbname, ...) {
-  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite'))
+  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite', 'bigquery'))
   pkgName = switch(dbtype,
                    postgres = 'RPostgres',
                    mariadb = 'RMariaDB',
                    mysql = 'RMariaDB',
-                   sqlite = 'RSQLite')
+                   sqlite = 'RSQLite',
+                   bigquery = 'bigrquery')
 
   if (!requireNamespace(pkgName, quietly = TRUE)) {
     stop(glue('To use dbtype "{dbtype}", install the {pkgName} package.'))}
@@ -47,7 +48,8 @@ connect = function(dbtype, dbname, ...) {
                postgres = RPostgres::Postgres(),
                mariadb = RMariaDB::MariaDB(),
                mysql = RMariaDB::MariaDB(),
-               sqlite = RSQLite::SQLite())
+               sqlite = RSQLite::SQLite(),
+               bigquery = bigrquery::bigquery())
 
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
 
