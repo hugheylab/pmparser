@@ -229,6 +229,8 @@ createTable = function(con, tableName, d) {
   # writes 0 rows
   if (inherits(con, 'ClickhouseConnection')) {
     createTableClickhouse(con, tableName, d)
+  } else if (inherits(con, 'BigQueryConnection')) {
+    bigrquery::bq_table_create(bigrquery::bq_table(con@project, con@dataset, tableName), d)
   } else {
     DBI::dbCreateTable(con, tableName, d)}
   invisible(0L)}
