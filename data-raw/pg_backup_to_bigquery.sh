@@ -2,8 +2,8 @@ SCHEMA="public"
 DB="pmdbclick"
 
 Rscript \
-  -e "pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test, dataset = 'pmparser')" \
-  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test, dataset = 'pmparser')" \
+  -e "pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
+  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
   -e "pmparser:::dropPmidVersionColumn('', bqCon)" \
   -e "pmparser:::disconnect(bqCon)"
 
