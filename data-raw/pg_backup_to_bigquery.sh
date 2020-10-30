@@ -14,21 +14,19 @@ psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
   done
 for f in *.csv; do
   tName=$(echo $f | sed 's/\.csv//g')
-  if [ $tName == 'journal' ]
-    then
-      bq load \
-      --allow_quoted_newlines \
-      --source_format=CSV \
-      "pmparser-test:pmparser.$tName" \
-      $f \
-      pmid:INT64,journal_name:STRING,journal_iso:STRING,pub_date:DATE,pub_year:STRING,pub_month:STRING,pub_day:STRING,medline_date:STRING,volume:STRING,issue:STRING,cited_medium:STRING
-    else
-      bq load \
-      --autodetect
-      --allow_quoted_newlines \
-      --source_format=CSV \
-      "pmparser-test:pmparser.$tName" \
-      $f
+  if [ "$tName" == 'journal' ]; then
+    bq load \
+    --allow_quoted_newlines \
+    --source_format=CSV \
+    "pmparser-test:pmparser.$tName" \
+    $f \
+    pmid:INT64,journal_name:STRING,journal_iso:STRING,pub_date:DATE,pub_year:STRING,pub_month:STRING,pub_day:STRING,medline_date:STRING,volume:STRING,issue:STRING,cited_medium:STRING
+  else
+    bq load \
+    --allow_quoted_newlines \
+    --source_format=CSV \
+    "pmparser-test:pmparser.$tName" \
+    $f
   fi
 
 done
