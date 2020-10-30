@@ -17,7 +17,7 @@ for f in *.csv; do
 
   bq load \
   --skip_leading_rows=1
-  --allow_quoted_newlines \
+  --allow_quoted_newlines=true \
   --source_format=CSV \
   "pmparser-test:pmparser.$tName" \
   $f
