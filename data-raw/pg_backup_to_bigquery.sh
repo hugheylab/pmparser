@@ -17,18 +17,18 @@ for f in *.csv; do
   if [$tName == 'journal']
     then
       bq load \
-        --allow_quoted_newlines \
-        --source_format=CSV \
-        "pmparser-test:pmparser.$tName" \
-        $f \
-        pmid:INT64,journal_name:STRING,journal_iso:STRING,pub_date:DATE,pub_year:STRING,pub_month:STRING,pub_day:STRING,medline_date:STRING,volume:STRING,issue:STRING,cited_medium:STRING
+      --allow_quoted_newlines \
+      --source_format=CSV \
+      "pmparser-test:pmparser.$tName" \
+      $f \
+      pmid:INT64,journal_name:STRING,journal_iso:STRING,pub_date:DATE,pub_year:STRING,pub_month:STRING,pub_day:STRING,medline_date:STRING,volume:STRING,issue:STRING,cited_medium:STRING
     else
       bq load \
-        --autodetect
-        --allow_quoted_newlines \
-        --source_format=CSV \
-        "pmparser-test:pmparser.$tName" \
-        $f
+      --autodetect
+      --allow_quoted_newlines \
+      --source_format=CSV \
+      "pmparser-test:pmparser.$tName" \
+      $f
   fi
 
 done
