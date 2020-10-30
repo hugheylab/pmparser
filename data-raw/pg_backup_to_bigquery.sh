@@ -14,12 +14,10 @@ psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
   done
 for f in *.csv; do
   tName=$(echo $f | sed 's/\.csv//g')
-
   bq load \
+  --allow_quoted_newlines \
   --skip_leading_rows=1
-  --allow_quoted_newlines=true \
   --source_format=CSV \
   "pmparser-test:pmparser.$tName" \
   $f
-
 done
