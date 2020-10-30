@@ -15,9 +15,9 @@ psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
 for f in *.csv; do
   tName=$(echo $f | sed 's/\.csv//g')
   bq load \
-  --allow_quoted_newlines \
-  --skip_leading_rows=1
   --source_format=CSV \
+  --allow_quoted_newlines \
+  --skip_leading_rows=1 \
   "pmparser-test:pmparser.$tName" \
   $f
 done
