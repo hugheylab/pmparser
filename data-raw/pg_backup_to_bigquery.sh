@@ -1,11 +1,11 @@
 SCHEMA="public"
 DB="pmdbclick"
 
-Rscript \
-  -e "pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
-  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
-  -e "pmparser:::dropPmidVersionColumn('', bqCon)" \
-  -e "pmparser:::disconnect(bqCon)"
+#Rscript \
+#  -e "pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
+#  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
+#  -e "pmparser:::dropPmidVersionColumn('', bqCon)" \
+#  -e "pmparser:::disconnect(bqCon)"
 
 
 psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
