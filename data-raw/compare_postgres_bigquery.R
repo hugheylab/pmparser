@@ -6,6 +6,11 @@ conB =  pmparser:::connect('bigquery', 'pmparser-test', project = 'pmparser-test
 for(table in tables){
   q = glue('select * from {table}')
   dtP = as.data.table(DBI::dbReadTable(conP, table))
+  for(col in colnames(dtP)){
+    if(inherits(dtP[[col]], 'character')){
+      dtP[[col]] = gsub('\uFEFF', '', dtP[[col]])
+    }
+  }
   data.table::setorder(dtP)
 
   dtB = as.data.table(DBI::dbReadTable(conB, table))
