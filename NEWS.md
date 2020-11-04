@@ -1,3 +1,6 @@
+# pmparser 0.0.0.9035
+* Remove rare, obnoxious unicode character from keyword name.
+
 # pmparser 0.0.0.9034
 * Explicitly set doFuture chunking for all dopar loops.
 
