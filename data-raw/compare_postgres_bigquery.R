@@ -1,20 +1,17 @@
+# TODO: Either call packages by loading explicitly or by using the :: syntax
 library('pmparser')
 library('data.table')
+library('glue')
+library('DBI')
 tables = c(names(pmparser:::getParsingTables('')), 'citation', 'citation_version')
 conP =  pmparser:::connect('postgres', 'pmdbclick')
 conB =  pmparser:::connect('bigquery', 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')
 for(table in tables){
-  q = glue('select * from {table}')
-  dtP = as.data.table(DBI::dbReadTable(conP, table))
-  for(col in colnames(dtP)){
-    if(inherits(dtP[[col]], 'character')){
-      dtP[[col]] = gsub('\uFEFF', '', dtP[[col]])
-    }
-  }
-  data.table::setorder(dtP)
+  dtP = as.data.table(dbReadTable(conP, table))
+  setorder(dtP)
 
-  dtB = as.data.table(DBI::dbReadTable(conB, table))
-  data.table::setorder(dtB)
+  dtB = as.data.table(dbReadTable(conB, table))
+  setorder(dtB)
 
   allEq = all.equal(dtP, dtB, check.attributes = FALSE)
 
