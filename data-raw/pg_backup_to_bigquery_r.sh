@@ -16,5 +16,5 @@ for f in *.csv; do
   tName=$(echo $f | sed 's/\.csv//g')
   Rscript \
     -e "source('create_bigquery_from_postgres.R')" \
-    -e "createBigQueryFromPostgres(bqDbName = 'pmdbclick', project = 'pmparser-test', dataset = 'pmparser', $tName, nRowsPerChunk = 15000L)"
+    -e "createBigQueryFromPostgres(bqDbName = 'pmdbclick', project = 'pmparser-test', dataset = 'pmparser', tableName = '$tName', nRowsPerChunk = 15000L)"
 done
