@@ -189,20 +189,25 @@ getPgParams = function(path = '~/.pgpass') {
   x3}
 
 
-writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
-  # will be inefficient if file is compressed
-  if (DBI::dbExistsTable(con, tableName)) {
-    if (isTRUE(overwrite)) {
-      DBI::dbRemoveTable(con, tableName)
-    } else {
-      stop(glue('Table {tableName} exists and overwrite is not TRUE.'))}}
-
+writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName, append) {
   # get total number of lines
   n = R.utils::countLines(path)
 
   # read first row to get data types, but don't send it to database
   d = data.table::fread(path, nrows = 1L)
-  createTable(con, tableName, d)
+
+  # will be inefficient if file is compressed
+  if (DBI::dbExistsTable(con, tableName) && !isTRUE(append)) {
+    if (isTRUE(overwrite)) {
+      DBI::dbRemoveTable(con, tableName)
+      createTable(con, tableName, d)
+    } else {
+      stop(glue('Table {tableName} exists and overwrite is not TRUE.'))}
+  } else {
+    createTable(con, tableName, d)}
+
+
+
 
   # append in chunks, fread handles last chunk where nrows > remaining rows
   for (i in seq(1L, n - 1L, nRowsPerChunk)) {
