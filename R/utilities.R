@@ -197,7 +197,8 @@ writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName, ap
   d = data.table::fread(path, nrows = 1L)
 
   # will be inefficient if file is compressed
-  if (DBI::dbExistsTable(con, tableName) && !isTRUE(append)) {
+  if (DBI::dbExistsTable(con, tableName) && isTRUE(append)) {
+  } else if(DBI::dbExistsTable(con, tableName)) {
     if (isTRUE(overwrite)) {
       DBI::dbRemoveTable(con, tableName)
       createTable(con, tableName, d)
