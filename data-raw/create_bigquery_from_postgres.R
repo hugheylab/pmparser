@@ -3,12 +3,6 @@ library(data.table)
 library(glue)
 library(bigrquery)
 
-createBigQueryFromPostgres = function(bqDbName = 'pmdbclick', project = 'pmparser-test', dataset = 'pmparser', tableName, nRowsPerChunk = 15000L){
-  bqCon = pmparser:::connect('bigquery', bqDbName, project = 'pmparser-test', dataset = 'pmparser')
-  pmparser:::writeTableInChunks(glue('{tableName}.csv'), bqCon, nRowsPerChunk, overwrite=FALSE, tableName, append=TRUE)
-  pmparser:::disconnect(bqCon)
-}
-
 createBigQueryFromPostgres = function(pgDbName = 'pmdbclick', bqDbName = 'pmdbclick', project = 'pmparser-test', dataset = 'pmparser', tableName, chunkSize = 15000L){
 
   # Create tables on DB and remove version column
@@ -42,7 +36,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdbclick', bqDbName = 'pmdbcl
       dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`chunkSize`} OFFSET {`off`}')))
 
       # Append to BigQuery DB
-      bq_table_upload(bq_table(project, dataset, tableName), values = dTable)
+      bq_table_upload(bq_table(project, dataset, tableName), values = dTable, write_disposition = 'WRITE_APPEND')
     }
     pmparser:::disconnect(pCon)}
 }
