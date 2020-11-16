@@ -1,0 +1,122 @@
+table_name,field_name,source
+abstract,pmid,PMID
+abstract,text,Abstract / AbstractText
+abstract,label,Abstract / AbstractText / attr Label
+abstract,nlm_category,Abstract / AbstractText / attr NlmCategory
+abstract_copyright,pmid,PMID
+abstract_copyright,copyright,Abstract / CopyrightInformation
+article,pmid,PMID
+article,title,Article / ArticleTitle
+article,pub_date,Article / ArticleDate / Year-Month-Day
+article,pub_model,Article / attr PubModel
+article_id,pmid,PMID
+article_id,id_type,ArticleIdList / ArticleId / attr IdType
+article_id,id_value,ArticleIdList / ArticleId
+author,pmid,PMID
+author,author_pos,AuthorList / Author / int position
+author,last_name,AuthorList / Author / LastName
+author,fore_name,AuthorList / Author / ForeName
+author,initials,AuthorList / Author / Initials
+author,suffix,AuthorList / Author / Suffix
+author,valid,AuthorList / Author / attr ValidYN
+author,equal_contrib,AuthorList / Author / attr EqualContrib
+author,collective_name,AuthorList / Author / CollectiveName
+author_affiliation,pmid,PMID
+author_affiliation,author_pos,AuthorList / Author / int position
+author_affiliation,affiliation_pos,AuthorList / Author / AffiliationInfo / Affiliation / int position
+author_affiliation,affiliation,AuthorList / Author / AffiliationInfo / Affiliation
+author_affiliation_identifier,pmid,PMID
+author_affiliation_identifier,author_pos,AuthorList / Author / int position
+author_affiliation_identifier,affiliation_pos,AuthorList / Author / Affiliation / int position
+author_affiliation_identifier,source,AuthorList / Author / AffiliationInfo / Identifier / attr Source
+author_affiliation_identifier,identifier,AuthorList / Author / AffiliationInfo / Identifier
+author_identifier,pmid,PMID
+author_identifier,author_pos,AuthorList / Author / int position
+author_identifier,source,AuthorList / Author / Identifier / attr Source
+author_identifier,identifier,AuthorList / Author / Identifier
+author_list,pmid,PMID
+author_list,complete,AuthorList / attr CompleteYN
+chemical,pmid,PMID
+chemical,registry_number,ChemicalList / Chemical / RegistryNumber
+chemical,substance_name,ChemicalList / Chemical / NameOfSubstance
+chemical,substance_ui,ChemicalList / Chemical / NameOfSubstance / attr UI
+citation,citing_pmid,NIH OCC / citing
+citation,cited_pmid,NIH OCC / referenced
+citation_version,md5_computed,-
+citation_version,pmparser_version,-
+citation_version,datetime_processed,-
+comment,pmid,PMID
+comment,ref_type,CommentsCorrectionsList / CommentsCorrections / attr RefType
+comment,ref_pmid,CommentsCorrectionsList / CommentsCorrections / PMID
+data_bank,pmid,PMID
+data_bank,data_bank_name,DataBankList / DataBank / DataBankName
+data_bank,accession_number,DataBankList / DataBank / AccessionNumber
+grant_item,pmid,PMID
+grant_item,grant_id,GrantList / Grant / GrantID
+grant_item,acronym,GrantList / Grant / Acronym
+grant_item,agency,GrantList / Grant / Agency
+grant_item,country,GrantList / Grant / Country
+grant_list,pmid,PMID
+grant_list,complete,GrantList / CompleteYN
+investigator,pmid,PMID
+investigator,investigator_pos,InvestigatorList / Investigator / int position
+investigator,last_name,InvestigatorList / Investigator / LastName
+investigator,fore_name,InvestigatorList / Investigator / ForeName
+investigator,initials,InvestigatorList / Investigator / Initials
+investigator,suffix,InvestigatorList / Investigator / Suffix
+investigator,valid,InvestigatorList / Investigator / attr ValidYN
+investigator_affiliation,pmid,PMID
+investigator_affiliation,investigator_pos,InvestigatorList / Investigator / int position
+investigator_affiliation,affiliation_pos,InvestigatorList / Investigator / AffiliationInfo / Affiliation / int position
+investigator_affiliation,affiliation,InvestigatorList / Investigator / AffiliationInfo / Affiliation
+investigator_affiliation_identifier,pmid,PMID
+investigator_affiliation_identifier,investigator_pos,InvestigatorList / Investigator / int position
+investigator_affiliation_identifier,affiliation_pos,InvestigatorList / Investigator / Affiliation / int position
+investigator_affiliation_identifier,source,InvestigatorList / Investigator / AffiliationInfo / Identifier / attr Source
+investigator_affiliation_identifier,identifier,InvestigatorList / Investigator / AffiliationInfo / Identifier
+investigator_identifier,pmid,PMID
+investigator_identifier,investigator_pos,InvestigatorList / Investigator / int position
+investigator_identifier,source,InvestigatorList / Investigator / Identifier / attr Source
+investigator_identifier,identifier,InvestigatorList / Investigator / Identifier
+journal,pmid,PMID
+journal,journal_name,Journal / Title
+journal,journal_iso,Journal / ISOAbbreviation
+journal,pub_date,Journal / Year-Month-Day
+journal,pub_year,Journal / Year
+journal,pub_month,Journal / Month
+journal,pub_day,Journal / Day
+journal,medline_date,Journal / MedlineDate
+journal,volume,Journal / Volume
+journal,issue,Journal / Issue
+journal,cited_medium,Journal / CitedMedium
+keyword_item,pmid,PMID
+keyword_item,keyword_name,KeywordList / Keyword
+keyword_item,major_topic,KeywordList / Keyword / attr MajorTopicYN
+keyword_list,pmid,PMID
+keyword_list,list_owner,KeywordList / attr Owner
+mesh_descriptor,pmid,PMID
+mesh_descriptor,descriptor_pos,MeshHeadingList / MeshHeading / int position
+mesh_descriptor,descriptor_name,MeshHeadingList / MeshHeading / DescriptorName
+mesh_descriptor,descriptor_ui,MeshHeadingList / MeshHeading / DescriptorName / attr UI
+mesh_descriptor,descriptor_major_topic,MeshHeadingList / MeshHeading / DescriptorName / attr MajorTopicYN
+mesh_list,pmid,PMID
+mesh_list,indexing_method,MedlineCitation / IndexingMethod
+mesh_qualifier,pmid,PMID
+mesh_qualifier,descriptor_pos,MeshHeadingList / MeshHeading / int position
+mesh_qualifier,qualifier_name,MeshHeadingList / MeshHeading / QualifiierName
+mesh_qualifier,qualifier_ui,MeshHeadingList / MeshHeading / QualifiierName / attr UI
+mesh_qualifier,qualifier_major_topic,MeshHeadingList / MeshHeading / QualifiierName / attr MajorTopicYN
+pmid_status,pmid,PMID
+pmid_status,version,PMID / attr Version
+pmid_status,xml_filename,-
+pmid_status,status,DeleteCitation | (MedlineCitation / attr Status)
+pub_history,pmid,PMID
+pub_history,pub_status,History / PubMedPubDate / attr PubStatus
+pub_history,pub_date,History / PubMedPubDate / Year-Month-Day
+pub_type,pmid,PMID
+pub_type,type_name,PublicationTypeList / PublicationType
+pub_type,type_id,PublicationTypeList / PublicationType / attr UI
+readme,text,ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt
+xml_processed,xml_filename,-
+xml_processed,pmparser_version,-
+xml_processed,datetime_processed,-

@@ -1,0 +1,22 @@
+---
+title: "Data Dictionary"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Data Dictionary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Most tables are derived from the MEDLINE XML files, parsed according to the [MEDLINE®PubMed® XML Element Descriptions and their Attributes](https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html). The `source` column indicates the corresponding element in the MEDLINE XML. All elements other than those for the pmid_status table and the citation table are nested within the PubmedArticle element. "attr" indicates a named attribute in the XML, and "int position" indicates an integer to index each item in a list. The citation table is derived from the [NIH Open Citation Collection](https://nih.figshare.com/collections/iCite_Database_Snapshots_NIH_Open_Citation_Collection_/4586573).
+
+```{r, echo = FALSE}
+dd = data.table::fread(system.file('extdata', 'data_dictionary.csv', package = 'pmparser'))
+knitr::kable(dd)
+```

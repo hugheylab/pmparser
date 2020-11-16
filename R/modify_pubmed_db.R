@@ -144,6 +144,11 @@ modifyPubmedDb = function(
       localDir = localDir, nrows = nCitations, tableSuffix = '',
       overwrite = TRUE, con = con, checkMd5 = !testing)}
 
+  dd = data.table::fread(
+    system.file('extdata', 'data_dictionary.csv', package = 'pmparser'))
+  DBI::dbWriteTable(con, 'data_dictionary', dd, overwrite = TRUE)
+  writeLogFile(logPath, data.table('add data dictionary'))
+
   dMissing = getMissing(con, '', fileInfoKeep)
   if (nrow(dMissing) > 0) {
     path = glue('{tools::file_path_sans_ext(logPath)}_missing.csv')
