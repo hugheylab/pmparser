@@ -3,19 +3,37 @@ library(data.table)
 library(glue)
 library(bigrquery)
 
-createBigQueryFromPostgres = function(pgDbName = 'pmdbclick', bqDbName = 'pmdbclick', project = 'pmparser-test', dataset = 'pmparser', tableName, chunkSize = 15000L){
-
-  # Create tables on DB and remove version column
-  pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')
-  bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')
-  pmparser:::dropPmidVersionColumn('', bqCon)
-  pmparser:::disconnect(bqCon)
+createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', tableName, chunkSize = 15000L, overwriteTable = FALSE, tables = c()){
 
   # Get tables for processing and add citation tables
   parseNames = pmparser:::getParsingTables('')
   parseNames = c(parseNames, list(citation = data.table::data.table(citing_pmid = as.integer(), cited_pmid = as.integer()),
                                   citation_version = data.table::data.table(md5_computed = as.character(), pmparser_version = as.character(), datetime_processed = as.POSIXct(as.character()))))
+
+
+  if(!is.na(tables) && length(tables) > 0){
+    parseNames = parseNames[tables == names(parseNames)]
+  }
+
   tableNames = names(parseNames)
+
+  bqCon = pmparser:::connect('bigquery', dbname = project, project = project, dataset = dataset)
+  tableExists = sapply(
+    tableNames, function(x) {
+      exists = DBI::dbExistsTable(bqCon, x)
+      if(exists && overwriteTable){
+        DBI::dbRemoveTable(bqCon, x)
+        exists = FALSE}
+      exists})
+  stopifnot(!any(tableExists))
+  pmparser:::disconnect(bqCon)
+
+  # Create tables on DB and remove version column
+  pmparser:::createParsingTables(dbtype = 'bigquery', dbname = project, project = project, dataset = dataset, tabNames = tables)
+  bqCon = pmparser:::connect('bigquery', dbname = project, project = project, dataset = dataset)
+  pmparser:::dropPmidVersionColumn('', bqCon)
+  pmparser:::disconnect(bqCon)
+
 
   verExclude = c('pmid_status', 'xml_processed', 'citation', 'citation_version')
   foreach(tableName = tableNames) %dopar% {

@@ -98,12 +98,16 @@ getParsingTables = function(tableSuffix) {
 
 
 createParsingTables = function(
-  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL,
+  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL, tabNames = c(),
   ...) {
   if (is.null(dbname)) return(invisible())
 
   con = connect(dbtype, dbname, ...)
   parTables = getParsingTables(tableSuffix)
+
+  if(!is.na(tabNames) && length(tabNames > 0)){
+    parTables = parTables[tabNames == names(parTables)]
+  }
 
   tableExists = sapply(
     names(parTables), function(x) DBI::dbExistsTable(con, x))
