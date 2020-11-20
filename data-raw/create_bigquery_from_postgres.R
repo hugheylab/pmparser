@@ -3,7 +3,9 @@ library(data.table)
 library(glue)
 library(bigrquery)
 
-createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', tableName, chunkSize = 15000L, overwriteTable = FALSE, tables = c()){
+#tables variable is a named list where the name is the table name and the value is the chunk size you want to process. Chunk sizes of 0 or NA will be removed from list
+
+createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 15000L, overwriteTable = FALSE, tables = NULL){
 
   # Get tables for processing and add citation tables
   parseNames = pmparser:::getParsingTables('')
@@ -11,8 +13,12 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
                                   citation_version = data.table::data.table(md5_computed = as.character(), pmparser_version = as.character(), datetime_processed = as.POSIXct(as.character()))))
 
 
-  if(!is.na(tables) && length(tables) > 0){
-    parseNames = parseNames[tables == names(parseNames)]
+  if(!is.null(tables) && length(tables) > 0){
+    tables = tables[which(tables > 0)]
+    parseNames = parseNames[names(parseNames) %in% names(tables)]
+  } else {
+    tables = as.list(rep.int(chunkSize, length(parseNames)))
+    names(tables) = names(parseNames)
   }
 
   tableNames = names(parseNames)
@@ -49,10 +55,13 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
     if(!(tableName %in% verExclude)) colNamesDT[,version := NULL]
     colOrder = paste(colnames(colNamesDT), collapse=', ')
 
+    # Use chunkSize from tables list
+    tChunkSize = tables[tableName]
+
     # For offset multiplier, integer divide the totalRows by chunkSize
-    for(rowOff in 0:(totalRows %/% chunkSize)) {
+    for(rowOff in 0:(totalRows %/% tChunkSize)) {
       # Calculate offset to use with limit, then query based off that
-      off = rowOff * chunkSize
+      off = rowOff * tChunkSize
       dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`chunkSize`} OFFSET {`off`}')))
 
       # Append to BigQuery DB
