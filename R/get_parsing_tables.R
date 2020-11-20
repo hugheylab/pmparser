@@ -98,7 +98,7 @@ getParsingTables = function(tableSuffix) {
 
 
 createParsingTables = function(
-  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL, tabNames = NULL,
+  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL, tableNames = NULL,
   ...) {
   if (is.null(dbname)) return(invisible())
 
