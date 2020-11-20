@@ -3,9 +3,10 @@ library(data.table)
 library(glue)
 library(bigrquery)
 
-#tables variable is a named list where the name is the table name and the value is the chunk size you want to process. Chunk sizes of 0 or NA will be removed from list
+createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 15000L, overwriteTable = FALSE){
 
-createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 15000L, overwriteTable = FALSE, tables = NULL){
+  # chunkSize variable is either an integer or a named list where the name is the table name and the value is the chunk size you want to process.
+  # Integer values will be the chunkSize for all tables, and a named list will only process the tables in the list in the size provided.
 
   # Get tables for processing and add citation tables
   parseNames = pmparser:::getParsingTables('')
@@ -13,8 +14,10 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
                                   citation_version = data.table::data.table(md5_computed = as.character(), pmparser_version = as.character(), datetime_processed = as.POSIXct(as.character()))))
 
 
-  if(!is.null(tables) && length(tables) > 0){
-    tables = tables[which(tables > 0)]
+  tables = list()
+
+  if(!is.null(tables) && inherits(chunkSize, 'list') && length(tables) > 0){
+    tables = chunkSize[which(chunkSize > 0)]
     parseNames = parseNames[names(parseNames) %in% names(tables)]
   } else {
     tables = as.list(rep.int(chunkSize, length(parseNames)))
