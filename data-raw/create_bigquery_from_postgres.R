@@ -35,6 +35,8 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
   pmparser:::disconnect(bqCon)
 
 
+  dtFail = data.table(table = as.character(), offset = as.integer(), chunk_size = as.integer(), fail_reason = as.character(), timestamp = as.POSIXct(as.character()))
+
   verExclude = c('pmid_status', 'xml_processed', 'citation', 'citation_version')
   foreach(tableName = tableNames) %dopar% {
     # Get count of rows in table
@@ -54,8 +56,13 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
       dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`chunkSize`} OFFSET {`off`}')))
 
       # Append to BigQuery DB
-      bq_table_upload(bq_table(project, dataset, tableName), values = dTable, write_disposition = 'WRITE_APPEND')
+      tryCatch({bq_table_upload(bq_table(project, dataset, tableName), values = dTable, write_disposition = 'WRITE_APPEND')},
+               error = function(e){
+                 dtFail = rbind(dtFail, data.table(table = tableName, offset = off, chunk_size =chunkSize, fail_reason = trimws(as.character(res)), timestamp = Sys.time()))
+               })
+
     }
     pmparser:::disconnect(pCon)}
+  return(dtFail)
 }
 
