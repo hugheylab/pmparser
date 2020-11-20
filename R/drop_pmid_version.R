@@ -38,7 +38,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
     DBI::dbRemoveTable(con, tableKeep)
   } else {
     DBI::dbRemoveTable(con, tableNow)
-    if(inherits(con, 'BigQueryConnection')){
+    if (inherits(con, 'BigQueryConnection')) {
       q = glue('create table {`tableNow`} as select * from {`tableKeep`}')
       n = DBI::dbExecute(con, q)
       q = glue('drop table {`tableKeep`}')
