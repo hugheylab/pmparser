@@ -105,8 +105,8 @@ createParsingTables = function(
   con = connect(dbtype, dbname, ...)
   parTables = getParsingTables(tableSuffix)
 
-  if(!is.null(tabNames) && length(tabNames > 0)){
-    parTables = parTables[names(parTables) %in% tabNames]
+  if(!is.null(tableNames) && length(tableNames > 0)){
+    parTables = parTables[names(parTables) %in% tableNames]
   }
 
   tableExists = sapply(
