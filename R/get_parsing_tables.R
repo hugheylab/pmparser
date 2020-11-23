@@ -1,4 +1,4 @@
-getParsingTables = function(tableSuffix, tableNames = NULL) {
+getParsingTables = function(tableSuffix, tableNames = NULL, ...) {
   ac = as.character()
   ai = as.integer()
 
