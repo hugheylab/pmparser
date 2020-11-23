@@ -52,7 +52,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
   return(d)}
 
 
-dropPmidVersionColumn = function(tableSuffix, con) {
+dropPmidVersionColumn = function(tableSuffix, con, ...) {
   parTables = getParsingTables(tableSuffix, ...)
   idx = !grepl('^(pmid_status|xml_processed)', names(parTables))
 
