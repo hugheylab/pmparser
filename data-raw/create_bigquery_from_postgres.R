@@ -16,7 +16,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
 
   tables = list()
 
-  if(!is.null(tables) && inherits(chunkSize, 'list') && length(tables) > 0){
+  if(inherits(chunkSize, 'list')){
     tables = chunkSize[which(chunkSize > 0)]
     parseNames = parseNames[names(parseNames) %in% names(tables)]
   } else {
