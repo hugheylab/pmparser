@@ -65,7 +65,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
     for(rowOff in 0:(totalRows %/% tChunkSize)) {
       # Calculate offset to use with limit, then query based off that
       off = rowOff * tChunkSize
-      dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`chunkSize`} OFFSET {`off`}')))
+      dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`tChunkSize`} OFFSET {`off`}')))
 
       # Append to BigQuery DB
       tryCatch({bq_table_upload(bq_table(project, dataset, tableName), values = dTable, write_disposition = 'WRITE_APPEND')},
