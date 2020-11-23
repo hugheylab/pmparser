@@ -70,7 +70,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
       # Append to BigQuery DB
       tryCatch({bq_table_upload(bq_table(project, dataset, tableName), values = dTable, write_disposition = 'WRITE_APPEND')},
                error = function(e){
-                 dtFail = rbind(dtFail, data.table(table = tableName, offset = off, chunk_size =chunkSize, fail_reason = trimws(as.character(res)), timestamp = Sys.time()))
+                 dtFail = rbind(dtFail, data.table(table = tableName, offset = off, chunk_size =chunkSize, fail_reason = trimws(as.character(e)), timestamp = Sys.time()))
                })
 
     }
