@@ -59,7 +59,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
     colOrder = paste(colnames(colNamesDT), collapse=', ')
 
     # Use chunkSize from tables list
-    tChunkSize = tables[tableName]
+    tChunkSize = tables[[tableName]]
 
     # For offset multiplier, integer divide the totalRows by chunkSize
     for(rowOff in 0:(totalRows %/% tChunkSize)) {
