@@ -33,7 +33,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
       if(exists && overwriteTable){
         DBI::dbRemoveTable(bqCon, x)
         exists = FALSE}
-      exists})
+      return(exists)})
   stopifnot(!any(tableExists))
   pmparser:::disconnect(bqCon)
 
