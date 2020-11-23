@@ -40,7 +40,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
   # Create tables on DB and remove version column
   pmparser:::createParsingTables(dbtype = 'bigquery', dbname = project, project = project, dataset = dataset, tableNames = tableNames)
   bqCon = pmparser:::connect('bigquery', dbname = project, project = project, dataset = dataset)
-  pmparser:::dropPmidVersionColumn('', bqCon)
+  pmparser:::dropPmidVersionColumn('', bqCon, tableNames = tableNames)
   pmparser:::disconnect(bqCon)
 
 
