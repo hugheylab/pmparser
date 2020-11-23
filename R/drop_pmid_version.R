@@ -1,5 +1,5 @@
 deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
-  parTables = getParsingTables(tableSuffix)
+  parTables = getParsingTables(tableSuffix, ...)
   tableKeep = paste_('pmid_status_keep', tableSuffix)
 
   con = connect(dbtype, dbname, ...)
@@ -53,7 +53,7 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
 
 
 dropPmidVersionColumn = function(tableSuffix, con) {
-  parTables = getParsingTables(tableSuffix)
+  parTables = getParsingTables(tableSuffix, ...)
   idx = !grepl('^(pmid_status|xml_processed)', names(parTables))
 
   if (inherits(con, 'SQLiteConnection')) { # thanks, sqlite
