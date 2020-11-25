@@ -88,8 +88,8 @@ getParsingTables = function(tableSuffix, tableNames = NULL, ...) {
     r[[tableName]] = cbind(dBase, r[[tableName]])}
 
   if (!isEmpty(tableSuffix)) {
-    tableNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
-    for (tableName in tableNames) {
+    tNames = setdiff(names(r), c('pmid_status', 'xml_processed'))
+    for (tableName in tNames) {
       r[[tableName]][, xml_filename := ac]
       setcolorder(r[[tableName]], c('pmid', 'version', 'xml_filename'))}}
 
