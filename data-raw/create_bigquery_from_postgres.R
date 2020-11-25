@@ -78,3 +78,20 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
   return(dtFail)
 }
 
+retryBigQueryFromPostgres = function(dtFail, pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb'){
+  dtFail[,retryMsg := queryFun(table, chunk_size, offset, pgDbName, project, dataset)]
+}
+
+queryFun = function(table, chunkSize, off, pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb'){
+  dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`tChunkSize`} OFFSET {`off`}')))
+
+  retMsg = 'Success'
+  # Append to BigQuery DB
+  tryCatch({bq_table_upload(bq_table(project, dataset, tableName), values = dTable, write_disposition = 'WRITE_APPEND')},
+           error = function(e){
+             errMsg = trimws(as.character(e))
+             retMsg = glue('Failure: {errMsg}')
+           })
+  return(retMsg)
+}
+
