@@ -3,7 +3,7 @@ library(data.table)
 library(glue)
 library(bigrquery)
 
-createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 15000L, overwriteTable = FALSE){
+createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 15000L, overwriteTable = FALSE, fName = 'create_bigquery_result.csv'){
 
   # chunkSize variable is either an integer or a named list where the name is the table name and the value is the chunk size you want to process.
   # Integer values will be the chunkSize for all tables, and a named list will only process the tables in the list in the size provided.
@@ -75,6 +75,9 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
 
     }
     pmparser:::disconnect(pCon)}
+  if(length(dtFail) > 0){
+    fwrite(dtFail, file = fName)
+  }
   return(dtFail)
 }
 
