@@ -2,6 +2,8 @@ library(pmparser)
 library(data.table)
 library(glue)
 library(bigrquery)
+library(doParallel)
+library(foreach)
 
 createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 15000L, overwriteTable = FALSE, fName = 'create_bigquery_result.csv'){
 
