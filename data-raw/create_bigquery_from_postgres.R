@@ -69,7 +69,7 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
       off = rowOff * tChunkSize
       dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`tChunkSize`} OFFSET {`off`}')))
 
-      if(is.TRUE(checkAndFix)){
+      if(isTRUE(checkAndFix)){
         dTableBQ = data.table::as.data.table(bq_dataset_query(bq_dataset(project, dataset), glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`tChunkSize`} OFFSET {`off`}')))
 
         dTable = data.table::fsetdiff(dTable, dTableBQ)
