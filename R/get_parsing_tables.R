@@ -109,7 +109,7 @@ createParsingTables = function(
 
   if(dbtype == 'bigquery'){
     for(parTable in parTables){
-      parTable$id = as.integer()
+      parTable[, id := as.integer()]
     }
   }
 
