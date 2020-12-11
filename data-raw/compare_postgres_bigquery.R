@@ -136,8 +136,10 @@ comparePostgresBigquery = function(tables = NULL, pgDbName = 'pmdb', project = '
         }
 
         # Query for ids in the bigquery DB
+        conB@page_size = 100
         dtB = data.table::as.data.table(DBI::dbGetQuery(conB, glue('SELECT id FROM {`table`}')))
         setorder(dtB)
+        conB@page_size = 10000
 
         pIds = 1L:totalRows
         bIds = as.vector(dtB$id)
