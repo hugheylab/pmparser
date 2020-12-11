@@ -26,4 +26,4 @@ done
 Rscript \
   -e "source('compare_postgres_bigquery.R')" \
   -e "source('check_and_retry_bigquery.R')" \
-  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmdb')"
+  -e "checkAndRetryBigquery(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb')"
