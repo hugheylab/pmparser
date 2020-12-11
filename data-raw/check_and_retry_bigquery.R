@@ -10,11 +10,13 @@ checkAndRetryBigquery = function(pgDbName = 'pmdb', project = 'pmparser-test', d
 
   dtFail = data.table(table = as.character(), offset = as.integer(), chunk_size = as.integer(), missingIds = as.character(), fail_reason = as.character(), timestamp = as.POSIXct(as.character()))
 
+  conP =  pmparser:::connect('postgres', pgDbName)
+
   for (retryTable in retryTables) {
     table = retryTable$table
     mIds = retryTable$missingIds
 
-    conP =  pmparser:::connect('postgres', pgDbName)
+
     dCount = data.table::as.data.table(DBI::dbGetQuery(conP, glue('SELECT count(*) as count FROM {`table`} WHERE id IN ({mIds})')))
     totalRows = as.integer(dCount$count)
 
@@ -31,11 +33,20 @@ checkAndRetryBigquery = function(pgDbName = 'pmdb', project = 'pmparser-test', d
 
   }
 
-
   notEqTablesAfter = comparePostgresBigquery(tables = retryTables$table, pgDbName = pgDbName, project = project, dataset = dataset)
 
   if(nrow(notEqTablesAfter) > 0){
     fwrite(notEqTablesAfter, fResName)
   }
+
+  retryTablesAfter = notEqTablesAfter[which(notEqTablesAfter$reason == 'Missing IDs'), table, missingIds]
+
+  tabIds = retryTables[which(!(retryTables$table %in% retryTablesAfter$table))]$table
+
+  for (table in tabIds) {
+    DBI::dbExecute(conP, 'ALTER TABLE {`table`} DROP COLUMN IF EXISTS id;')
+  }
+
+  pmparser:::disconnect(conP)
 
 }

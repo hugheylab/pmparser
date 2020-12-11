@@ -1,9 +1,9 @@
 SCHEMA="public"
-DB="pmdbclick"
+DB="pmdb"
 
 Rscript \
-  -e "pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
-  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmparser')" \
+  -e "pmparser:::createParsingTables(dbtype = 'bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmdb')" \
+  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmdb')" \
   -e "pmparser:::dropPmidVersionColumn('', bqCon)" \
   -e "pmparser:::disconnect(bqCon)"
 
@@ -19,11 +19,11 @@ for f in *.csv; do
   --source_format=CSV \
   --allow_quoted_newlines \
   --skip_leading_rows=1 \
-  "pmparser-test:pmparser.$tName" \
+  "pmparser-test:pmdb.$tName" \
   $f
 done
 
-psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
-  while read TBL; do
-    psql -c "ALTER TABLE $SCHEMA.$TBL DROP COLUMN IF EXISTS id;" $DB
-  done
+Rscript \
+  -e "source('compare_postgres_bigquery.R')" \
+  -e "source('check_and_retry_bigquery.R')" \
+  -e "bqCon = pmparser:::connect('bigquery', dbname = 'pmparser-test', project = 'pmparser-test', dataset = 'pmdb')"
