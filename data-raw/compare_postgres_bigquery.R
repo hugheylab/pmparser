@@ -86,11 +86,11 @@ comparePostgresBigquery = function(tables = NULL, pgDbName = 'pmdb', project = '
           if (inherits(dtP[[colname]], 'character')) {
             dtP[[colname]] = gsub('\r', '', dtP[[colname]])
             dtP[[colname]] = gsub('\n', '', dtP[[colname]])
-            dtP[[colname]] = gsub('\FEFF', '', dtP[[colname]])
+            dtP[[colname]] = gsub('\feff', '', dtP[[colname]])
 
             dtB[[colname]] = gsub('\r', '', dtB[[colname]])
             dtB[[colname]] = gsub('\n', '', dtB[[colname]])
-            dtB[[colname]] = gsub('\FEFF', '', dtB[[colname]])
+            dtB[[colname]] = gsub('\feff', '', dtB[[colname]])
           }
         }
         setorder(dtP)
@@ -115,11 +115,11 @@ comparePostgresBigquery = function(tables = NULL, pgDbName = 'pmdb', project = '
           if (inherits(dtP[[colname]], 'character')) {
             dtP[[colname]] = gsub('\r', '', dtP[[colname]])
             dtP[[colname]] = gsub('\n', '', dtP[[colname]])
-            dtP[[colname]] = gsub('\FEFF', '', dtP[[colname]])
+            dtP[[colname]] = gsub('\feff', '', dtP[[colname]])
 
             dtB[[colname]] = gsub('\r', '', dtB[[colname]])
             dtB[[colname]] = gsub('\n', '', dtB[[colname]])
-            dtB[[colname]] = gsub('\FEFF', '', dtB[[colname]])
+            dtB[[colname]] = gsub('\feff', '', dtB[[colname]])
           }
         }
         setorder(dtP)
