@@ -22,3 +22,8 @@ for f in *.csv; do
   "pmparser-test:pmparser.$tName" \
   $f
 done
+
+psql -Atc "select tablename from pg_tables where schemaname='$SCHEMA'" $DB |\
+  while read TBL; do
+    psql -c "ALTER TABLE $SCHEMA.$TBL DROP COLUMN IF EXISTS id;" $DB
+  done
