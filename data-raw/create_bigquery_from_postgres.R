@@ -57,14 +57,14 @@ createBigQueryFromPostgres = function(pgDbName = 'pmdb', project = 'pmparser-tes
 
     # Exclude version column and add sort order by all columns
     colNamesDT = parseNames[[tableName]]
-    if(!(tableName %in% verExclude)) colNamesDT[,version := NULL]
+    if (!(tableName %in% verExclude)) colNamesDT[,version := NULL]
     colOrder = paste(colnames(colNamesDT), collapse=', ')
 
     # Use chunkSize from tables list
     tChunkSize = tables[[tableName]]
 
     # For offset multiplier, integer divide the totalRows by chunkSize
-    for(rowOff in 0:(totalRows %/% tChunkSize)) {
+    for (rowOff in 0:(totalRows %/% tChunkSize)) {
       # Calculate offset to use with limit, then query based off that
       off = rowOff * tChunkSize
       dTable = data.table::as.data.table(DBI::dbGetQuery(pCon, glue('SELECT * FROM {`tableName`} ORDER BY {`colOrder`} LIMIT {`tChunkSize`} OFFSET {`off`}')))
