@@ -107,6 +107,12 @@ createParsingTables = function(
   con = connect(dbtype, dbname, ...)
   parTables = getParsingTables(tableSuffix, ...)
 
+  if(dbtype == 'bigquery'){
+    for(parTable in parTables){
+      parTable$id = as.integer()
+    }
+  }
+
   tableExists = sapply(
     names(parTables), function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tableExists) || isTRUE(overwrite))
