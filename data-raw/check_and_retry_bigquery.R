@@ -1,6 +1,6 @@
 library(data.table)
 
-checkAndRetryBigquery = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 10000L, fCompName = 'bigquery_comp_results.csv', fResName = 'retry_bigquery_result.csv'){
+checkAndRetryBigquery = function(pgDbName = 'pmdb', project = 'pmparser-test', dataset = 'pmdb', chunkSize = 10000L, fCompName = 'bigquery_comp_results.csv', fResName = 'retry_bigquery_result.csv', ...){
 
   notEqTables = comparePostgresBigquery(pgDbName = pgDbName, project = project, dataset = dataset)
 
