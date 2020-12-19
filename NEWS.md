@@ -1,3 +1,9 @@
+# pmparser 0.0.0.9036
+* Added data dictionary as a vignette and a table in the database.
+
+# pmparser 0.0.0.9035
+* Remove rare, obnoxious unicode character from keyword name.
+
 # pmparser 0.0.0.9034
 * Explicitly set doFuture chunking for all dopar loops.
 

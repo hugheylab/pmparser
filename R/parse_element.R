@@ -343,7 +343,7 @@ parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 
   x4 = data.table(
     dPmid[rep.int(1:.N, n)],
-    keyword_name = trimws(xml_text(x3)),
+    keyword_name = trimws(xml_text(x3), whitespace = '[ \t\r\n\uFEFF]'),
     major_topic = xml_attr(x3, 'MajorTopicYN'))
 
   r = list(x2, x4)
