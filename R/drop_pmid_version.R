@@ -1,5 +1,6 @@
-deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
-  parTables = getParsingTables(tableSuffix, ...)
+deleteOldPmidVersions = function(
+  tableSuffix, dryRun, dbtype, dbname, tableNames = NULL, ...) {
+  parTables = getParsingTables(tableSuffix, tableNames)
   tableKeep = paste_('pmid_status_keep', tableSuffix)
 
   con = connect(dbtype, dbname, ...)
@@ -43,8 +44,9 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
       n = DBI::dbExecute(con, q)
       q = glue('drop table {`tableKeep`}')
       DBI::dbExecute(con, q)
-    } else{
-      q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}', .con = con)
+    } else {
+      q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}',
+                   .con = con)
       n = DBI::dbExecute(con, q)}}
 
   disconnect(con)
@@ -72,7 +74,9 @@ dropPmidVersionColumn = function(tableSuffix, con, ...) {
 
   } else if (inherits(con, 'BigQueryConnection')){
     for (tableName in names(parTables)[idx]) {
-      q = glue_sql('create or replace table {`tableName`} as select * EXCEPT(version) from {`tableName`}', .con = con)
+      q = glue_sql('create or replace table {`tableName`}
+                   as select * except(version) from {`tableName`}',
+                   .con = con)
       x = DBI::dbExecute(con, q)}
   } else {
     for (tableName in names(parTables)[idx]) {

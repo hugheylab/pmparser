@@ -1,4 +1,4 @@
-getParsingTables = function(tableSuffix, tableNames = NULL, ...) {
+getParsingTables = function(tableSuffix, tableNames = NULL) {
   ac = as.character()
   ai = as.integer()
 
@@ -94,24 +94,17 @@ getParsingTables = function(tableSuffix, tableNames = NULL, ...) {
       setcolorder(r[[tableName]], c('pmid', 'version', 'xml_filename'))}}
 
   names(r) = paste_(names(r), tableSuffix)
-  if(!is.null(tableNames)){
-    r = r[names(r) %in% tableNames]
-  }
+  if (!is.null(tableNames)) r = r[names(r) %in% tableNames]
   return(r)}
 
 
 createParsingTables = function(
-  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL, ...) {
+  tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL,
+  tableNames = NULL, ...) {
   if (is.null(dbname)) return(invisible())
 
   con = connect(dbtype, dbname, ...)
-  parTables = getParsingTables(tableSuffix, ...)
-
-  if(dbtype == 'bigquery'){
-    for(parTable in parTables){
-      parTable[, id := as.integer()]
-    }
-  }
+  parTables = getParsingTables(tableSuffix, tableNames)
 
   tableExists = sapply(
     names(parTables), function(x) DBI::dbExistsTable(con, x))

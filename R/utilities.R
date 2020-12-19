@@ -33,7 +33,8 @@ download = function(url, destfile, n = 3L) {
 
 
 connect = function(dbtype, dbname, ...) {
-  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite', 'clickhouse', 'bigquery'))
+  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite',
+                               'clickhouse', 'bigquery'))
   pkgName = switch(dbtype,
                    postgres = 'RPostgres',
                    mariadb = 'RMariaDB',
@@ -190,24 +191,18 @@ getPgParams = function(path = '~/.pgpass') {
 
 
 writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
+  # will be inefficient if file is compressed
+  if (DBI::dbExistsTable(con, tableName)) {
+    if (isTRUE(overwrite)) {
+      DBI::dbRemoveTable(con, tableName)
+    } else {
+      stop(glue('Table {tableName} exists and overwrite is not TRUE.'))}}
+
   # get total number of lines
   n = R.utils::countLines(path)
 
   # read first row to get data types, but don't send it to database
   d = data.table::fread(path, nrows = 1L)
-
-  # will be inefficient if file is compressed
-  if (!(DBI::dbExistsTable(con, tableName) && !isTRUE(overwrite))) {
-    createTable(con, tableName, d)
-  } else if(DBI::dbExistsTable(con, tableName)) {
-    if (isTRUE(overwrite)) {
-      DBI::dbRemoveTable(con, tableName)
-      createTable(con, tableName, d)
-    } else {
-      stop(glue('Table {tableName} exists and overwrite is not TRUE.'))}}
-
-
-
 
   # append in chunks, fread handles last chunk where nrows > remaining rows
   for (i in seq(1L, n - 1L, nRowsPerChunk)) {
@@ -218,59 +213,13 @@ writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
   invisible()}
 
 
-getClickhouseDataTypes = function(d, nullable = TRUE) {
-  r = c('logical', 'integer', 'numeric', 'character', 'Date', 'POSIXct')
-  ch = c('UInt8', 'Int32', 'Float64', 'String', 'Date', 'DateTime')
-  rIdx = lapply(d, function(x) inherits(x, r, which = TRUE))
-  dataTypesTmp = sapply(rIdx, function(i) ch[i == 1L])
-
-  if (!isTRUE(nullable)) {
-    return(dataTypesTmp)
-  } else {
-    dataTypes = glue('Nullable({dataTypesTmp})')
-    dataTypes[dataTypesTmp == 'DateTime'] = 'DateTime'
-    dataTypes[dataTypesTmp == 'Date'] = 'Date'
-    return(dataTypes)}}
-
-
 createTable = function(con, tableName, d) {
   # writes 0 rows
   if (inherits(con, 'ClickhouseConnection')) {
     createTableClickhouse(con, tableName, d)
   } else if (inherits(con, 'BigQueryConnection')) {
-    bigrquery::bq_table_create(bigrquery::bq_table(con@project, con@dataset, tableName), d)
+    bigrquery::bq_table_create(
+      bigrquery::bq_table(con@project, con@dataset, tableName), d)
   } else {
     DBI::dbCreateTable(con, tableName, d)}
   invisible(0L)}
-
-
-createTableClickhouse = function(con, tableName, d, nullable = TRUE) {
-  dataTypes = getClickhouseDataTypes(d, nullable = nullable)
-  q = glue(
-    'create table {tableName} ({z}) ENGINE = MergeTree() order by tuple()',
-    z = paste(colnames(d), dataTypes, collapse = ', '))
-  DBI::dbExecute(con, q)}
-
-setNAToSpecial = function(d) {
-  naDateVal = as.Date('2100-01-01')
-  priorDateVal = as.Date('2075-01-01')
-  if (nrow(d) == 1L && any(is.na(d))){
-    columns = colnames(d)
-    for(column in columns){
-      if (is.na(d[[column]])){
-        if (is.logical(d[[column]])) val = 0
-        else if (is.integer(d[[column]])) val = -1L
-        else if (is.numeric(d[[column]])) val = -1
-        else if (inherits(d[[column]], 'POSIXct')) val = naDateVal
-        else if (inherits(d[[column]], 'Date')) val = naDateVal
-        else val = as.character(NA)
-        d[, (column) := val]}}
-  } else {
-    for (j in 1:ncol(d)) {
-      if (inherits(d[[j]], 'Date')) {
-        data.table::set(
-          d, i = which(is.na(d[[j]])), j = j, value = naDateVal)
-        data.table::set(
-          d, i = which(d[[j]] < as.Date('1970-01-01')), j = j, value = priorDateVal)}}}
-  return(invisible(d))
-}
