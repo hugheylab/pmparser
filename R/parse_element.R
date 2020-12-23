@@ -373,6 +373,7 @@ parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     acronym = xml_text(xml_find_first(x3, './/Acronym')),
     agency = xml_text(xml_find_first(x3, './/Agency')),
     country = xml_text(xml_find_first(x3, './/Country')))
+  x4 = unique(x4) # funding info has some duplicates
 
   r = list(x2, x4)
   # avoid reserved word
