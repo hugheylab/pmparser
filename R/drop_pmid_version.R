@@ -1,5 +1,6 @@
-deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
-  parTables = getParsingTables(tableSuffix)
+deleteOldPmidVersions = function(
+  tableSuffix, dryRun, dbtype, dbname, tableNames = NULL, ...) {
+  parTables = getParsingTables(tableSuffix, tableNames)
   tableKeep = paste_('pmid_status_keep', tableSuffix)
 
   con = connect(dbtype, dbname, ...)
@@ -38,16 +39,23 @@ deleteOldPmidVersions = function(tableSuffix, dryRun, dbtype, dbname, ...) {
     DBI::dbRemoveTable(con, tableKeep)
   } else {
     DBI::dbRemoveTable(con, tableNow)
-    q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}', .con = con)
-    n = DBI::dbExecute(con, q)}
+    if (inherits(con, 'BigQueryConnection')) {
+      q = glue('create table {`tableNow`} as select * from {`tableKeep`}')
+      n = DBI::dbExecute(con, q)
+      q = glue('drop table {`tableKeep`}')
+      DBI::dbExecute(con, q)
+    } else {
+      q = glue_sql('alter table {`tableKeep`} rename to {`tableNow`}',
+                   .con = con)
+      n = DBI::dbExecute(con, q)}}
 
   disconnect(con)
   setattr(d, 'dryRun', dryRun)
   return(d)}
 
 
-dropPmidVersionColumn = function(tableSuffix, con) {
-  parTables = getParsingTables(tableSuffix)
+dropPmidVersionColumn = function(tableSuffix, con, ...) {
+  parTables = getParsingTables(tableSuffix, ...)
   idx = !grepl('^(pmid_status|xml_processed)', names(parTables))
 
   if (inherits(con, 'SQLiteConnection')) { # thanks, sqlite
@@ -64,6 +72,12 @@ dropPmidVersionColumn = function(tableSuffix, con) {
                    .con = con)
       x = DBI::dbExecute(con, q)}
 
+  } else if (inherits(con, 'BigQueryConnection')){
+    for (tableName in names(parTables)[idx]) {
+      q = glue_sql('create or replace table {`tableName`}
+                   as select * except(version) from {`tableName`}',
+                   .con = con)
+      x = DBI::dbExecute(con, q)}
   } else {
     for (tableName in names(parTables)[idx]) {
       q = glue_sql('alter table {`tableName`} drop column version', .con = con)

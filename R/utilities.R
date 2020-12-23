@@ -33,12 +33,15 @@ download = function(url, destfile, n = 3L) {
 
 
 connect = function(dbtype, dbname, ...) {
-  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite'))
+  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite',
+                               'clickhouse', 'bigquery'))
   pkgName = switch(dbtype,
                    postgres = 'RPostgres',
                    mariadb = 'RMariaDB',
                    mysql = 'RMariaDB',
-                   sqlite = 'RSQLite')
+                   sqlite = 'RSQLite',
+                   clickhouse = 'RClickhouse',
+                   bigquery = 'bigrquery')
 
   if (!requireNamespace(pkgName, quietly = TRUE)) {
     stop(glue('To use dbtype "{dbtype}", install the {pkgName} package.'))}
@@ -47,7 +50,9 @@ connect = function(dbtype, dbname, ...) {
                postgres = RPostgres::Postgres(),
                mariadb = RMariaDB::MariaDB(),
                mysql = RMariaDB::MariaDB(),
-               sqlite = RSQLite::SQLite())
+               sqlite = RSQLite::SQLite(),
+               clickhouse = RClickhouse::clickhouse(),
+               bigquery = bigrquery::bigquery())
 
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
 
@@ -198,7 +203,6 @@ writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
 
   # read first row to get data types, but don't send it to database
   d = data.table::fread(path, nrows = 1L)
-  createTable(con, tableName, d)
 
   # append in chunks, fread handles last chunk where nrows > remaining rows
   for (i in seq(1L, n - 1L, nRowsPerChunk)) {
@@ -209,32 +213,13 @@ writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
   invisible()}
 
 
-getClickhouseDataTypes = function(d, nullable = TRUE) {
-  r = c('logical', 'integer', 'numeric', 'character', 'Date', 'POSIXct')
-  ch = c('UInt8', 'Int32', 'Float64', 'String', 'Date', 'DateTime')
-  rIdx = lapply(d, function(x) inherits(x, r, which = TRUE))
-  dataTypesTmp = sapply(rIdx, function(i) ch[i == 1L])
-
-  if (!isTRUE(nullable)) {
-    return(dataTypesTmp)
-  } else {
-    dataTypes = glue('Nullable({dataTypesTmp})')
-    dataTypes[dataTypesTmp == 'DateTime'] = 'DateTime'
-    return(dataTypes)}}
-
-
 createTable = function(con, tableName, d) {
   # writes 0 rows
   if (inherits(con, 'ClickhouseConnection')) {
     createTableClickhouse(con, tableName, d)
+  } else if (inherits(con, 'BigQueryConnection')) {
+    bigrquery::bq_table_create(
+      bigrquery::bq_table(con@project, con@dataset, tableName), d)
   } else {
     DBI::dbCreateTable(con, tableName, d)}
   invisible(0L)}
-
-
-createTableClickhouse = function(con, tableName, d, nullable = TRUE) {
-  dataTypes = getClickhouseDataTypes(d, nullable = nullable)
-  q = glue(
-    'create table {tableName} ({z}) ENGINE = MergeTree() order by tuple()',
-    z = paste(colnames(d), dataTypes, collapse = ', '))
-  DBI::dbExecute(con, q)}
