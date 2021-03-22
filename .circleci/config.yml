@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Deploy to drat
           command: |
-            if [ "${CIRCLE_BRANCH}" = "master" ]
+            if [ "${CIRCLE_BRANCH}" = "master" ] || [ "${CIRCLE_BRANCH}" = "main" ]
             then
               echo "In master branch."
               git clone https://github.com/hugheylab/drat
