@@ -36,10 +36,10 @@ jobs:
           command: R CMD check ${PKG_TARBALL} --no-manual
 
       - run:
-          name: Check failures
+          name: Check coverage percentage
           command: |
             Rscript \
-              -e "message(devtools::check_failures(path = '${PKG_NAME}.Rcheck'))" \
+              -e "install.packages('covr')" \
               -e "covr::package_coverage()"
 
       - run:
