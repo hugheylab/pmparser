@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: rocker/tidyverse:4.0.5
+      - image: rocker/tidyverse:4.1.0
 
     working_directory: ~/repo
 
