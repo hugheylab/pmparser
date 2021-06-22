@@ -1,3 +1,6 @@
+# pmparser 1.0.0
+* Updated tests
+
 # pmparser 0.0.0.9036
 * Added data dictionary as a vignette and a table in the database.
 

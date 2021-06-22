@@ -2,8 +2,8 @@ refDir = 'citation_info'
 
 test_that('getCitationInfo', {
   citationInfo = getCitationInfo()
-  colsExp = c('is_link_only', 'name', 'supplied_md5',
-              'computed_md5', 'id', 'download_url', 'size')
+  colsExp = c('id', 'name', 'size', 'is_link_only', 'download_url',
+              'supplied_md5', 'computed_md5')
   expect_s3_class(citationInfo, 'data.table')
   expect_equal(colnames(citationInfo), colsExp)
   expect_equal(nrow(citationInfo), 1L)
