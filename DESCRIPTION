@@ -34,7 +34,6 @@ Suggests:
   RPostgres (>= 1.2.0),
   RSQLite (>= 2.2.0),
   testthat (>= 2.3.2),
-  covr,
   knitr,
   rmarkdown
 SystemRequirements: head, unzip
