@@ -34,18 +34,13 @@ jobs:
 
       - run:
           name: Check package
-          command: R CMD check ${PKG_TARBALL} --no-manual
-
-      - run:
-          name: Check coverage percentage
-          command: |
-            Rscript \
-              -e "install.packages('covr')" \
-              -e "covr::package_coverage()"
-
+          command: R CMD check ${PKG_TARBALL} --no-manual --no-tests
+          
+      # When using codecov, change below line to run "covr::codecov(quiet = FALSE)"
       - run:
           name: Calculate code coverage
-          command: r -e 'tryCatch(covr::codecov(), error = function(e) warning(e))'
+          command: |
+            Rscript  -e "covr::package_coverage()"
 
       - run:
           name: Deploy to drat
