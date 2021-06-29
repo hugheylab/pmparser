@@ -37,9 +37,9 @@ jobs:
           command: R CMD check ${PKG_TARBALL} --no-manual --no-tests
           
       - run:
-          name: Calculate code coverage
+          name: Run tests and calculate code coverage
           command: |
-            Rscript  -e "covr::codecov(quiet = FALSE)"
+            Rscript -e 'covr::codecov(quiet = FALSE)'
 
       - run:
           name: Deploy to drat
