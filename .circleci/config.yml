@@ -36,11 +36,10 @@ jobs:
           name: Check package
           command: R CMD check ${PKG_TARBALL} --no-manual --no-tests
           
-      # When using codecov, change below line to run "covr::codecov(quiet = FALSE)"
       - run:
           name: Calculate code coverage
           command: |
-            Rscript  -e "covr::package_coverage()"
+            Rscript  -e "covr::codecov(quiet = FALSE)"
 
       - run:
           name: Deploy to drat
