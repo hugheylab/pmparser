@@ -1,6 +1,6 @@
 copyPostgresToBigquery = function(
   dbname, overwrite, project, dataset, auth, ...) {
-
+  tableName = NULL
   # get table names from postgres
   conPg = connect('postgres', dbname, ...)
   tableNames = DBI::dbListTables(conPg)

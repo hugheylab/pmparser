@@ -1,6 +1,7 @@
 getCitationInfo = function(
   filename = 'open_citation_collection.zip', collectionId = 4586573,
   baseUrl = 'https://api.figshare.com/v2') {
+  published_date = name = NULL
 
   #getting content from icite collection
   iciteUrl = glue('{baseUrl}/collections/{collectionId}/articles')

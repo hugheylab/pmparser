@@ -1,4 +1,5 @@
 getParsingTables = function(tableSuffix, tableNames = NULL) {
+  xml_filename = NULL
   ac = as.character()
   ai = as.integer()
 

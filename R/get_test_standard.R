@@ -1,4 +1,5 @@
 parseAll = function(rawXmlPath) {
+  status = parseFunc = NULL
   rawXml = xml2::read_xml(rawXmlPath)
   pmidStatus = parsePmidStatus(rawXml, 'sorry for the convenience')
   pmXml = pmidStatus[[1L]]
@@ -15,6 +16,7 @@ parseAll = function(rawXmlPath) {
 
 
 getSamplePmid = function(parsed, nPmidsPerStep) {
+  .N = pmid = N = . = step = NULL
   d1 = parsed$pmid_status[[2L]][, .N, by = pmid][N > 1]
   d1 = d1[sample.int(min(.N, nPmidsPerStep)), .(pmid)]
   d1[, step := 'pmid_status']
@@ -32,6 +34,7 @@ getSamplePmid = function(parsed, nPmidsPerStep) {
 
 
 getSampleXml = function(parsed, dSample, emptyXmlPath) {
+  status = pmid = NULL
   pmXml = parsed$pmid_status[[1L]]
   dPmid = parsed$pmid_status[[2L]][status != 'Deleted', !'status']
   rawXml = xml2::read_xml(emptyXmlPath)
@@ -45,6 +48,7 @@ getSampleXml = function(parsed, dSample, emptyXmlPath) {
 
 
 getTestStandardInput = function(localDir, tmpDir, offset) {
+  sub_dir = .N = sample_base = NULL
   if (!dir.exists(localDir)) dir.create(localDir, recursive = TRUE)
   if (!dir.exists(tmpDir)) dir.create(tmpDir, recursive = TRUE)
 
@@ -61,6 +65,7 @@ getTestStandardInput = function(localDir, tmpDir, offset) {
 getTestStandardXml = function(
   localDir, tmpDir, dFile, nPmidsPerStep, emptyXmlPath) {
 
+  f = NULL
   r = foreach(f = iterators::iter(dFile, by = 'row')) %do% {
     rawXmlPath = file.path(tmpDir, f$sub_dir, f$xml_filename)
     parsed = parseAll(rawXmlPath)
@@ -80,6 +85,7 @@ getTestStandardXml = function(
 
 
 getTestStandardParsed = function(localDir, dFile) {
+  f = NULL
   r = foreach(f = iterators::iter(dFile, by = 'row')) %do% {
     xmlPath = file.path(localDir, f$sub_dir, glue('{f$sample_base}.xml.gz'))
     parsed = parseAll(xmlPath)
@@ -90,12 +96,14 @@ getTestStandardParsed = function(localDir, dFile) {
 
 
 getTestStandardIndex = function(dFile, offset) {
+  sub_dir = NULL
   nBaseline = nrow(dFile[sub_dir == 'baseline'])
   idx = c(nBaseline - offset, nBaseline,
           nBaseline + 1L, nBaseline + offset + 1L)}
 
 
 getTestStandardCsv = function(localDir, offset) {
+  sub_dir = xml_download = xml_filename = md5_filename = NULL
   dFileAll = getPubmedFileInfo(localDir)
   data.table::fwrite(dFileAll, file.path(localDir, 'file_info_predown_all.csv'))
 

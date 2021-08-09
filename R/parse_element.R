@@ -146,6 +146,7 @@ parsePmidStatus = function(rawXml, filename, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = id_type = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/ArticleIdList') # assume this comes before refs
   nIds = xml_length(x1)
@@ -164,6 +165,7 @@ parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  pub_date = y = m = d = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Article')
   idx = xml_length(x1) > 0
@@ -196,6 +198,7 @@ parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parsePubHistory = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = pub_date = y = m = d = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/History')
   nHist = xml_length(x1)
@@ -218,6 +221,8 @@ parsePubHistory = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  pub_month_tmp1 = pub_month = pub_day_tmp = pub_day = pub_year =
+    pub_month_tmp2 = pub_date = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Journal')
   idx = xml_length(x1) > 0
@@ -258,6 +263,7 @@ parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/PublicationTypeList')
   n = xml_length(x1)
@@ -275,6 +281,7 @@ parsePubType = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  indexing_method = .N = descriptor_pos = pmid = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   ai = as.integer()
   ac = as.character()
@@ -331,6 +338,7 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/KeywordList')
   n = xml_length(x1)
@@ -357,6 +365,7 @@ parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/GrantList')
   n = xml_length(x1)
@@ -386,6 +395,7 @@ parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseChemical = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/ChemicalList')
   n = xml_length(x1)
@@ -406,6 +416,7 @@ parseChemical = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = accession_number = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/DataBankList')
   nBanksPerPmid = xml_length(x1)
@@ -431,6 +442,7 @@ parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/CommentsCorrectionsList')
   n = xml_length(x1)
@@ -448,6 +460,7 @@ parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = copyright = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(

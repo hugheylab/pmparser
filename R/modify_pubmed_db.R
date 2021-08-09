@@ -38,6 +38,7 @@ modifyPubmedDb = function(
   nFiles = Inf, retry = TRUE, nCitations = Inf, mode = c('create', 'update'),
   ...) {
 
+  processed = .N = md5_match = xml_filename = . = step = NULL
   testing = isTesting()
   con = connect(dbtype, dbname, ...)
 
@@ -164,6 +165,7 @@ modifyPubmedDb = function(
 
 addSourceToTarget = function(
   sourceSuffix, targetSuffix, dryRun, dbtype, dbname, ...) {
+  targetName = sourceName = NULL
   stopifnot(!isEmpty(sourceSuffix))
 
   targetEmpty = getParsingTables(targetSuffix)
