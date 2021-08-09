@@ -1,3 +1,6 @@
+# pmparser 1.0.1
+* Replace `globalVariables` call with other workaround.
+
 # pmparser 1.0.0
 * Updated tests
 
