@@ -102,6 +102,7 @@ getParsingTables = function(tableSuffix, tableNames = NULL) {
 createParsingTables = function(
   tableSuffix = NULL, overwrite = FALSE, dbtype = 'postgres', dbname = NULL,
   tableNames = NULL, ...) {
+
   if (is.null(dbname)) return(invisible())
 
   con = connect(dbtype, dbname, ...)

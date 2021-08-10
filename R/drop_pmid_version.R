@@ -1,5 +1,6 @@
 deleteOldPmidVersions = function(
   tableSuffix, dryRun, dbtype, dbname, tableNames = NULL, ...) {
+
   tableName = NULL
   parTables = getParsingTables(tableSuffix, tableNames)
   tableKeep = paste_('pmid_status_keep', tableSuffix)

@@ -11,6 +11,7 @@ getRemoteFilenames = function(url, pattern) {
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
+
   sub_dir = subDir = . = xml_filename = NULL
   pattern = 'pubmed.*\\.xml\\.gz'
 
@@ -64,6 +65,7 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
 getPubmedFiles = function(
   fileInfo, localDir, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   downloadMd5 = TRUE) {
+
   md5_download = xml_download = f = sub_dir = xml_filename = md5_filename =
     md5_match = NULL
 

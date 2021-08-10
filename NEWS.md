@@ -1,8 +1,8 @@
 # pmparser 1.0.1
-* Replace `globalVariables` call with other workaround.
+* Revised code to not need `globalVariables()` in order to pass R CMD check without notes. 
 
 # pmparser 1.0.0
-* Updated tests
+* Updated tests.
 
 # pmparser 0.0.0.9036
 * Added data dictionary as a vignette and a table in the database.

@@ -165,6 +165,7 @@ modifyPubmedDb = function(
 
 addSourceToTarget = function(
   sourceSuffix, targetSuffix, dryRun, dbtype, dbname, ...) {
+
   targetName = sourceName = NULL
   stopifnot(!isEmpty(sourceSuffix))
 
