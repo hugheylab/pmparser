@@ -5,22 +5,10 @@
 NULL
 
 
-globalVariables(c(
-  '.', '.N', 'd', 'affiliation', 'author_pos', 'filenameNow', 'i', 'id_type',
-  'm', 'pmid', 'pub_date', 'step', 'source', 'identifier', 'status', 'y',
-  'parseFunc', 'collective_name', 'person_pos', 'affiliation_pos', 'affil_idx',
-  'person_idx', 'n_affil_ids', 'n_person_ids', 'n_total_ids', 'id_pos', 'f',
-  'md5_computed', 'md5_provided', 'md5_match', 'subDir', 'pre', 'group', 'name',
-  'xml_filename', 'md5_filename', 'xml_download', 'md5_download', 'version',
-  'published_date', 'sub_dir', 'sourceName', 'targetName', 'accession_number',
-  '..cols', 'tableName', 'copyright', 'descriptor_pos', 'processed', 'N',
-  'equal_contrib', 'sample_base', 'pub_year', 'pub_month', 'pub_month_tmp1',
-  'pub_month_tmp2', 'pub_day', 'pub_day_tmp', 'indexing_method'))
-
-
 parsePubmedXmlCore = function(
   xmlDir, filename, steps = 'all', logPath = NULL, tableSuffix = NULL,
   dbtype = 'postgres', dbname = NULL, ...) {
+  status = xml_filename = parseFunc = NULL
 
   parseFuncs = getParseFuncs(steps)
   writeLogFile(logPath, data.table(filename, 'start', 0, NA))
@@ -68,6 +56,7 @@ parsePubmedXmlCore = function(
 parsePubmedXml = function(
   xmlDir, xmlFiles = NULL, logPath = NULL, tableSuffix = NULL,
   overwrite = FALSE, dbtype = 'postgres', dbname = NULL, ...) {
+  xml_filename = filenameNow = NULL
 
   xmlInfo = getXmlInfo(xmlDir, xmlFiles, tableSuffix)
 

@@ -1,10 +1,12 @@
 getFailed = function(logPath) {
+  status = xml_filename = NULL
   d = data.table::fread(logPath, sep = '\t', na.strings = '', logical01 = TRUE)
   d = d[(status)][order(xml_filename)]
   return(d)}
 
 
 getMissing = function(con, tableSuffix, dFile) {
+  . = xml_filename = NULL
   dProc = DBI::dbReadTable(con, paste_('xml_processed', tableSuffix))
   data.table::setDT(dProc)
   dMissing = data.table::fsetdiff(
@@ -71,6 +73,7 @@ appendTable = function(con, tableName, d) {
 
 getXmlInfo = function(xmlDir, xmlFiles, tableSuffix) {
 
+  . = xml_filename = step = NULL
   if (is.null(xmlFiles)) {
     xmlFiles = list.files(xmlDir, 'xml\\.gz$')
     xmlInfo = data.table(xml_filename = xmlFiles, step = 'all')

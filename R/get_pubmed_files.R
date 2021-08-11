@@ -11,6 +11,8 @@ getRemoteFilenames = function(url, pattern) {
 getPubmedFileInfo = function(
   localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
+
+  sub_dir = subDir = . = xml_filename = NULL
   pattern = 'pubmed.*\\.xml\\.gz'
 
   dRemote = foreach(subDir = subDirs, .combine = rbind) %do% {
@@ -53,6 +55,7 @@ getProvidedMd5s = function(filepaths) {
 
 
 checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
+  md5_match = md5_computed = md5_provided = NULL
   d = data.table(md5_computed = tools::md5sum(file.path(xmlFilepaths)),
                  md5_provided = getProvidedMd5s(md5Filepaths))
   d[, md5_match := md5_computed == md5_provided]
@@ -62,6 +65,9 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
 getPubmedFiles = function(
   fileInfo, localDir, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
   downloadMd5 = TRUE) {
+
+  md5_download = xml_download = f = sub_dir = xml_filename = md5_filename =
+    md5_match = NULL
 
   for (subDir in unique(fileInfo$sub_dir)) {
     if (!dir.exists(file.path(localDir, subDir)))

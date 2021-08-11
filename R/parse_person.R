@@ -1,5 +1,10 @@
 parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
                        personType = c('author', 'investigator')) {
+
+  . = pmid = .N = equal_contrib = collective_name = person_pos = ..cols =
+    affiliation_pos = affiliation = affil_idx = person_idx = n_affil_ids =
+    n_person_ids = n_total_ids = id_pos = NULL
+
   stopifnot(length(pmXml) == nrow(dPmid))
   personType = match.arg(personType)
   personPre = paste0(toupper(substring(personType, 1, 1)),
