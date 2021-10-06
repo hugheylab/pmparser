@@ -36,5 +36,7 @@ Suggests:
   testthat (>= 2.3.2),
   knitr,
   rmarkdown
+Remotes:
+  r-lib/xml2
 SystemRequirements: head, unzip
 VignetteBuilder: knitr
