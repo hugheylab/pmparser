@@ -29,7 +29,7 @@ jobs:
           dir
           cd C:\sqlite3
           dir
-          sqlite3.exe --version
+          C:\sqlite3\sqlite3.exe --version
 
       - uses: hugheylab/actions/R-CMD-check@main
 
