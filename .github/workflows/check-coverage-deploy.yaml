@@ -27,6 +27,8 @@ jobs:
           Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\
           ren C:\sqlite-tools-win32-x86-3360000 C:\sqlite3
           dir
+          cd C:\
+          dir
           cd C:\sqlite3
           dir
           C:\sqlite3\sqlite3.exe --version
