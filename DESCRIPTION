@@ -38,5 +38,5 @@ Suggests:
   rmarkdown
 Remotes:
   r-lib/xml2
-SystemRequirements: head, unzip
+SystemRequirements: head, unzip, sqlite
 VignetteBuilder: knitr

@@ -20,6 +20,8 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
     steps:
+      - run: sqlite3 --version
+
       - uses: hugheylab/actions/R-CMD-check@main
 
 
