@@ -25,11 +25,11 @@ jobs:
         run: |
           curl.exe -o sqlite-tools-win32-x86-3360000.zip https://www.sqlite.org/2021/sqlite-tools-win32-x86-3360000.zip
           Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\
-          ren C:\sqlite-tools-win32-x86-3360000 C:\sqlite
+          ren C:\sqlite-tools-win32-x86-3360000 C:\sqlite3
           dir
-          cd C:\sqlite
+          cd C:\sqlite3
           dir
-          sqlite.exe --version
+          sqlite3.exe --version
 
       - uses: hugheylab/actions/R-CMD-check@main
 
