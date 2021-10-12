@@ -25,7 +25,7 @@ jobs:
         run: |
           curl.exe -o sqlite-tools-win32-x86-3360000.zip https://www.sqlite.org/2021/sqlite-tools-win32-x86-3360000.zip
           Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\
-          Rename C:\sqlite-tools-win32-x86-3360000 C:\sqlite
+          ren C:\sqlite-tools-win32-x86-3360000 C:\sqlite
           dir
           cd C:\sqlite
           dir
