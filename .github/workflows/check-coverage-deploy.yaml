@@ -23,14 +23,13 @@ jobs:
       - name: Install sqlite Windows
         if: ${{ startswith(matrix.config.os, 'windows') }}
         run: |
-          curl.exe -o sqlite-dll-win64-x64-3360000.zip https://www.sqlite.org/2021/sqlite-tools-win32-x86-3360000.zip
-          mkdir C:\sqlite3
-          Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\sqlite3\
+          curl.exe -o sqlite-tools-win32-x86-3360000.zip https://www.sqlite.org/2021/sqlite-tools-win32-x86-3360000.zip
+          mkdir C:\sqlite
+          Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\sqlite\
           dir
-          cd C:\sqlite3
+          cd C:\sqlite
           dir
-
-      - run: sqlite.exe --version
+          sqlite.exe --version
 
       - uses: hugheylab/actions/R-CMD-check@main
 
