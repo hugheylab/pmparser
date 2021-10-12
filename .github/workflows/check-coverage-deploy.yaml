@@ -26,6 +26,9 @@ jobs:
           curl.exe -o sqlite-dll-win64-x64-3360000.zip https://www.sqlite.org/2021/sqlite-dll-win64-x64-3360000.zip
           mkdir C:\sqlite3
           Expand-Archive -Force sqlite-dll-win64-x64-3360000.zip C:\sqlite3\
+          dir
+          cd C:\sqlite3
+          dir
 
       - run: sqlite3 --version
 
