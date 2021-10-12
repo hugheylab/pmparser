@@ -24,14 +24,16 @@ jobs:
         if: ${{ startswith(matrix.config.os, 'windows') }}
         run: |
           curl.exe -o sqlite-tools-win32-x86-3360000.zip https://www.sqlite.org/2021/sqlite-tools-win32-x86-3360000.zip
-          Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\
-          ren C:\sqlite-tools-win32-x86-3360000 C:\sqlite3
+          Expand-Archive -Force sqlite-tools-win32-x86-3360000.zip C:\Program Files (x86)
+          ren C:\Program Files (x86)\sqlite-tools-win32-x86-3360000 C:\Program Files (x86)\sqlite3
           dir
           cd C:\
           dir
-          cd C:\sqlite3
+          cd C:\Program Files (x86)
           dir
-          C:\sqlite3\sqlite3.exe --version
+          cd C:\Program Files (x86)\sqlite3
+          dir
+          C:\Program Files (x86)\sqlite3\sqlite3.exe --version
 
       - uses: hugheylab/actions/R-CMD-check@main
 
