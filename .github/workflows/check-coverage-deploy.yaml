@@ -20,7 +20,12 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
     steps:
-      - run: sqlite3 --version
+      - name: Install sqlite Windows
+        if: ${{ startswith(matrix.config.os, 'windows') }}
+        run: |
+          wget https://www.sqlite.org/2021/sqlite-dll-win64-x64-3360000.zip
+          mkdir C:\sqlite
+          Expand-Archive -Force sqlite-dll-win64-x64-3360000.zip C:\sqlite\
 
       - uses: hugheylab/actions/R-CMD-check@main
 
