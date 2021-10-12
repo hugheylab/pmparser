@@ -24,8 +24,8 @@ jobs:
         if: ${{ startswith(matrix.config.os, 'windows') }}
         run: |
           curl.exe -o sqlite-dll-win64-x64-3360000.zip https://www.sqlite.org/2021/sqlite-dll-win64-x64-3360000.zip
-          mkdir C:\sqlite
-          Expand-Archive -Force sqlite-dll-win64-x64-3360000.zip C:\sqlite\
+          mkdir C:\sqlite3
+          Expand-Archive -Force sqlite-dll-win64-x64-3360000.zip C:\sqlite3\
 
       - run: sqlite3 --version
 
