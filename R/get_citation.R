@@ -58,7 +58,7 @@ getCitation = function(
   tableSuffix = NULL, overwrite = FALSE, con = NULL, checkMd5 = TRUE) {
 
   os = getOS()
-  filenameNoExt = substr(filename, 1, nchar(filename)-4)
+  filenameNoExt = substr(filename, 1, nchar(filename) - 4)
   path = file.path(localDir, filename)
   tableBase = 'citation'
   citationName = paste_(tableBase, tableSuffix)
