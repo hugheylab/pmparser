@@ -173,7 +173,7 @@ getOS = function() {
   return(Sys.info()['sysname'])}
 
 getOSLineDelim = function() {
-  delim = if (getOS() == 'Windows') delim = '\\r\\n' else '\\n'
+  delim = if (getOS() == 'Windows') '\\r\\n' else '\\n'
   return(delim)}
 
 

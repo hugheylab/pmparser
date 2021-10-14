@@ -93,8 +93,12 @@ getCitation = function(
       stop('Supplied and computed MD5 checksums do not match.')}}
   pathTmp = pathTmp = tempfile()
   withr::local_file(pathTmp)
-  pathTmpCsv = file.path(pathTmp, paste0(filenameNoExt, '.csv'), fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
-  pathTmpCsv2 = file.path(pathTmp, paste0(filenameNoExt, '_tmp.csv'), fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
+  pathTmpCsv = file.path(pathTmp,
+                         paste0(filenameNoExt, '.csv'),
+                         fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
+  pathTmpCsv2 = file.path(pathTmp,
+                          paste0(filenameNoExt, '_tmp.csv'),
+                          fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
   cmdHead = if (nrows < Inf) {
     if (os != 'Windows') {
       glue('| head -n {nrows + 1L}')
@@ -128,16 +132,19 @@ getCitation = function(
 
   if (tools::file_ext(path) == 'zip') {
     withr::local_file(pathTmp)
-    cmd = if (os != 'Windows') glue('unzip -p {path} {cmdHead} > {pathTmp}') else glue('powershell -command "Expand-Archive -Force {path} {pathTmp}" {cmdHead}')
+    cmd = if (os != 'Windows') {
+        glue('unzip -p {path} {cmdHead} > {pathTmp}')
+      } else {
+        glue('powershell -command "Expand-Archive -Force {path} {pathTmp}" {cmdHead}')}
     system(cmd)
-    if (os == "Windows") pathTmp = pathTmpCsv
+    if (os == 'Windows') pathTmp = pathTmpCsv
   } else {
     if (nrows < Inf) {
       pathTmp = tempfile()
       withr::local_file(pathTmp)
       cmd = if (os != 'Windows') glue('head -n {nrows + 1L} {path} > {pathTmp}') else cmdHead
       system(cmd)
-      if (os == "Windows") pathTmp = pathTmpCsv
+      if (os == 'Windows') pathTmp = pathTmpCsv
     } else {
       pathTmp = path}}
 

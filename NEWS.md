@@ -1,3 +1,6 @@
+# pmparser 1.0.2
+* Fixed windows compatibility.
+
 # pmparser 1.0.1
 * Revised code to not need `globalVariables()` in order to pass R CMD check without notes. 
 
