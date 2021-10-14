@@ -1,6 +1,6 @@
 getRemoteFilenames = function(url, pattern) {
   raw = RCurl::getURL(url)
-  x = strsplit(raw, '\\n')[[1L]]
+  x = strsplit(raw, getOSLineDelim())[[1L]]
   m = regexpr(glue('{pattern}$'), x)
   filenames = regmatches(x, m)
   d = data.table(
