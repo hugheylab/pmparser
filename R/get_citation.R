@@ -57,6 +57,8 @@ getCitation = function(
   localDir, filename = 'open_citation_collection.zip', nrows = Inf,
   tableSuffix = NULL, overwrite = FALSE, con = NULL, checkMd5 = TRUE) {
 
+  os = getOS()
+  filenameNoExt = substr(filename, 1, nchar(filename) - 4)
   path = file.path(localDir, filename)
   tableBase = 'citation'
   citationName = paste_(tableBase, tableSuffix)
@@ -89,15 +91,36 @@ getCitation = function(
     md5Local = tools::md5sum(path)
     if (md5Local != md5Remote) {
       stop('Supplied and computed MD5 checksums do not match.')}}
-
-  cmdHead = if (nrows < Inf) glue('| head -n {nrows + 1L}') else ''
+  pathTmp = pathTmp = tempfile()
+  withr::local_file(pathTmp)
+  pathTmpCsv = file.path(pathTmp,
+                         paste0(filenameNoExt, '.csv'),
+                         fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
+  pathTmpCsv2 = file.path(pathTmp,
+                          paste0(filenameNoExt, '_tmp.csv'),
+                          fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
+  cmdHead = if (nrows < Inf) {
+    if (os != 'Windows') {
+      glue('| head -n {nrows + 1L}')
+    } else {
+      glue(' \r\n powershell -command "Get-Content -Path {pathTmpCsv} -TotalCount {nrows + 1L} | Set-Content {pathTmpCsv2}" ',
+           ' \r\n powershell -command "Remove-Item {pathTmpCsv}"',
+           ' \r\n powershell -command "Rename-Item {pathTmpCsv2} {pathTmpCsv}"')}
+  } else {
+    ''}
   dCols = data.table(old = c('citing', 'referenced'),
                      new = c('citing_pmid', 'cited_pmid'))
 
   if (is.null(con)) {
     if (tools::file_ext(path) == 'zip') {
+      cmd = if (os != 'Windows') {
+        glue('unzip -p {path} {cmdHead}')
+        } else {
+          system(glue('powershell -command "Expand-Archive -Force {path} {pathTmp}"'))
+          glue('powershell -command "Get-Content -Path {pathTmpCsv}',
+               if (nrows < Inf) ' -TotalCount {nrows + 1L}"' else '"')}
       dCitation = data.table::fread(
-        cmd = glue('unzip -p {path} {cmdHead}'))
+        cmd = cmd)
     } else {
       dCitation = data.table::fread(path, nrows = nrows)}
     setnames(dCitation, dCols$old, dCols$new)
@@ -108,15 +131,20 @@ getCitation = function(
   # use head, since unark only knows how to unarchive an entire file
 
   if (tools::file_ext(path) == 'zip') {
-    pathTmp = tempfile()
     withr::local_file(pathTmp)
-    cmd = glue('unzip -p {path} {cmdHead} > {pathTmp}')
+    cmd = if (os != 'Windows') {
+        glue('unzip -p {path} {cmdHead} > {pathTmp}')
+      } else {
+        glue('powershell -command "Expand-Archive -Force {path} {pathTmp}" {cmdHead}')}
     system(cmd)
+    if (os == 'Windows') pathTmp = pathTmpCsv
   } else {
     if (nrows < Inf) {
       pathTmp = tempfile()
       withr::local_file(pathTmp)
-      system(glue('head -n {nrows + 1L} {path} > {pathTmp}'))
+      cmd = if (os != 'Windows') glue('head -n {nrows + 1L} {path} > {pathTmp}') else cmdHead
+      system(cmd)
+      if (os == 'Windows') pathTmp = pathTmpCsv
     } else {
       pathTmp = path}}
 
