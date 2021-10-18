@@ -1,7 +1,7 @@
 parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
                        personType = c('author', 'investigator')) {
 
-  . = pmid = .N = equal_contrib = collective_name = person_pos = ..cols =
+  . = pmid = .N = equal_contrib = collective_name = person_pos  =
     affiliation_pos = affiliation = affil_idx = person_idx = n_affil_ids =
     n_person_ids = n_total_ids = id_pos = NULL
 
@@ -46,7 +46,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
   nAffiliations = sapply(x4, length)
 
   if (length(nAffiliations) > 0 && sum(nAffiliations) > 0) {
-    dAffil = dPerson[rep.int(1:nrow(dPerson), nAffiliations), ..cols]
+    dAffil = dPerson[rep.int(1:nrow(dPerson), nAffiliations), cols, with = FALSE]
     dAffil[, affiliation_pos := 1:.N, by = cols]
     dAffil[, affiliation := unlist(lapply(x4, xml_text))]
   } else {
@@ -68,7 +68,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
 
     dAffil[, affil_idx := 1:.N]
     dAffilId = merge(
-      dAffilId, dAffil[, c('affil_idx', ..cols, 'affiliation_pos')],
+      dAffilId, dAffil[, c('affil_idx', cols, 'affiliation_pos'), with = FALSE],
       by = 'affil_idx')
 
     dAffil[, affil_idx := NULL]
@@ -97,7 +97,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
 
     dPerson[, person_idx := 1:.N]
     dAllId = merge(
-      dAllId, dPerson[, c('person_idx', ..cols)], by = 'person_idx')
+      dAllId, dPerson[, c('person_idx', cols), with = FALSE], by = 'person_idx')
 
     dPerson[, person_idx := NULL]
     dAllId[, person_idx := NULL]
