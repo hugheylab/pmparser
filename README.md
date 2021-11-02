@@ -1,6 +1,6 @@
 # pmparser
 
-[![check-coverage-deploy](https://github.com/hugheylab/pmparser/workflows/check-coverage-deploy/badge.svg)](https://github.com/hugheylab/pmparser/actions)
+[![check-deploy](https://github.com/hugheylab/pmparser/workflows/check-deploy/badge.svg)](https://github.com/hugheylab/pmparser/actions)
 [![codecov](https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/pmparser)
 
 `pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008109). For a detailed description of `pmparser` and PMDB, check out the [article](https://doi.org/10.7717/peerj.11071).
