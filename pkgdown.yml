@@ -3,5 +3,8 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   data_dictionary: data_dictionary.html
-last_built: 2021-11-02T21:15Z
+last_built: 2021-11-03T03:12Z
+urls:
+  reference: https://pmparser.hugheylab.org/reference
+  article: https://pmparser.hugheylab.org/articles
 
