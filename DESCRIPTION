@@ -8,12 +8,12 @@ Authors@R: as.person(c(
 Description: Provides a simple interface for extracting various elements from
   the publicly available PubMed XML files, incorporating PubMed's regular
   updates, and combining the data with the NIH Open Citation Collection.
-URL: https://github.com/hugheylab/pmparser
+URL: https://pmparser.hugheylab.org, https://github.com/hugheylab/pmparser
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Depends: R (>= 3.6)
 Imports:
   data.table (>= 1.12.2),
