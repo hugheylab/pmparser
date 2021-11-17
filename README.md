@@ -31,13 +31,13 @@
     You only have to do this once. Then you can install or update the package by entering:
 
     ```r
-    BiocManager::install('seeker')
+    BiocManager::install('pmparser')
     ```
 
     Alternatively, you can install or update the package by entering:
 
     ```r
-    BiocManager::install('seeker', site_repository = 'https://hugheylab.github.io/drat/')
+    BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/')
     ```
 
 ## Usage
