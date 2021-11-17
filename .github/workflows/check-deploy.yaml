@@ -29,7 +29,6 @@ jobs:
     if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') }}
     env:
       GITHUB_PAT: ${{ secrets.JAKEJH_PAT }}
-      PKG_NAME: ${{ github.event.repository.name }}
     steps:
       - uses: hugheylab/actions/drat-deployment@main
         with:
