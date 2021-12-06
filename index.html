@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,18 +35,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pmparser</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -66,7 +62,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/hugheylab/pmparser/">
+  <a href="https://github.com/hugheylab/pmparser/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -83,33 +79,33 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="pmparser" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#pmparser" class="anchor"></a>pmparser</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="pmparser">pmparser<a class="anchor" aria-label="anchor" href="#pmparser"></a>
+</h1></div>
 
-<p><code>pmparser</code> enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. <code>pmparser</code> can download the publicly available XML files, parse them, incorporate PubMed’s regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available to download on <a href="https://doi.org/10.5281/zenodo.4008109">Zenodo</a>. For a detailed description of <code>pmparser</code> and PMDB, check out the <a href="https://doi.org/10.7717/peerj.11071">article</a>.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<ol>
+<p><code>pmparser</code> enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. <code>pmparser</code> can download the publicly available XML files, parse them, incorporate PubMed’s regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available to download on <a href="https://doi.org/10.5281/zenodo.4008109" class="external-link">Zenodo</a>. For a detailed description of <code>pmparser</code> and PMDB, check out the <a href="https://doi.org/10.7717/peerj.11071" class="external-link">article</a>.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<ol style="list-style-type: decimal">
 <li>
-<p>Install <a href="https://cran.r-project.org/package=BiocManager"><code>BiocManager</code></a>.</p>
+<p>Install <a href="https://cran.r-project.org/package=BiocManager" class="external-link"><code>BiocManager</code></a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span></code></pre></div>
 </li>
 <li>
 <p>Install the latest version of <code>xml2</code> from GitHub.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">'remotes'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">'remotes'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'r-lib/xml2'</span><span class="op">)</span></code></pre></div>
 </li>
 <li>
 <p>If you use RStudio, go to Tools → Global Options… → Packages → Add… (under Secondary repositories), then enter:</p>
 <ul>
 <li>Name: hugheylab</li>
-<li>Url: <a href="https://hugheylab.github.io/drat/" class="uri">https://hugheylab.github.io/drat/</a>
+<li>Url: <a href="https://hugheylab.github.io/drat/" class="external-link uri">https://hugheylab.github.io/drat/</a>
 </li>
 </ul>
 <p>You only have to do this once. Then you can install or update the package by entering:</p>
@@ -121,9 +117,9 @@
 </li>
 </ol>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>See the examples and detailed guidance in the <a href="https://pmparser.hugheylab.org/reference/index.html">reference documentation</a>.</p>
 </div>
 </div>
@@ -131,20 +127,29 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/hugheylab/pmparser/">https://​github.com/​hugheylab/​pmparser/​</a>
-</li>
+<li><a href="https://github.com/hugheylab/pmparser/" class="external-link">Browse source code</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-2" class="external-link">GPL-2</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing pmparser</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Jake Hughey <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Josh Schoenbachler <br><small class="roles"> Author </small>  </li>
@@ -152,24 +157,27 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/hugheylab/pmparser/actions"><img src="https://github.com/hugheylab/pmparser/workflows/check-deploy/badge.svg" alt="check-deploy"></a></li>
-<li><a href="https://codecov.io/gh/hugheylab/pmparser"><img src="https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="https://app.netlify.com/sites/zealous-raman-c627d3/deploys"><img src="https://api.netlify.com/api/v1/badges/865d8ac1-54df-47ee-ae71-f3f0226f324d/deploy-status" alt="Netlify Status"></a></li>
+<li><a href="https://github.com/hugheylab/pmparser/actions" class="external-link"><img src="https://github.com/hugheylab/pmparser/workflows/check-deploy/badge.svg" alt="check-deploy"></a></li>
+<li><a href="https://codecov.io/gh/hugheylab/pmparser" class="external-link"><img src="https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://app.netlify.com/sites/zealous-raman-c627d3/deploys" class="external-link"><img src="https://api.netlify.com/api/v1/badges/865d8ac1-54df-47ee-ae71-f3f0226f324d/deploy-status" alt="Netlify Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Jake Hughey, Josh Schoenbachler, Elliot Outland.</p>
+  <p></p>
+<p>Developed by Jake Hughey, Josh Schoenbachler, Elliot Outland.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -177,6 +185,8 @@
 
   
 
+
+  
 
   </body>
 </html>
