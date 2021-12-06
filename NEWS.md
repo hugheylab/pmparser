@@ -1,3 +1,6 @@
+# pmparser 1.0.3
+* Simplified xml2 dependency, since new version is now on CRAN.
+
 # pmparser 1.0.2
 * Fixed windows compatibility.
 
