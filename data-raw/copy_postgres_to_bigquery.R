@@ -1,8 +1,10 @@
-library('doFuture')
-
-registerDoFuture()
-nCores = round(availableCores() * 0.75)
-plan(multisession, workers = nCores)
+# library('doFuture')
+#
+# registerDoFuture()
+# nCores = round(availableCores() * 0.75)
+# plan(multisession, workers = nCores)
+nCores = round(parallel::detectCores() * 0.75)
+doParallel::registerDoParallel(cores = nCores)
 
 dbname = 'pmdb'
 overwrite = TRUE

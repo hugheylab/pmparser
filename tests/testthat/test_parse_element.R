@@ -2,7 +2,7 @@ foreach::registerDoSEQ()
 
 refDir = 'pubmed_sample'
 subDir = 'updatefiles'
-fileBase = 'pubmed21n1063'
+fileBase = 'pubmed22n1115'
 
 parsedExp = readRDS(file.path(refDir, glue('{fileBase}.rds')))
 xmlPath = file.path(refDir, subDir, glue('{fileBase}.xml.gz'))

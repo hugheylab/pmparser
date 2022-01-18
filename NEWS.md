@@ -1,3 +1,7 @@
+# pmparser 1.0.4
+* Updated test standards for latest PubMed XML files.
+* Returned to `doParallel` in scripts for simplicity.
+
 # pmparser 1.0.3
 * Simplified xml2 dependency, since new version is now on CRAN.
 

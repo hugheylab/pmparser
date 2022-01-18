@@ -14,6 +14,6 @@ dumpPubmedDb = function(pg, nCores = 2L, dumpDir = 'dumps', tar = TRUE) {
     unlink(file.path(dumpDir, dumpName), recursive = TRUE)}}
 
 pg = pmparser::getPgParams()
-nCores = future::availableCores() - 2L
+nCores = parallel::detectCores() - 2L
 
 dumpPubmedDb(pg, nCores)
