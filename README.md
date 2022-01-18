@@ -15,14 +15,6 @@
       install.packages('BiocManager')
     ```
 
-1. Install the latest version of `xml2` from GitHub.
-
-    ```r
-    if (!requireNamespace('remotes', quietly = TRUE))
-      install.packages('remotes')
-    remotes::install_github('r-lib/xml2')
-    ```
-
 1. If you use RStudio, go to Tools → Global Options... → Packages → Add... (under Secondary repositories), then enter:
 
     - Name: hugheylab
