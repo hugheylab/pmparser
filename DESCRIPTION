@@ -7,7 +7,8 @@ Authors@R: as.person(c(
   "Elliot Outland <ehoutland@gmail.com> [aut]"))
 Description: Provides a simple interface for extracting various elements from
   the publicly available PubMed XML files, incorporating PubMed's regular
-  updates, and combining the data with the NIH Open Citation Collection.
+  updates, and combining the data with the NIH Open Citation Collection. See
+  Schoenbachler and Hughey (2021) <doi:10.7717/peerj.11071>.
 URL: https://pmparser.hugheylab.org, https://github.com/hugheylab/pmparser
 License: GPL-2
 Encoding: UTF-8
