@@ -36,13 +36,14 @@ download = function(url, destfile, n = 3L) {
 
 connect = function(dbtype, dbname, ...) {
   dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite',
-                               'clickhouse', 'bigquery'))
+                               'bigquery'))
+                               # 'clickhouse', 'bigquery'))
   pkgName = switch(dbtype,
                    postgres = 'RPostgres',
                    mariadb = 'RMariaDB',
                    mysql = 'RMariaDB',
                    sqlite = 'RSQLite',
-                   clickhouse = 'RClickhouse',
+                   # clickhouse = 'RClickhouse',
                    bigquery = 'bigrquery')
 
   if (!requireNamespace(pkgName, quietly = TRUE)) {
@@ -53,7 +54,7 @@ connect = function(dbtype, dbname, ...) {
                mariadb = RMariaDB::MariaDB(),
                mysql = RMariaDB::MariaDB(),
                sqlite = RSQLite::SQLite(),
-               clickhouse = RClickhouse::clickhouse(),
+               # clickhouse = RClickhouse::clickhouse(),
                bigquery = bigrquery::bigquery())
 
   return(DBI::dbConnect(drv, dbname = dbname, ...))}
@@ -225,9 +226,10 @@ writeTableInChunks = function(path, con, nRowsPerChunk, overwrite, tableName) {
 
 createTable = function(con, tableName, d) {
   # writes 0 rows
-  if (inherits(con, 'ClickhouseConnection')) {
-    createTableClickhouse(con, tableName, d)
-  } else if (inherits(con, 'BigQueryConnection')) {
+  # if (inherits(con, 'ClickhouseConnection')) {
+  #   createTableClickhouse(con, tableName, d)
+  # } else
+  if (inherits(con, 'BigQueryConnection')) {
     bigrquery::bq_table_create(
       bigrquery::bq_table(con@project, con@dataset, tableName), d)
   } else {
