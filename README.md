@@ -3,10 +3,19 @@
 [![check-deploy](https://github.com/hugheylab/pmparser/workflows/check-deploy/badge.svg)](https://github.com/hugheylab/pmparser/actions)
 [![codecov](https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/pmparser)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/865d8ac1-54df-47ee-ae71-f3f0226f324d/deploy-status)](https://app.netlify.com/sites/zealous-raman-c627d3/deploys)
+[![CRAN Status](https://www.r-pkg.org/badges/version/pmparser)](https://cran.r-project.org/package=pmparser)
 
 `pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008109). For a detailed description of `pmparser` and PMDB, check out the [article](https://doi.org/10.7717/peerj.11071).
 
 ## Installation
+
+### Option 1: CRAN
+
+```r
+install.packages('pmparser')
+```
+
+### Option 2: Hughey Lab Drat Repository
 
 1. Install [`BiocManager`](https://cran.r-project.org/package=BiocManager).
 
