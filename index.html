@@ -88,10 +88,19 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<div class="section level3">
+<h3 id="option-1-cran">Option 1: CRAN<a class="anchor" aria-label="anchor" href="#option-1-cran"></a>
+</h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'pmparser'</span><span class="op">)</span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="option-2-hughey-lab-drat-repository">Option 2: Hughey Lab Drat Repository<a class="anchor" aria-label="anchor" href="#option-2-hughey-lab-drat-repository"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>
 <p>Install <a href="https://cran.r-project.org/package=BiocManager" class="external-link"><code>BiocManager</code></a>.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">'BiocManager'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'BiocManager'</span><span class="op">)</span></code></pre></div>
 </li>
@@ -103,13 +112,14 @@
 </li>
 </ul>
 <p>You only have to do this once. Then you can install or update the package by entering:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">'pmparser'</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, you can install or update the package by entering:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu">install</span><span class="op">(</span><span class="st">'pmparser'</span>, site_repository <span class="op">=</span> <span class="st">'https://hugheylab.github.io/drat/'</span><span class="op">)</span></code></pre></div>
 </li>
 </ol>
+</div>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -157,6 +167,7 @@
 <li><a href="https://github.com/hugheylab/pmparser/actions" class="external-link"><img src="https://github.com/hugheylab/pmparser/workflows/check-deploy/badge.svg" alt="check-deploy"></a></li>
 <li><a href="https://codecov.io/gh/hugheylab/pmparser" class="external-link"><img src="https://codecov.io/gh/hugheylab/pmparser/branch/master/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="https://app.netlify.com/sites/zealous-raman-c627d3/deploys" class="external-link"><img src="https://api.netlify.com/api/v1/badges/865d8ac1-54df-47ee-ae71-f3f0226f324d/deploy-status" alt="Netlify Status"></a></li>
+<li><a href="https://cran.r-project.org/package=pmparser" class="external-link"><img src="https://www.r-pkg.org/badges/version/pmparser" alt="CRAN Status"></a></li>
 </ul>
 </div>
 
