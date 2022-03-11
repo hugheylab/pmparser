@@ -475,6 +475,10 @@ parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     text = xml_text(x4),
     label = xml_attr(x4, 'Label'),
     nlm_category = xml_attr(x4, 'NlmCategory'))
+  if (nrow(x5) > 0) {
+    x5[, abstract_pos := 1:.N, by = pmid]
+  } else {
+    x5[, person_pos := as.integer()]}
 
   r = list(x2[!is.na(copyright)], x5)
   names(r) = c(paste_('abstract_copyright', tableSuffix),

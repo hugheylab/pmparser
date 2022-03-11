@@ -49,7 +49,7 @@ getParsingTables = function(tableSuffix, tableNames = NULL) {
     abstract_copyright = data.table(copyright = ac),
 
     abstract = data.table(
-      text = ac, label = ac, nlm_category = ac),
+      text = ac, label = ac, nlm_category = ac, abstract_pos = ai),
 
     author = data.table(
       author_pos = ai, last_name = ac, fore_name = ac, initials = ac,
