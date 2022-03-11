@@ -462,7 +462,7 @@ parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
-  .N = copyright = NULL
+  .N = abstract_pos = copyright = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(
