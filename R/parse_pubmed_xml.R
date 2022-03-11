@@ -2,6 +2,7 @@
 #' @importFrom foreach foreach %do% %dopar%
 #' @importFrom glue glue glue_sql
 #' @importFrom xml2 xml_find_all xml_find_first xml_text xml_attr xml_length xml_integer
+#' @importFrom stringr str_extract
 NULL
 
 
