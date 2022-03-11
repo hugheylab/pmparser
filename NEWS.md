@@ -1,4 +1,4 @@
-# pmparser 1.0.4
+# pmparser 1.0.5
 * Added `abstract_pos` column to abstract table.
 * If `pub_year` in `journal` table is empty, now extracts `pub_year` from `medline_date`.
 
