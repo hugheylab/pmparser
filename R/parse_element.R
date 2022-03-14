@@ -221,7 +221,7 @@ parsePubHistory = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
-  pub_month_tmp1 = pub_month = pub_day_tmp = pub_day = pub_year =
+  medline_date = pub_month_tmp1 = pub_month = pub_day_tmp = pub_day = pub_year =
     pub_month_tmp2 = pub_date = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Journal')
@@ -238,6 +238,11 @@ parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     volume = xml_text(xml_find_first(x1[idx], './/Volume')),
     issue = xml_text(xml_find_first(x1[idx], './/Issue')),
     cited_medium = xml_attr(xml_find_first(x1[idx], 'CitedMedium')))
+
+  x2[is.na(pub_year), date_idx := regexpr('[0-9]{4}', medline_date)]
+  x2[is.na(pub_year) & date_idx > 0,
+     pub_year := as.integer(substr(medline_date, date_idx, date_idx + 3L))]
+  x2[, date_idx := NULL]
 
   monthNums = sprintf('%.2d', 1:12)
   dMonth = data.table(
@@ -460,7 +465,7 @@ parseComment = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
-  .N = copyright = NULL
+  .N = abstract_pos = copyright = pmid = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Abstract')
   x2 = data.table(
@@ -475,6 +480,10 @@ parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     text = xml_text(x4),
     label = xml_attr(x4, 'Label'),
     nlm_category = xml_attr(x4, 'NlmCategory'))
+  if (nrow(x5) > 0) {
+    x5[, abstract_pos := 1:.N, by = pmid]
+  } else {
+    x5[, abstract_pos := as.integer()]}
 
   r = list(x2[!is.na(copyright)], x5)
   names(r) = c(paste_('abstract_copyright', tableSuffix),
