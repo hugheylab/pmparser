@@ -239,7 +239,10 @@ parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     issue = xml_text(xml_find_first(x1[idx], './/Issue')),
     cited_medium = xml_attr(xml_find_first(x1[idx], 'CitedMedium')))
 
-  x2[is.na(pub_year), pub_year := str_extract(medline_date, '[0-9]{4}')]
+  x2[is.na(pub_year), date_idx := regexpr('[0-9]{4}', medline_date)]
+  x2[is.na(pub_year) & date_idx > 0,
+     pub_year := as.integer(substr(medline_date, date_idx, date_idx + 3L))]
+  x2[, date_idx := NULL]
 
   monthNums = sprintf('%.2d', 1:12)
   dMonth = data.table(
