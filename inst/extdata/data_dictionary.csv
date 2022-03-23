@@ -3,6 +3,7 @@ abstract,pmid,PMID
 abstract,text,Abstract / AbstractText
 abstract,label,Abstract / AbstractText / attr Label
 abstract,nlm_category,Abstract / AbstractText / attr NlmCategory
+abstract,abstract_pos,Abstract / AbstractText / int position
 abstract_copyright,pmid,PMID
 abstract_copyright,copyright,Abstract / CopyrightInformation
 article,pmid,PMID
