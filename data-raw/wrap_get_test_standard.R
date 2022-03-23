@@ -1,3 +1,4 @@
+# before running this script, run "Clean and Rebuild"
 foreach::registerDoSEQ() # to ensure reproducibility, do not parallelize
 
 options(timeout = 3600)

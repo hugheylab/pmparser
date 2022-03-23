@@ -222,7 +222,7 @@ parsePubHistory = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @export
 parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   medline_date = pub_month_tmp1 = pub_month = pub_day_tmp = pub_day = pub_year =
-    pub_month_tmp2 = pub_date = NULL
+    pub_month_tmp2 = pub_date = date_idx = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Journal')
   idx = xml_length(x1) > 0

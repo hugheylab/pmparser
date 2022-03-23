@@ -13,14 +13,12 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-
 sudo apt update
 
 # postgres versions on EC2 and RDS instances must match for pg_dump to work
-sudo apt install -y postgresql-12 libpq-dev libmariadbclient-dev
+# check for the most recent version of postgres
+sudo apt install -y postgresql-14 libpq-dev libmariadbclient-dev
 
 # now that pmparser is on the lab's drat repo
-Rscript -e "install.packages('BiocManager')"
+Rscript -e "install.packages(c('BiocManager', 'doParallel'))"
 Rscript -e "BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/', ask = FALSE)"
-
-# for parallel processing
-Rscript -e "install.packages('doParallel')"
 
 conda activate
 
