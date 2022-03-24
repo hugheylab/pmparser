@@ -1,0 +1,99 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on: push
+
+name: lint
+
+jobs:
+  lint_package:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.JAKEJH_PAT }}
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+    outputs:
+        style_text: ${{ steps.run_lintr.outputs.style_text }}
+        has_style_issues: ${{ steps.run_lintr.outputs.has_style_issues }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: nelonoel/branch-name@v1
+
+      - id: run_lintr
+        run: |
+          install.packages('lintr')
+          install.packages('data.table')
+
+          repository = '${{ github.event.repository.name }}'
+          branch = system("echo ${BRANCH_NAME}", intern = TRUE)
+
+          lintFile = file.path('.github', 'workflows', 'custom-lint-script.R')
+
+          if (!file.exists(lintFile)) {
+            download.file(
+              'https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint-script.R',
+              lintFile)}
+
+          source(lintFile)
+
+          print(lfDt)
+
+          s = sprintf("echo '::set-output name=style_text::%s'", issueStr)
+          system(s)
+
+          if (nrow(lfDt) > 0) {
+            system("echo '::set-output name=has_style_issues::true'")
+          } else {
+            system("echo '::set-output name=has_style_issues::false'")}
+        shell: Rscript {0}
+
+  close_open_lint:
+    name: Close all issues labeled "lint"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find all cran update issues
+        id: issues
+        uses: lee-dohm/select-matching-issues@v1.2.0
+        with:
+          query: "label:lint is:open"
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Close found issues
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" > token.txt
+          gh auth login --with-token < token.txt
+          for OUTPUT in $(cat ${{ steps.issues.outputs.path }})
+          do
+            gh issue close "$OUTPUT"
+          done
+        shell: bash
+
+  create_issue:
+    needs: [ lint_package, close_open_lint ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    name: Create issue for lintr errors.
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    if: ${{ fromJson(needs.lint_package.outputs.has_style_issues) }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: debug output
+        run: |
+          echo "${{ needs.lint_package.outputs.style_text }}"
+        shell: bash
+
+      - name: Create an issue
+        uses: actions-ecosystem/action-create-issue@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          title: lintr found issues with code
+          body: |
+            ${{ needs.lint_package.outputs.style_text }}
+          labels: |
+            lint
