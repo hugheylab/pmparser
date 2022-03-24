@@ -159,7 +159,7 @@ getCitation = function(
   #   col_types = vroom::cols(citing = 'i', referenced = 'i'))
 
   # change column names in citation table
-  for (i in 1:nrow(dCols)) {
+  for (i in seq_len(nrow(dCols))) {
     q = glue_sql('alter table {`citationName`} rename column \\
                  {`dCols[i]$old`} to {`dCols[i]$new`}', .con = con)
     x = DBI::dbExecute(con, q)}

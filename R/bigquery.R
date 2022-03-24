@@ -12,14 +12,14 @@ copyPostgresToBigquery = function(
   tableExists = sapply(tableNames, function(x) DBI::dbExistsTable(conBq, x))
   stopifnot(!any(tableExists) || isTRUE(overwrite))
 
-  for (i in 1:length(tableNames)) {
+  for (i in seq_len(length(tableNames))) {
     if (tableExists[i]) DBI::dbRemoveTable(conBq, tableNames[i])}
 
   # are you ready for the fun part?
   feo = foreach(tableName = tableNames,
                 .options.future = list(scheduling = Inf))
 
-  optVal = getOption( 'future.rng.onMisuse')
+  optVal = getOption('future.rng.onMisuse')
   options(future.rng.onMisuse = 'ignore')
 
   r = feo %dopar% {

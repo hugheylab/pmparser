@@ -24,10 +24,10 @@
 # setNAToSpecial = function(d) {
 #   naDateVal = as.Date('2100-01-01')
 #   priorDateVal = as.Date('2075-01-01')
-#   if (nrow(d) == 1L && any(is.na(d))){
+#   if (nrow(d) == 1L && any(is.na(d))) {
 #     columns = colnames(d)
-#     for(column in columns){
-#       if (is.na(d[[column]])){
+#     for(column in columns) {
+#       if (is.na(d[[column]])) {
 #         if (is.logical(d[[column]])) val = 0
 #         else if (is.integer(d[[column]])) val = -1L
 #         else if (is.numeric(d[[column]])) val = -1

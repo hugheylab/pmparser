@@ -43,7 +43,7 @@ modifyPubmedDb = function(
   con = connect(dbtype, dbname, ...)
 
   # not using rng, so unclear why future gives warnings
-  optVal = getOption( 'future.rng.onMisuse')
+  optVal = getOption('future.rng.onMisuse')
   options(future.rng.onMisuse = 'ignore')
 
   mode = match.arg(mode)

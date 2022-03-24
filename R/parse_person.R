@@ -46,8 +46,8 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
   nAffiliations = sapply(x4, length)
 
   if (length(nAffiliations) > 0 && sum(nAffiliations) > 0) {
-    dAffil = dPerson[rep.int(1:nrow(dPerson), nAffiliations), cols, with = FALSE]
-    dAffil[, affiliation_pos := 1:.N, by = cols]
+    dAffil = dPerson[rep.int(seq_len(nrow(dPerson)), nAffiliations), cols, with = FALSE]
+    dAffil[, affiliation_pos := seq_len(.N), by = cols]
     dAffil[, affiliation := unlist(lapply(x4, xml_text))]
   } else {
     dAffil = data.table(
@@ -62,7 +62,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
 
   if (length(nAffilIds) > 0) {
     dAffilId = data.table(
-      affil_idx = rep.int(1:length(x6), nAffilIds),
+      affil_idx = rep.int(seq_len(length(x6)), nAffilIds),
       source = unlist(lapply(x6, function(x) xml_attr(x, 'Source'))),
       identifier = unlist(lapply(x6, xml_text)))
 
@@ -91,7 +91,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
 
   if (length(nTotalIds) > 0 && sum(nTotalIds) > 0) {
     dAllId = data.table(
-      person_idx = rep.int(1:length(x7), nTotalIds),
+      person_idx = rep.int(seq_len(length(x7)), nTotalIds),
       source = unlist(lapply(x7, function(x) xml_attr(x, 'Source'))),
       identifier = unlist(lapply(x7, xml_text)))
 
@@ -111,7 +111,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
     if (nrow(x10) > 0) {
       x11 = x10[n_person_ids > 0, .(id_pos = 1:n_person_ids), by = cols]
 
-      dAllId[, id_pos := 1:.N, by = cols]
+      dAllId[, id_pos := seq_len(.N), by = cols]
       dPersonId = merge(dAllId, x11, by = c(cols, 'id_pos'))
       dPersonId[, id_pos := NULL]
 
@@ -134,7 +134,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
       dPmidNow[nPersons > 0],
       complete = xml_attr(x3[nPersons > 0], 'CompleteYN'))}
 
-  for (i in 1:length(r)) {
+  for (i in seq_len(length(r))) {
     # change colnames based on personType
     setnames(r[[i]], 'person_pos', personPos, skip_absent = TRUE)
     # possibly add xml_filename as column
