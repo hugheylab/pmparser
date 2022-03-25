@@ -1,6 +1,6 @@
 Package: pmparser
 Title: Create and Maintain a Relational Database of Data from PubMed/MEDLINE
-Version: 1.0.5
+Version: 1.0.6
 Authors@R: c(person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Josh', 'Schoenbachler', , 'josh.schoenbachler@gmail.com', 'aut'),
   person('Elliot', 'Outland', , 'ehoutland@gmail.com', 'aut'))
@@ -16,6 +16,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Depends: R (>= 3.6)
 Imports:
+  curl (>= 4.3.2),
   data.table (>= 1.12.2),
   DBI (>= 1.1.0),
   foreach (>= 1.5.0),

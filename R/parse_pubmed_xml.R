@@ -16,7 +16,8 @@ parsePubmedXmlCore = function(
   # create separate connection for each parallel process
   con = if (is.null(dbname)) NULL else connect(dbtype, dbname, ...)
 
-  rawXml = xml2::read_xml(file.path(xmlDir, filename))
+  rawXml = xml2::read_xml(
+    file.path(xmlDir, filename), options = c('NOBLANKS', 'HUGE'))
   writeLogFile(logPath, data.table(filename, 'read_xml', 0, NA))
 
   step = 'pmid_status'

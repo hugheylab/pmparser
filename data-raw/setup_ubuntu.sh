@@ -14,12 +14,17 @@ sudo apt update
 
 # postgres versions on EC2 and RDS instances must match for pg_dump to work
 # check for the most recent version of postgres
-sudo apt install -y postgresql-14 libpq-dev libmariadbclient-dev
+sudo apt install -y postgresql libpq-dev libmariadbclient-dev
 
 # now that pmparser is on the lab's drat repo
-Rscript -e "install.packages(c('BiocManager', 'doParallel'))"
+Rscript -e "install.packages(c('BiocManager', 'curl', 'doParallel', 'RPostgres', 'yaml'))"
 Rscript -e "BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/', ask = FALSE)"
 
 conda activate
 
 # create ~/.pgpass file according to https://www.postgresql.org/docs/9.6/libpq-pgpass.html
+
+# sudo -u postgres psql
+# postgres=# create database pmdb;
+# postgres=# create user ubuntu with encrypted password 'ubuntu';
+# postgres=# grant all privileges on database pmdb to ubuntu;
