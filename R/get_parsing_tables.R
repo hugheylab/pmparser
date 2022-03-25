@@ -112,7 +112,7 @@ createParsingTables = function(
     names(parTables), function(x) DBI::dbExistsTable(con, x))
   stopifnot(!any(tableExists) || isTRUE(overwrite))
 
-  for (i in 1:length(parTables)) {
+  for (i in seq_len(length(parTables))) {
     if (tableExists[i]) DBI::dbRemoveTable(con, names(parTables)[i])
     createTable(con, names(parTables)[i], parTables[[i]])}
 

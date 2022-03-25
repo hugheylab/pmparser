@@ -74,7 +74,7 @@ dropPmidVersionColumn = function(tableSuffix, con, ...) {
                    .con = con)
       x = DBI::dbExecute(con, q)}
 
-  } else if (inherits(con, 'BigQueryConnection')){
+  } else if (inherits(con, 'BigQueryConnection')) {
     for (tableName in names(parTables)[idx]) {
       q = glue_sql('create or replace table {`tableName`}
                    as select * except(version) from {`tableName`}',

@@ -336,7 +336,7 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   names(r) = paste_(
     c('mesh_list', 'mesh_descriptor', 'mesh_qualifier'), tableSuffix)
 
-  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  for (i in seq_len(length(r))) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
@@ -363,7 +363,7 @@ parseKeyword = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   # consistent with grant_item
   names(r) = paste_(c('keyword_list', 'keyword_item'), tableSuffix)
 
-  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  for (i in seq_len(length(r))) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
@@ -393,7 +393,7 @@ parseGrant = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   # avoid reserved word
   names(r) = paste_(c('grant_list', 'grant_item'), tableSuffix)
 
-  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  for (i in seq_len(length(r))) appendTable(con, names(r)[i], r[[i]])
   return(r)}
 
 
@@ -489,5 +489,5 @@ parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   names(r) = c(paste_('abstract_copyright', tableSuffix),
                paste_('abstract', tableSuffix))
 
-  for (i in 1:length(r)) appendTable(con, names(r)[i], r[[i]])
+  for (i in seq_len(length(r))) appendTable(con, names(r)[i], r[[i]])
   return(r)}
