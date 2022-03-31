@@ -12,6 +12,7 @@ jobs:
         style_text: ${{ steps.run_lintr.outputs.style_text }}
         has_style_issues: ${{ steps.run_lintr.outputs.has_style_issues }}
     timeout-minutes: 30
+    if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') }}
     steps:
       - uses: actions/checkout@v2
 
@@ -37,7 +38,7 @@ jobs:
 
           source(lintFile)
 
-          lfDt = getLintDt(lintsFound)
+          lfDt = getLintDt(lintsFound, repository, branch)
           issueStr = getFormattedIssueStr(lfDt)
 
           library('gh')
