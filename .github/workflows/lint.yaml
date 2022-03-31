@@ -6,7 +6,7 @@ jobs:
   lint_package:
     runs-on: ubuntu-latest
     env:
-      GITHUB_PAT: ${{ secrets.JAKEJH_PAT }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     outputs:
         style_text: ${{ steps.run_lintr.outputs.style_text }}
