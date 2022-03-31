@@ -23,7 +23,7 @@ jobs:
 
       - id: run_lintr
         run: |
-          install.packages(c('data.table', 'glue', 'lintr'))
+          install.packages(c('data.table', 'gh', 'glue', 'lintr'))
 
           repository = '${{ github.event.repository.name }}'
           branch = system("echo ${BRANCH_NAME}", intern = TRUE)
