@@ -1,5 +1,3 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on: push
 
 name: lint
@@ -13,6 +11,7 @@ jobs:
     outputs:
         style_text: ${{ steps.run_lintr.outputs.style_text }}
         has_style_issues: ${{ steps.run_lintr.outputs.has_style_issues }}
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v2
 
@@ -24,8 +23,7 @@ jobs:
 
       - id: run_lintr
         run: |
-          install.packages('lintr')
-          install.packages('data.table')
+          install.packages(c('data.table', 'glue', 'lintr'))
 
           repository = '${{ github.event.repository.name }}'
           branch = system("echo ${BRANCH_NAME}", intern = TRUE)
@@ -34,16 +32,16 @@ jobs:
 
           if (!file.exists(lintFile)) {
             download.file(
-              'https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint-script.R',
+              'https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint.R',
               lintFile)}
 
           source(lintFile)
 
-          print(lfDt)
+          lfDt = getLintDt(lintsFound)
+          issueStr = getFormattedIssueStr(lfDt)
 
           s = sprintf("echo '::set-output name=style_text::%s'", issueStr)
           system(s)
-
           if (nrow(lfDt) > 0) {
             system("echo '::set-output name=has_style_issues::true'")
           } else {
@@ -53,6 +51,7 @@ jobs:
   close_open_lint:
     name: Close all issues labeled "lint"
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Find all cran update issues
         id: issues
@@ -79,6 +78,7 @@ jobs:
     name: Create issue for lintr errors.
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 30
     if: ${{ fromJson(needs.lint_package.outputs.has_style_issues) }}
     steps:
       - uses: actions/checkout@v2

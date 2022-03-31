@@ -19,6 +19,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+    timeout-minutes: 30
     steps:
       - uses: hugheylab/actions/R-CMD-check@main
 
@@ -29,6 +30,7 @@ jobs:
     if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') }}
     env:
       GITHUB_PAT: ${{ secrets.JAKEJH_PAT }}
+    timeout-minutes: 30
     steps:
       - uses: hugheylab/actions/drat-deployment@main
         with:
