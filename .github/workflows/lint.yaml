@@ -45,7 +45,7 @@ jobs:
             paste0('GET /repos/hugheylab/', repository, '/issues'),
             labels = 'lint')
 
-          if (length(issuesGet) > 0)
+          if (length(issuesGet) > 0) {
             issuesPatch = gh(
               paste0('PATCH /repos/hugheylab/', repository, '/issues/', issuesGet[[1]]$number),
               state = 'closed')}
