@@ -40,60 +40,24 @@ jobs:
           lfDt = getLintDt(lintsFound)
           issueStr = getFormattedIssueStr(lfDt)
 
-          s = sprintf("echo '::set-output name=style_text::%s'", issueStr)
-          system(s)
-          if (nrow(lfDt) > 0) {
-            system("echo '::set-output name=has_style_issues::true'")
-          } else {
-            system("echo '::set-output name=has_style_issues::false'")}
+          library('gh')
+          issuesGet = gh(
+            paste0('GET /repos/hugheylab/', repository, '/issues'),
+            labels = 'lint')
+
+          if (length(issuesGet) > 0)
+            issuesPatch = gh(
+              paste0('PATCH /repos/hugheylab/', repository, '/issues/', issuesGet[[1]]$number),
+              state = 'closed')}
+
+          issuesPost = gh(
+            endpoint = paste0('POST /repos/hugheylab/', repository, '/issues'),
+            title = "lintr found issues with code",
+            body = issueStr)
+
+          labelsPost = gh(
+            endpoint = paste0('POST /repos/hugheylab/', repository, '/issues/', issuesPost$number, '/labels'),
+            'lint')
+
         shell: Rscript {0}
 
-  close_open_lint:
-    name: Close all issues labeled "lint"
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Find all cran update issues
-        id: issues
-        uses: lee-dohm/select-matching-issues@v1.2.0
-        with:
-          query: "label:lint is:open"
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Close found issues
-        run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" > token.txt
-          gh auth login --with-token < token.txt
-          for OUTPUT in $(cat ${{ steps.issues.outputs.path }})
-          do
-            gh issue close "$OUTPUT"
-          done
-        shell: bash
-
-  create_issue:
-    needs: [ lint_package, close_open_lint ]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write
-    name: Create issue for lintr errors.
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-    timeout-minutes: 30
-    if: ${{ fromJson(needs.lint_package.outputs.has_style_issues) }}
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: debug output
-        run: |
-          echo "${{ needs.lint_package.outputs.style_text }}"
-        shell: bash
-
-      - name: Create an issue
-        uses: actions-ecosystem/action-create-issue@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          title: lintr found issues with code
-          body: |
-            ${{ needs.lint_package.outputs.style_text }}
-          labels: |
-            lint
