@@ -24,19 +24,12 @@ jobs:
 
       - id: run_lintr
         run: |
-          install.packages(c('data.table', 'gh', 'glue', 'lintr'))
+          install.packages(c('data.table', 'gh', 'lintr'))
 
           repository = '${{ github.event.repository.name }}'
           branch = system("echo ${BRANCH_NAME}", intern = TRUE)
 
-          lintFile = file.path('.github', 'workflows', 'custom-lint-script.R')
-
-          if (!file.exists(lintFile)) {
-            download.file(
-              'https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint.R',
-              lintFile)}
-
-          source(lintFile)
+          source('https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint.R')
 
           lfDt = getLintDt(lintsFound, repository, branch)
           issueStr = getFormattedIssueStr(lfDt)
@@ -51,14 +44,14 @@ jobs:
               paste0('PATCH /repos/hugheylab/', repository, '/issues/', issuesGet[[1]]$number),
               state = 'closed')}
 
-          issuesPost = gh(
-            endpoint = paste0('POST /repos/hugheylab/', repository, '/issues'),
-            title = "lintr found issues with code",
-            body = issueStr)
+          if (nrow(lfDt) > 0) {
+            issuesPost = gh(
+              endpoint = paste0('POST /repos/hugheylab/', repository, '/issues'),
+              title = "lintr found issues with code",
+              body = issueStr)
 
-          labelsPost = gh(
-            endpoint = paste0('POST /repos/hugheylab/', repository, '/issues/', issuesPost$number, '/labels'),
-            'lint')
+            labelsPost = gh(
+              endpoint = paste0('POST /repos/hugheylab/', repository, '/issues/', issuesPost$number, '/labels'),
+              'lint')}
 
         shell: Rscript {0}
-
