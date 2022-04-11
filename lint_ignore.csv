@@ -1,0 +1,74 @@
+filename,line_number,message,line
+R/get_citation.R,5,Variable and function name style should be camelCase.,published_date = name = NULL
+R/get_parsing_tables.R,2,Variable and function name style should be camelCase.,xml_filename = NULL
+R/get_parsing_tables.R,94,Variable and function name style should be camelCase.,"r[[tableName]][, xml_filename := ac]"
+R/get_pubmed_files.R,15,Variable and function name style should be camelCase.,sub_dir = subDir = . = xml_filename = NULL
+R/get_pubmed_files.R,20,Variable and function name style should be camelCase.,"dNow[, sub_dir := subDir]}"
+R/get_pubmed_files.R,58,Variable and function name style should be camelCase.,md5_match = md5_computed = md5_provided = NULL
+R/get_pubmed_files.R,61,Variable and function name style should be camelCase.,"d[, md5_match := md5_computed == md5_provided]"
+R/get_pubmed_files.R,69,Variable and function name style should be camelCase.,md5_download = xml_download = f = sub_dir = xml_filename = md5_filename =
+R/get_pubmed_files.R,70,Variable and function name style should be camelCase.,md5_match = NULL
+R/get_pubmed_files.R,80,Variable and function name style should be camelCase.,"fileInfo[, md5_download := NA_integer_]"
+R/get_pubmed_files.R,82,Variable and function name style should be camelCase.,"fileInfo[, md5_download := xml_download]}"
+R/get_pubmed_files.R,91,Variable and function name style should be camelCase.,"fileInfo[is.na(md5_download), md5_download := r]"
+R/get_pubmed_files.R,107,Variable and function name style should be camelCase.,"fileInfo[!(md5_match), xml_download := r]"
+R/get_test_standard.R,19,Variable and function name style should be camelCase.,.N = pmid = N = . = step = NULL
+R/get_test_standard.R,51,Variable and function name style should be camelCase.,sub_dir = .N = sample_base = NULL
+R/get_test_standard.R,62,Variable and function name style should be camelCase.,"dFile[, sample_base := gsub('\\.xml.*$', '', sampleBase)][]}"
+R/get_test_standard.R,92,Variable and function name style should be camelCase.,parsed$pmid_status = parsed$pmid_status[[2L]]
+R/get_test_standard.R,99,Variable and function name style should be camelCase.,sub_dir = NULL
+R/get_test_standard.R,106,Variable and function name style should be camelCase.,sub_dir = xml_download = xml_filename = md5_filename = NULL
+R/modify_pubmed_db.R,41,Variable and function name style should be camelCase.,processed = .N = md5_match = xml_filename = . = step = NULL
+R/parse_element.R,149,Variable and function name style should be camelCase.,.N = id_type = NULL
+R/parse_element.R,168,Variable and function name style should be camelCase.,pub_date = y = m = d = NULL
+R/parse_element.R,187,Variable and function name style should be camelCase.,"x4[, pub_date := as.Date(sprintf('%s-%s-%s', y, m, d))]"
+R/parse_element.R,201,Variable and function name style should be camelCase.,.N = pub_date = y = m = d = NULL
+R/parse_element.R,214,Variable and function name style should be camelCase.,"x4[, pub_date := as.Date(sprintf('%s-%s-%s', y, m, d))]"
+R/parse_element.R,224,Variable and function name style should be camelCase.,medline_date = pub_month_tmp1 = pub_month = pub_day_tmp = pub_day = pub_year =
+R/parse_element.R,225,Variable and function name style should be camelCase.,pub_month_tmp2 = pub_date = date_idx = NULL
+R/parse_element.R,242,Variable and function name style should be camelCase.,"x2[is.na(pub_year), date_idx := regexpr('[0-9]{4}', medline_date)]"
+R/parse_element.R,244,Variable and function name style should be camelCase.,"pub_year := as.integer(substr(medline_date, date_idx, date_idx + 3L))]"
+R/parse_element.R,245,Variable and function name style should be camelCase.,"x2[, date_idx := NULL]"
+R/parse_element.R,253,Variable and function name style should be camelCase.,"x2[, pub_month_tmp1 := tolower(pub_month)]"
+R/parse_element.R,256,Variable and function name style should be camelCase.,"x3[, pub_day_tmp := pub_day]"
+R/parse_element.R,257,Variable and function name style should be camelCase.,"x3[is.na(pub_day_tmp), pub_day_tmp := '01']"
+R/parse_element.R,259,Variable and function name style should be camelCase.,pub_date := as.Date(
+R/parse_element.R,271,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,289,Variable and function name style should be camelCase.,indexing_method = .N = descriptor_pos = pmid = NULL
+R/parse_element.R,311,Variable and function name style should be camelCase.,"x3[, descriptor_pos := 1:.N, by = pmid]"
+R/parse_element.R,313,Variable and function name style should be camelCase.,"x3[, descriptor_pos := ai]}"
+R/parse_element.R,346,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,373,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,403,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,424,Variable and function name style should be camelCase.,.N = accession_number = NULL
+R/parse_element.R,441,Variable and function name style should be camelCase.,"x5[, accession_number := unlist(lapply(x3, xml_text))]"
+R/parse_element.R,450,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,468,Variable and function name style should be camelCase.,.N = abstract_pos = copyright = pmid = NULL
+R/parse_element.R,484,Variable and function name style should be camelCase.,"x5[, abstract_pos := 1:.N, by = pmid]"
+R/parse_element.R,486,Variable and function name style should be camelCase.,"x5[, abstract_pos := as.integer()]}"
+R/parse_person.R,4,Variable and function name style should be camelCase.,. = pmid = .N = equal_contrib = collective_name = person_pos  =
+R/parse_person.R,5,Variable and function name style should be camelCase.,affiliation_pos = affiliation = affil_idx = person_idx = n_affil_ids =
+R/parse_person.R,6,Variable and function name style should be camelCase.,n_person_ids = n_total_ids = id_pos = NULL
+R/parse_person.R,34,Variable and function name style should be camelCase.,"dPerson[, equal_contrib := xml_attr(x2, 'EqualContrib')]"
+R/parse_person.R,35,Variable and function name style should be camelCase.,"dPerson[, collective_name :="
+R/parse_person.R,39,Variable and function name style should be camelCase.,"dPerson[, person_pos := 1:.N, by = pmid]"
+R/parse_person.R,41,Variable and function name style should be camelCase.,"dPerson[, person_pos := ai]}"
+R/parse_person.R,50,Variable and function name style should be camelCase.,"dAffil[, affiliation_pos := seq_len(.N), by = cols]"
+R/parse_person.R,69,Variable and function name style should be camelCase.,"dAffil[, affil_idx := 1:.N]"
+R/parse_person.R,74,Variable and function name style should be camelCase.,"dAffil[, affil_idx := NULL]"
+R/parse_person.R,75,Variable and function name style should be camelCase.,"dAffilId[, affil_idx := NULL]"
+R/parse_person.R,98,Variable and function name style should be camelCase.,"dPerson[, person_idx := 1:.N]"
+R/parse_person.R,102,Variable and function name style should be camelCase.,"dPerson[, person_idx := NULL]"
+R/parse_person.R,103,Variable and function name style should be camelCase.,"dAllId[, person_idx := NULL]"
+R/parse_person.R,108,Variable and function name style should be camelCase.,"x10[is.na(n_affil_ids), n_affil_ids := 0]"
+R/parse_person.R,109,Variable and function name style should be camelCase.,"x10[, n_person_ids := n_total_ids - n_affil_ids]"
+R/parse_person.R,114,Variable and function name style should be camelCase.,"dAllId[, id_pos := seq_len(.N), by = cols]"
+R/parse_person.R,116,Variable and function name style should be camelCase.,"dPersonId[, id_pos := NULL]"
+R/parse_pubmed_xml.R,11,Variable and function name style should be camelCase.,status = xml_filename = parseFunc = NULL
+R/parse_pubmed_xml.R,34,Variable and function name style should be camelCase.,"if (isEmpty(tableSuffix)) dPmid[, xml_filename := NULL]"
+R/parse_pubmed_xml.R,60,Variable and function name style should be camelCase.,xml_filename = filenameNow = NULL
+R/utilities.R,2,Variable and function name style should be camelCase.,status = xml_filename = NULL
+R/utilities.R,9,Variable and function name style should be camelCase.,. = xml_filename = NULL
+R/utilities.R,77,Variable and function name style should be camelCase.,. = xml_filename = step = NULL
+R/utilities.R,128,Variable and function name style should be camelCase.,paste_ = function(...) {
+tests/testthat/test_get_pubmed_files.R,31,Variable and function name style should be camelCase.,"fileInfo[, md5_match := as.numeric(md5_match)]"
