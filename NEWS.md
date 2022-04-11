@@ -1,3 +1,6 @@
+# pmparser 1.0.8
+* Update to match lab style standard.
+
 # pmparser 1.0.7
 * Explicitly added `curl` to Imports, since it's used by `utils::download.file()`.
 * Set "HUGE" option for `xml2::read_xml()` to avoid occassional error.
