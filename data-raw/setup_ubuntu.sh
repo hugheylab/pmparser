@@ -17,7 +17,7 @@ sudo apt update
 sudo apt install -y postgresql libpq-dev libmariadbclient-dev
 
 # now that pmparser is on the lab's drat repo
-Rscript -e "install.packages(c('BiocManager', 'curl', 'doParallel', 'RPostgres', 'yaml'))"
+Rscript -e "install.packages(c('bigrquery', 'BiocManager', 'curl', 'doParallel', 'RPostgres', 'yaml'))"
 Rscript -e "BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/', ask = FALSE)"
 
 conda activate
@@ -28,3 +28,6 @@ conda activate
 # postgres=# create database pmdb;
 # postgres=# create user ubuntu with encrypted password 'ubuntu';
 # postgres=# grant all privileges on database pmdb to ubuntu;
+
+# install bq command-line tool
+# https://cloud.google.com/sdk/docs/install#deb

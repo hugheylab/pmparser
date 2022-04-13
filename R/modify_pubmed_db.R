@@ -63,15 +63,21 @@ modifyPubmedDb = function(
   logPath = file.path(logDir, f)
   writeLogFile(logPath, data.table(step = 'start'), append = FALSE)
 
-  if (mode == 'create') r = getReadme(con = con)
+  if (mode == 'create') . = getReadme(con = con)
 
-  # download files
+  if (nCitations > 0) {
+    writeLogFile(logPath, data.table('get citation table'))
+    . = getCitation(
+      localDir = localDir, nrows = nCitations, tableSuffix = '',
+      overwrite = TRUE, con = con, checkMd5 = !testing)}
+
+  # download pubmed files
   writeLogFile(logPath, data.table('get pubmed file info'))
   fileInfo = getPubmedFileInfo(localDir, subDirs = subDir, con = conTmp)
   fileInfo = fileInfo[is.na(processed)]
 
   if (nrow(fileInfo) == 0) {
-    message('Database is already up-to-date.')
+    message('PubMed tables are already up-to-date.')
     return(invisible())}
 
   if (mode == 'create') {
@@ -138,12 +144,6 @@ modifyPubmedDb = function(
     addSourceToTarget(
       sourceSuffix = tableSuffix, targetSuffix = '', dryRun = FALSE,
       dbtype = dbtype, dbname = dbname, ...)}
-
-  if (nCitations > 0) {
-    writeLogFile(logPath, data.table('get citation table'))
-    r = getCitation(
-      localDir = localDir, nrows = nCitations, tableSuffix = '',
-      overwrite = TRUE, con = con, checkMd5 = !testing)}
 
   dd = data.table::fread(
     system.file('extdata', 'data_dictionary.csv', package = 'pmparser'))

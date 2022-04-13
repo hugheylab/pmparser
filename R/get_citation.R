@@ -87,7 +87,11 @@ getCitation = function(
     md5Local = ''}
 
   if (md5Local != md5Remote && isTRUE(checkMd5)) {
+    timmy = getOption('timeout')
+    options(timeout = 60 * 60)
     utils::download.file(citationInfo$download_url, path, mode = 'wb')
+    options(timeout = timmy)
+
     md5Local = tools::md5sum(path)
     if (md5Local != md5Remote) {
       stop('Supplied and computed MD5 checksums do not match.')}}

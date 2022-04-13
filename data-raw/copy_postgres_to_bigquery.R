@@ -3,8 +3,17 @@
 # registerDoFuture()
 # nCores = round(availableCores() * 0.75)
 # plan(multisession, workers = nCores)
-nCores = round(parallel::detectCores() * 0.75)
-doParallel::registerDoParallel(cores = nCores)
+
+# row numbers in the bigquery console are incorrect and may not match those in
+# postgres, but downloading the tables into R shows that they are identical
+
+# select table_name, n_rows as to_char(n_live_tup, 'FM9,999,999,999')
+# from pg_stat_user_tables
+# order by table_name;
+
+# nCores = round(parallel::detectCores() * 0.75)
+# doParallel::registerDoParallel(cores = nCores)
+foreach::registerDoSEQ() # slower but avoids irreproducible errors
 
 dbname = 'pmdb'
 overwrite = TRUE

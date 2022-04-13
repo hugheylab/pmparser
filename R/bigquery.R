@@ -1,9 +1,10 @@
 copyPostgresToBigquery = function(
-  dbname, overwrite, project, dataset, auth, ...) {
+  dbname, overwrite, project, dataset, auth, tableNames = NULL, ...) {
   tableName = NULL
   # get table names from postgres
   conPg = connect('postgres', dbname, ...)
-  tableNames = DBI::dbListTables(conPg)
+
+  if (is.null(tableNames)) tableNames = sort(DBI::dbListTables(conPg))
 
   # check for tables on bigquery and possibly remove them
   bigrquery::bq_auth(path = auth)
@@ -16,8 +17,8 @@ copyPostgresToBigquery = function(
     if (tableExists[i]) DBI::dbRemoveTable(conBq, tableNames[i])}
 
   # are you ready for the fun part?
-  feo = foreach(tableName = tableNames,
-                .options.future = list(scheduling = Inf))
+  feo = foreach(
+    tableName = tableNames, .options.future = list(scheduling = Inf))
 
   optVal = getOption('future.rng.onMisuse')
   options(future.rng.onMisuse = 'ignore')
