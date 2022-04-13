@@ -1,6 +1,7 @@
 # pmparser 1.0.8
 * Increased timeout for downloading citation file.
 * Reordered steps to check citation table even if other tables are up-to-date.
+* Update to match lab style standard.
 
 # pmparser 1.0.7
 * Explicitly added `curl` to Imports, since it's used by `utils::download.file()`.

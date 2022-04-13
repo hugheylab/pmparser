@@ -107,9 +107,11 @@ getCitation = function(
     if (os != 'Windows') {
       glue('| head -n {nrows + 1L}')
     } else {
-      glue(' \r\n powershell -command "Get-Content -Path {pathTmpCsv} -TotalCount {nrows + 1L} | Set-Content {pathTmpCsv2}" ',
-           ' \r\n powershell -command "Remove-Item {pathTmpCsv}"',
-           ' \r\n powershell -command "Rename-Item {pathTmpCsv2} {pathTmpCsv}"')}
+      glue(
+        ' \r\n powershell -command "Get-Content -Path {pathTmpCsv} -TotalCount',
+        ' {nrows + 1L} | Set-Content {pathTmpCsv2}" ',
+        ' \r\n powershell -command "Remove-Item {pathTmpCsv}"',
+        ' \r\n powershell -command "Rename-Item {pathTmpCsv2} {pathTmpCsv}"')}
   } else {
     ''}
   dCols = data.table(

@@ -3,20 +3,20 @@ library('data.table')
 tables = c(names(pmparser:::getParsingTables('')), 'citation', 'citation_version')
 conP =  pmparser:::connect('postgres', 'pmdbclick')
 conC =  pmparser:::connect('clickhouse', 'pmdbclick')
-for(table in tables){
+for (table in tables) {
   q = glue('select * from {table}')
   dtP = as.data.table(DBI::dbReadTable(conP, table))
-  for(colname in colnames(dtP)){
-    if(inherits(dtP[[colname]], 'Date')){
+  for (colname in colnames(dtP)) {
+    if (inherits(dtP[[colname]], 'Date')) {
       dtP[[colname]] = NULL
     }
   }
   data.table::setorder(dtP)
 
   dtC = as.data.table(DBI::dbReadTable(conC, table))
-  for(colname in colnames(dtC)){
-    # if(inherits(dtC[[colname]], 'Date') || (colname == 'version' && table != 'pmid_status')){
-    if(inherits(dtC[[colname]], 'Date')){
+  for (colname in colnames(dtC)) {
+    # if (inherits(dtC[[colname]], 'Date') || (colname == 'version' && table != 'pmid_status')) {
+    if (inherits(dtC[[colname]], 'Date')) {
       dtC[[colname]] = NULL
     }
   }
@@ -24,7 +24,7 @@ for(table in tables){
 
   allEq = all.equal(dtP, dtC, check.attributes = FALSE)
 
-  if(isTRUE(allEq)){
+  if (isTRUE(allEq)) {
     warning(glue('{table} is equal.\n'))
   } else{
     warning(glue('{table} is not equal: \n{allEq}\n'))
@@ -33,4 +33,3 @@ for(table in tables){
 warnings()
 pmparser:::disconnect(conP)
 pmparser:::disconnect(conC)
-
