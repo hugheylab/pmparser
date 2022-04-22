@@ -4,6 +4,7 @@ refDir = 'pubmed_sample'
 localDir = tempfile()
 
 test_that('getPubmedFileInfo', {
+  skip_on_cran()
   fileInfoExp = data.table::fread(
     file.path(refDir, 'file_info_predown_baseline.csv'))
   fileInfoExp = fileInfoExp[sub_dir == 'baseline']
@@ -16,6 +17,7 @@ test_that('getPubmedFileInfo', {
 })
 
 test_that('getPubmedFiles', {
+  skip_on_cran()
   withr::local_file(localDir)
   if (dir.exists(localDir)) unlink(localDir, recursive = TRUE)
   dir.create(localDir)
