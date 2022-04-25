@@ -9,7 +9,7 @@
 
 # pmparser 1.0.7
 * Explicitly added `curl` to Imports, since it's used by `utils::download.file()`.
-* Set "HUGE" option for `xml2::read_xml()` to avoid occassional error.
+* Set "HUGE" option for `xml2::read_xml()` to avoid occasional error.
 
 # pmparser 1.0.6
 * Updated styling based on linter.
