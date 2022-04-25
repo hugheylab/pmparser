@@ -71,4 +71,4 @@ R/utilities.R,2,Variable and function name style should be camelCase.,status = x
 R/utilities.R,9,Variable and function name style should be camelCase.,. = xml_filename = NULL
 R/utilities.R,77,Variable and function name style should be camelCase.,. = xml_filename = step = NULL
 R/utilities.R,128,Variable and function name style should be camelCase.,paste_ = function(...) {
-tests/testthat/test_get_pubmed_files.R,31,Variable and function name style should be camelCase.,"fileInfo[, md5_match := as.numeric(md5_match)]"
+tests/testthat/test_get_pubmed_files.R,33,Variable and function name style should be camelCase.,"fileInfo[, md5_match := as.numeric(md5_match)]"
