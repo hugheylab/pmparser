@@ -1,6 +1,7 @@
 refDir = 'citation_info'
 
 test_that('getCitationInfo', {
+  skip_on_cran()
   citationInfo = getCitationInfo()
   colsExp = c('id', 'name', 'size', 'is_link_only', 'download_url',
               'supplied_md5', 'computed_md5')
@@ -10,6 +11,7 @@ test_that('getCitationInfo', {
 })
 
 test_that('getCitation', {
+  skip_on_cran()
   refDir = 'pubmed_sample'
   filename = 'open_citation_collection.zip'
   nrows = 50L

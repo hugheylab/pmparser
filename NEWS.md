@@ -1,3 +1,7 @@
+# pmparser 1.0.9
+* Clarified error message when downloading PubMed files.
+* Skip testing of file downloads on CRAN.
+
 # pmparser 1.0.8
 * Increased timeout for downloading citation file.
 * Reordered steps to check citation table even if other tables are up-to-date.

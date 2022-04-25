@@ -29,7 +29,7 @@ download = function(url, destfile, n = 3L) {
     if (!identical(x, 0L)) Sys.sleep(stats::runif(1L, 1, 2))
     i = i + 1L}
 
-  if (inherits(x, 'error')) stop(x)
+  if (inherits(x, 'error')) stop(glue('Download of {url} failed with the following error: {x}'))
   if (x != 0L) stop(glue('Download of {url} failed {n} times. Ruh-roh.'))
   x}
 
