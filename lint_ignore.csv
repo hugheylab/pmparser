@@ -64,9 +64,9 @@ R/parse_person.R,108,Variable and function name style should be camelCase.,"x10[
 R/parse_person.R,109,Variable and function name style should be camelCase.,"x10[, n_person_ids := n_total_ids - n_affil_ids]"
 R/parse_person.R,114,Variable and function name style should be camelCase.,"dAllId[, id_pos := seq_len(.N), by = cols]"
 R/parse_person.R,116,Variable and function name style should be camelCase.,"dPersonId[, id_pos := NULL]"
-R/parse_pubmed_xml.R,11,Variable and function name style should be camelCase.,status = xml_filename = parseFunc = NULL
-R/parse_pubmed_xml.R,34,Variable and function name style should be camelCase.,"if (isEmpty(tableSuffix)) dPmid[, xml_filename := NULL]"
-R/parse_pubmed_xml.R,60,Variable and function name style should be camelCase.,xml_filename = filenameNow = NULL
+R/parse_pubmed_xml.R,12,Variable and function name style should be camelCase.,status = xml_filename = parseFunc = NULL
+R/parse_pubmed_xml.R,35,Variable and function name style should be camelCase.,"if (isEmpty(tableSuffix)) dPmid[, xml_filename := NULL]"
+R/parse_pubmed_xml.R,61,Variable and function name style should be camelCase.,xml_filename = filenameNow = NULL
 R/utilities.R,2,Variable and function name style should be camelCase.,status = xml_filename = NULL
 R/utilities.R,9,Variable and function name style should be camelCase.,. = xml_filename = NULL
 R/utilities.R,77,Variable and function name style should be camelCase.,. = xml_filename = step = NULL
