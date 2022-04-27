@@ -1,3 +1,6 @@
+# pmparser 1.0.10
+* Added import for `curl::curl()` to circumvent check NOTE.
+
 # pmparser 1.0.9
 * Clarified error message when downloading PubMed files.
 * Skip testing of file downloads on CRAN.
