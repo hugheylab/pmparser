@@ -1,1 +1,3 @@
 url: https://pmparser.hugheylab.org
+template:
+  bootstrap: 5
