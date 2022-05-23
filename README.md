@@ -6,7 +6,7 @@
 [![CRAN Status](https://www.r-pkg.org/badges/version/pmparser)](https://cran.r-project.org/package=pmparser)
 [![drat version](https://raw.githubusercontent.com/hugheylab/drat/gh-pages/badges/pmparser_drat_badge.svg)](https://github.com/hugheylab/drat/tree/gh-pages/src/contrib)
 
-`pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available to download on [Zenodo](https://doi.org/10.5281/zenodo.4008109). For a detailed description of `pmparser` and PMDB, check out the [article](https://doi.org/10.7717/peerj.11071).
+`pmparser` enables one to easily create and maintain a relational database of data from PubMed/MEDLINE. `pmparser` can download the publicly available XML files, parse them, incorporate PubMed's regular updates, and combine the data with the NIH Open Citation Collection. PMDB, our implementation of the database, is available on [Zenodo](https://doi.org/10.5281/zenodo.4008109) (as a PostgreSQL dump) and on [Google BigQuery](https://console.cloud.google.com/bigquery?project=pmdb-bq&d=pmdb). For a detailed description of `pmparser` and PMDB, check out the [article](https://doi.org/10.7717/peerj.11071).
 
 ## Installation
 
