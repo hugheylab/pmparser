@@ -1,3 +1,6 @@
+# pmparser 1.0.11
+* Updated test standards based on PubMed's updated README.txt.
+
 # pmparser 1.0.10
 * Added import for `curl::curl()` to circumvent check NOTE.
 

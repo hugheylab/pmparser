@@ -1,23 +1,13 @@
 ## R CMD check results
 
-### Local check
-`devtools::check()` result:
+### Local
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-### Online check
-`devtools::check_rhub()` result:
+### R-hub
 
-  > checking for detritus in the temp directory ... NOTE
-  Found the following files/directories:
-    'lastMiKTeXException'
+  0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-  0 errors ✓ | 0 warnings ✓ | 1 notes x
+## Changes from current CRAN release
 
-Notes:
-  - This note only occurs on the Windows Server rhub environment, and from what I have seen about these types of notes they do not occur when building and checking on CRAN.
-
-You can also see the results of R CMD check on Windows, Linux, and MacOS by going to the GitHub Actions run labeled `check-deploy` [here](https://github.com/hugheylab/pmparser/actions).
-
-## Downstream dependencies
-There are no downstream dependencies for pmparser.
+A test was failing because PubMed updated the README.txt file that pmparser downloads and inserts as a one-row table in the database it creates, which meant the resulting table (called readme) was different than the expected table based on the previous README.txt. The solution was to update the test standards based on the new README.txt.
