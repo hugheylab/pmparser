@@ -3,7 +3,7 @@
 Descriptions and their Attributes
 here.
 These functions should not normally be called directly, as they are called by
-modifyPubmedDb()."><title>Parse elements from a PubMed XML file — parseElement • pmparser</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Parse elements from a PubMed XML file — parseElement"><meta property="og:description" content="Elements are parsed according to the MEDLINE®PubMed® XML Element
+modifyPubmedDb()."><title>Parse elements from a PubMed XML file — parseElement • pmparser</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Parse elements from a PubMed XML file — parseElement"><meta property="og:description" content="Elements are parsed according to the MEDLINE®PubMed® XML Element
 Descriptions and their Attributes
 here.
 These functions should not normally be called directly, as they are called by
@@ -18,7 +18,7 @@ modifyPubmedDb()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
     
     <a class="navbar-brand me-2" href="../index.html">pmparser</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@ modifyPubmedDb()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
       <ul class="navbar-nav"><li class="nav-item">
-  <a class="external-link nav-link" href="https://www.hugheylab.org/software/" aria-label="Hughey Lab">Hughey Lab</a>
+  <a class="external-link nav-link" href="https://www.hugheylab.org/software/" target="_blank" aria-label="Hughey Lab">Hughey Lab</a>
 </li>
 <li class="nav-item">
   <a class="external-link nav-link" href="https://github.com/hugheylab/pmparser/" aria-label="github">
@@ -72,99 +72,140 @@ These functions should not normally be called directly, as they are called by
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">parsePmidStatus</span><span class="op">(</span><span class="va">rawXml</span>, <span class="va">filename</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseArticleId</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseArticle</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parsePubHistory</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseJournal</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parsePubType</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseMesh</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseKeyword</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseGrant</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseChemical</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseDataBank</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseComment</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseAbstract</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseAuthor</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">parseInvestigator</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">parsePmidStatus</span><span class="op">(</span><span class="va">rawXml</span>, <span class="va">filename</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseArticleId</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseArticle</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parsePubHistory</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseJournal</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parsePubType</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseMesh</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseKeyword</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseGrant</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseChemical</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseDataBank</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseComment</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseAbstract</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseAuthor</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseInvestigator</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>rawXml</dt>
 <dd><p>An xml document obtained by loading a PubMed XML file using
-<code><a href="https://rdrr.io/pkg/xml2/man/read_xml.html" class="external-link">xml2::read_xml()</a></code>.</p></dd>
+<code><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">xml2::read_xml()</a></code>.</p></dd>
+
+
 <dt>filename</dt>
 <dd><p>A string that will be added to a column <code>xml_filename</code>.</p></dd>
+
+
 <dt>con</dt>
 <dd><p>Connection to the database, created using <code><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">DBI::dbConnect()</a></code>.</p></dd>
+
+
 <dt>tableSuffix</dt>
 <dd><p>String to append to the table names.</p></dd>
+
+
 <dt>pmXml</dt>
 <dd><p>An xml nodeset derived from <code>rawXml</code>, such as that returned by
 <code>parsePmidStatus()</code>, where each node corresponds to a PMID.</p></dd>
+
+
 <dt>dPmid</dt>
 <dd><p>A data.table with one row for each node of <code>pmXml</code>, should have
 columns <code>pmid</code>, <code>version</code>, and possibly <code>xml_filename</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>parsePmidStatus()</code> returns a list of two objects. The first is an
+    
+
+<p><code>parsePmidStatus()</code> returns a list of two objects. The first is an
 xml nodeset in which each node corresponds to a PubmedArticle in the
 <code>rawXml</code> object. The second is a data.table with columns <code>pmid</code>, <code>version</code>,
 <code>xml_filename</code>, and <code>status</code>, in which each row corresponds to a
 PubmedArticle in the <code>rawXml</code> object or a deleted pmid. The <code>status</code> column
-is parsed from the DeleteCitation and MedlineCitation sections.
-The following functions return a data.table or list of data.tables with
-columns from <code>dPmid</code> plus the columns specified.
-<code>parseArticleId()</code>: a data.table with columns <code>id_type</code> and <code>id_value</code>,
+is parsed from the DeleteCitation and MedlineCitation sections.</p>
+
+
+<p>The following functions return a data.table or list of data.tables with
+columns from <code>dPmid</code> plus the columns specified.</p>
+
+
+<p><code>parseArticleId()</code>: a data.table with columns <code>id_type</code> and <code>id_value</code>,
 parsed from the ArticleIdList section. Only <code>id_type</code>s "doi"
-and "pmc" are retained.
-<code>parseArticle()</code>: a data.table with columns <code>title</code>, <code>pub_date</code>, and
-<code>pub_model</code>, parsed from the Article section.
-<code>parsePubHistory()</code>: a data.table with columns <code>pub_status</code> and <code>pub_date</code>,
-parsed from the History section.
-<code>parseJournal()</code>: a data.table with columns <code>journal_name</code>, <code>journal_iso</code>,
+and "pmc" are retained.</p>
+
+
+<p><code>parseArticle()</code>: a data.table with columns <code>title</code>, <code>pub_date</code>, and
+<code>pub_model</code>, parsed from the Article section.</p>
+
+
+<p><code>parsePubHistory()</code>: a data.table with columns <code>pub_status</code> and <code>pub_date</code>,
+parsed from the History section.</p>
+
+
+<p><code>parseJournal()</code>: a data.table with columns <code>journal_name</code>, <code>journal_iso</code>,
 <code>pub_date</code>, <code>pub_year</code>, <code>pub_month</code>, <code>pub_day</code>, <code>medline_date</code>, <code>volume</code>,
-<code>issue</code>, and <code>cited_medium</code>, parsed from the Journal section.
-<code>parsePubType()</code>: a data.table with columns <code>type_name</code> and <code>type_id</code>,
-parsed from the PublicationTypeList section.
-<code>parseMesh()</code>: a list of three data.tables parsed mostly from the
+<code>issue</code>, and <code>cited_medium</code>, parsed from the Journal section.</p>
+
+
+<p><code>parsePubType()</code>: a data.table with columns <code>type_name</code> and <code>type_id</code>,
+parsed from the PublicationTypeList section.</p>
+
+
+<p><code>parseMesh()</code>: a list of three data.tables parsed mostly from the
 MeshHeadingList section. The first has column <code>indexing_method</code> (parsed
 from the MedlineCitation section), the second has columns <code>descriptor_pos</code>,
 <code>descriptor_name</code>, <code>descriptor_ui</code>, and <code>descriptor_major_topic</code>, the
 third has columns <code>descriptor_pos</code>, <code>qualifier_name</code>, <code>qualifier_ui</code>, and
-<code>qualifier_major_topic</code>.
-<code>parseKeyword()</code>: a list of two data.tables parsed from the KeywordList
+<code>qualifier_major_topic</code>.</p>
+
+
+<p><code>parseKeyword()</code>: a list of two data.tables parsed from the KeywordList
 section. The first has column <code>list_owner</code>, the second has columns
-<code>keyword_name</code> and <code>major_topic</code>.
-<code>parseGrant()</code>: a list of two data.tables parsed from the GrantList
+<code>keyword_name</code> and <code>major_topic</code>.</p>
+
+
+<p><code>parseGrant()</code>: a list of two data.tables parsed from the GrantList
 section. The first has column <code>complete</code>, the second has columns
-<code>grant_id</code>, <code>acronym</code>, <code>agency</code>, and <code>country</code>.
-<code>parseChemical()</code>: a data.table with columns <code>registry_number</code>,
-<code>substance_name</code>, and <code>substance_ui</code>, parsed from the ChemicalList section.
-<code>parseDataBank()</code>: a data.table with columns <code>data_bank_name</code> and
-<code>accession_number</code>, parsed from the DataBankList section.
-<code>parseComment()</code>: a data.table with columns <code>ref_type</code> and <code>ref_pmid</code>,
-parsed from the CommentsCorrectionsList section.
-<code>parseAbstract()</code>: a list of two data.tables parsed from the Abstract
+<code>grant_id</code>, <code>acronym</code>, <code>agency</code>, and <code>country</code>.</p>
+
+
+<p><code>parseChemical()</code>: a data.table with columns <code>registry_number</code>,
+<code>substance_name</code>, and <code>substance_ui</code>, parsed from the ChemicalList section.</p>
+
+
+<p><code>parseDataBank()</code>: a data.table with columns <code>data_bank_name</code> and
+<code>accession_number</code>, parsed from the DataBankList section.</p>
+
+
+<p><code>parseComment()</code>: a data.table with columns <code>ref_type</code> and <code>ref_pmid</code>,
+parsed from the CommentsCorrectionsList section.</p>
+
+
+<p><code>parseAbstract()</code>: a list of two data.tables parsed from the Abstract
 section. The first has column <code>copyright</code>. The second has columns <code>text</code>,
-<code>label</code>, and <code>nlm_category</code>.
-<code>parseAuthor()</code>: a list of data.tables parsed from the AuthorList section.
+<code>label</code>, and <code>nlm_category</code>.</p>
+
+
+<p><code>parseAuthor()</code>: a list of data.tables parsed from the AuthorList section.
 The first is for authors and has columns <code>author_pos</code>, <code>last_name</code>,
 <code>fore_name</code>, <code>initials</code>, <code>suffix</code>, <code>valid</code>, <code>equal_contrib</code>, and
 <code>collective_name</code>. The second is for affiliations and has columns
@@ -172,11 +213,16 @@ The first is for authors and has columns <code>author_pos</code>, <code>last_nam
 identifiers and has columns <code>author_pos</code>, <code>source</code>, and <code>identifier</code>. The
 fourth is for author affiliation identifiers and has columns <code>author_pos</code>,
 <code>affiliation_pos</code>, <code>source</code>, and <code>identifier</code>. The fifth is for the author
-list itself and has a column <code>complete</code>.
-<code>parseInvestigator()</code>: a list of data.tables similar to those returned by
+list itself and has a column <code>complete</code>.</p>
+
+
+<p><code>parseInvestigator()</code>: a list of data.tables similar to those returned by
 <code>parseAuthor()</code>, except parsed from the InvestigatorList section, with
 column names containing "investigator" instead of "author", and where the
-first data.table lacks columns for <code>equal_contrib</code> and <code>collective_name</code>and the fifth data.table does not exist.</p>
+first data.table lacks columns for <code>equal_contrib</code> and <code>collective_name</code></p>
+
+
+<p>and the fifth data.table does not exist.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -185,32 +231,32 @@ first data.table lacks columns for <code>equal_contrib</code> and <code>collecti
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-datatable.com" class="external-link">'data.table'</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://xml2.r-lib.org/" class="external-link">'xml2'</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">filename</span> <span class="op">=</span> <span class="st">'pubmed20n1016.xml.gz'</span></span>
-<span class="r-in"><span class="va">rawXml</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/xml2/man/read_xml.html" class="external-link">read_xml</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'extdata'</span>, <span class="va">filename</span>, package <span class="op">=</span> <span class="st">'pmparser'</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">pmidStatusList</span> <span class="op">=</span> <span class="fu">parsePmidStatus</span><span class="op">(</span><span class="va">rawXml</span>, <span class="va">filename</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pmXml</span> <span class="op">=</span> <span class="va">pmidStatusList</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">dPmidRaw</span> <span class="op">=</span> <span class="va">pmidStatusList</span><span class="op">[[</span><span class="fl">2L</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">dPmid</span> <span class="op">=</span> <span class="va">dPmidRaw</span><span class="op">[</span><span class="va">status</span> <span class="op">!=</span> <span class="st">'Deleted'</span>, <span class="op">!</span><span class="st">'status'</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">dArticleId</span> <span class="op">=</span> <span class="fu">parseArticleId</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dArticle</span> <span class="op">=</span> <span class="fu">parseArticle</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dJournal</span> <span class="op">=</span> <span class="fu">parseJournal</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dPubType</span> <span class="op">=</span> <span class="fu">parsePubType</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dPubHistory</span> <span class="op">=</span> <span class="fu">parsePubHistory</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">meshRes</span> <span class="op">=</span> <span class="fu">parseMesh</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">keywordRes</span> <span class="op">=</span> <span class="fu">parseKeyword</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">grantRes</span> <span class="op">=</span> <span class="fu">parseGrant</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dChemical</span> <span class="op">=</span> <span class="fu">parseChemical</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dDataBank</span> <span class="op">=</span> <span class="fu">parseDataBank</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">dComment</span> <span class="op">=</span> <span class="fu">parseComment</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">abstractRes</span> <span class="op">=</span> <span class="fu">parseAbstract</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">authorRes</span> <span class="op">=</span> <span class="fu">parseAuthor</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">investigatorRes</span> <span class="op">=</span> <span class="fu">parseInvestigator</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-datatable.com" class="external-link">'data.table'</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://xml2.r-lib.org/" class="external-link">'xml2'</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">filename</span> <span class="op">=</span> <span class="st">'pubmed20n1016.xml.gz'</span></span></span>
+<span class="r-in"><span><span class="va">rawXml</span> <span class="op">=</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html" class="external-link">read_xml</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'extdata'</span>, <span class="va">filename</span>, package <span class="op">=</span> <span class="st">'pmparser'</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">pmidStatusList</span> <span class="op">=</span> <span class="fu">parsePmidStatus</span><span class="op">(</span><span class="va">rawXml</span>, <span class="va">filename</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pmXml</span> <span class="op">=</span> <span class="va">pmidStatusList</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">dPmidRaw</span> <span class="op">=</span> <span class="va">pmidStatusList</span><span class="op">[[</span><span class="fl">2L</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">dPmid</span> <span class="op">=</span> <span class="va">dPmidRaw</span><span class="op">[</span><span class="va">status</span> <span class="op">!=</span> <span class="st">'Deleted'</span>, <span class="op">!</span><span class="st">'status'</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dArticleId</span> <span class="op">=</span> <span class="fu">parseArticleId</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dArticle</span> <span class="op">=</span> <span class="fu">parseArticle</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dJournal</span> <span class="op">=</span> <span class="fu">parseJournal</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dPubType</span> <span class="op">=</span> <span class="fu">parsePubType</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dPubHistory</span> <span class="op">=</span> <span class="fu">parsePubHistory</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">meshRes</span> <span class="op">=</span> <span class="fu">parseMesh</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">keywordRes</span> <span class="op">=</span> <span class="fu">parseKeyword</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">grantRes</span> <span class="op">=</span> <span class="fu">parseGrant</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dChemical</span> <span class="op">=</span> <span class="fu">parseChemical</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dDataBank</span> <span class="op">=</span> <span class="fu">parseDataBank</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dComment</span> <span class="op">=</span> <span class="fu">parseComment</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">abstractRes</span> <span class="op">=</span> <span class="fu">parseAbstract</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">authorRes</span> <span class="op">=</span> <span class="fu">parseAuthor</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">investigatorRes</span> <span class="op">=</span> <span class="fu">parseInvestigator</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -222,7 +268,7 @@ first data.table lacks columns for <code>equal_contrib</code> and <code>collecti
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>
