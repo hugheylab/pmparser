@@ -1,3 +1,6 @@
+# pmparser 1.0.12
+* Fixed issues found by lintr.
+
 # pmparser 1.0.11
 * Updated test standards based on PubMed's updated README.txt.
 

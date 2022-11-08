@@ -28,7 +28,9 @@ deleteOldPmidVersions = function(
   doOp = getDoOp(dbtype)
   d = doOp(feo, {
     con = connect(dbtype, dbname, ...)
-    qStart; tableName; tableKeep; # so glue works in dopar
+    qStart
+    tableName
+    tableKeep # so glue works in dopar
     q = glue('{qStart} from {tableName} as a where not exists
              (select 1 from {tableKeep} as b
              where a.pmid = b.pmid and a.version = b.version)')

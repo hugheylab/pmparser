@@ -218,7 +218,8 @@ addSourceToTarget = function(
   doOp = getDoOp(dbtype)
   d2 = doOp(feo, {
     con = connect(dbtype, dbname, ...) # required if in dopar
-    deleteStart; sourceKeep; # so glue works in dopar
+    deleteStart
+    sourceKeep # so glue works in dopar
 
     # drop rows in target tables, use subquery to conform to sql standard
     q = glue('{deleteStart[1L + dryRun]} from {targetName}

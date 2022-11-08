@@ -23,7 +23,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
   # above line may break if InvestigatorList gets an identifier
 
   dPerson = data.table(
-    dPmidNow[rep.int(1:.N, nPersons)],
+    dPmidNow[rep.int(seq_len(.N), nPersons)],
     last_name = xml_text(xml_find_first(x2, './/LastName')),
     fore_name = xml_text(xml_find_first(x2, './/ForeName')),
     initials = xml_text(xml_find_first(x2, './/Initials')),
@@ -36,7 +36,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
               xml_text(xml_find_first(x2, './/CollectiveName'))]}
 
   if (nrow(dPerson) > 0) {
-    dPerson[, person_pos := 1:.N, by = pmid]
+    dPerson[, person_pos := seq_len(.N), by = pmid]
   } else {
     dPerson[, person_pos := ai]}
   setcolorder(dPerson, cols)
@@ -66,7 +66,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
       source = unlist(lapply(x6, function(x) xml_attr(x, 'Source'))),
       identifier = unlist(lapply(x6, xml_text)))
 
-    dAffil[, affil_idx := 1:.N]
+    dAffil[, affil_idx := seq_len(.N)]
     dAffilId = merge(
       dAffilId, dAffil[, c('affil_idx', cols, 'affiliation_pos'), with = FALSE],
       by = 'affil_idx')
@@ -95,7 +95,7 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
       source = unlist(lapply(x7, function(x) xml_attr(x, 'Source'))),
       identifier = unlist(lapply(x7, xml_text)))
 
-    dPerson[, person_idx := 1:.N]
+    dPerson[, person_idx := seq_len(.N)]
     dAllId = merge(
       dAllId, dPerson[, c('person_idx', cols), with = FALSE], by = 'person_idx')
 
