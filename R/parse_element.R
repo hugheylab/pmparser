@@ -87,6 +87,10 @@
 #'   first data.table lacks columns for `equal_contrib` and `collective_name`
 #'   and the fifth data.table does not exist.
 #'
+#'   `parseOther()`: a list of data.tables parsed from the OtherAbstract and
+#'   OtherID sections. The first has columns `text`, `type`, and `language`. The
+#'   second has columns `source` and `id_value`.
+#'
 #' @examples
 #' library('data.table')
 #' library('xml2')
@@ -113,6 +117,7 @@
 #' abstractRes = parseAbstract(pmXml, dPmid)
 #' authorRes = parseAuthor(pmXml, dPmid)
 #' investigatorRes = parseInvestigator(pmXml, dPmid)
+#' otherRes = parseOther(pmXml, dPmid)
 #'
 #' @seealso [getCitation()], [modifyPubmedDb()]
 #'
@@ -315,7 +320,7 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 
   x4 = xml_find_all(x1[nDescPerPmid > 0], './/MeshHeading')
   x5 = xml_find_all(x4, './/QualifierName', flatten = FALSE)
-  nQualPerDesc = sapply(x5, length)
+  nQualPerDesc = lengths(x5)
 
   descPos = unlist(lapply(nDescPerPmid[nDescPerPmid > 0], function(n) 1:n))
 
@@ -431,7 +436,7 @@ parseDataBank = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 
   x2 = xml_find_all(x1[nBanksPerPmid > 0], './/DataBank')
   x3 = xml_find_all(x2, './/AccessionNumber', flatten = FALSE)
-  nAccsPerBank = sapply(x3, length)
+  nAccsPerBank = lengths(x3)
 
   x4 = data.table(
     dPmid[rep.int(seq_len(.N), nBanksPerPmid)],
@@ -488,6 +493,35 @@ parseAbstract = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   r = list(x2[!is.na(copyright)], x5)
   names(r) = c(paste_('abstract_copyright', tableSuffix),
                paste_('abstract', tableSuffix))
+
+  for (i in seq_len(length(r))) appendTable(con, names(r)[i], r[[i]])
+  return(r)}
+
+
+#' @rdname parseElement
+#' @export
+parseOther = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
+  .N = pmid = NULL
+  stopifnot(length(pmXml) == nrow(dPmid))
+
+  x1 = xml_find_first(pmXml, './/OtherAbstract')
+  idx = xml_length(x1) > 0
+  x2 = data.table(
+    dPmid[idx],
+    text = xml_text(xml_find_first(x1[idx], './/AbstractText')),
+    type = xml_attr(x1[idx], 'Type'),
+    language = xml_attr(x1[idx], 'Language'))
+
+  x3 = xml_find_all(pmXml, './/OtherID', flatten = FALSE)
+  nIdsPerPmid = lengths(x3)
+  x4 = data.table(
+    dPmid[rep.int(seq_len(.N), nIdsPerPmid)],
+    source = unlist(lapply(x3, function(x) xml_attr(x, 'Source'))),
+    id_value = unlist(lapply(x3, xml_text)))
+
+  r = list(x2, x4)
+  names(r) = c(paste_('other_abstract', tableSuffix),
+               paste_('other_id', tableSuffix))
 
   for (i in seq_len(length(r))) appendTable(con, names(r)[i], r[[i]])
   return(r)}

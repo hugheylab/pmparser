@@ -107,6 +107,13 @@ mesh_qualifier,descriptor_pos,MeshHeadingList / MeshHeading / int position
 mesh_qualifier,qualifier_name,MeshHeadingList / MeshHeading / QualifiierName
 mesh_qualifier,qualifier_ui,MeshHeadingList / MeshHeading / QualifiierName / attr UI
 mesh_qualifier,qualifier_major_topic,MeshHeadingList / MeshHeading / QualifiierName / attr MajorTopicYN
+other_abstract,pmid,PMID
+other_abstract,text,OtherAbstract / AbstractText
+other_abstract,type,OtherAbstract / attr Type
+other_abstract,language,OtherAbstract / attr Language
+other_id,pmid,PMID
+other_id,source,OtherId / attr Source
+other_id,id_value,OtherId
 pmid_status,pmid,PMID
 pmid_status,version,PMID / attr Version
 pmid_status,xml_filename,-

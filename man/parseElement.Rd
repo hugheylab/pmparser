@@ -15,6 +15,7 @@
 \alias{parseDataBank}
 \alias{parseComment}
 \alias{parseAbstract}
+\alias{parseOther}
 \alias{parseAuthor}
 \alias{parseInvestigator}
 \title{Parse elements from a PubMed XML file}
@@ -44,6 +45,8 @@ parseDataBank(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 parseComment(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
 parseAbstract(pmXml, dPmid, con = NULL, tableSuffix = NULL)
+
+parseOther(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
 parseAuthor(pmXml, dPmid, con = NULL, tableSuffix = NULL)
 
@@ -136,6 +139,10 @@ list itself and has a column \code{complete}.
 column names containing "investigator" instead of "author", and where the
 first data.table lacks columns for \code{equal_contrib} and \code{collective_name}
 and the fifth data.table does not exist.
+
+\code{parseOther()}: a list of data.tables parsed from the OtherAbstract and
+OtherID sections. The first has columns \code{text}, \code{type}, and \code{language}. The
+second has columns \code{source} and \code{id_value}.
 }
 \description{
 Elements are parsed according to the MEDLINE®PubMed® XML Element
@@ -170,6 +177,7 @@ dComment = parseComment(pmXml, dPmid)
 abstractRes = parseAbstract(pmXml, dPmid)
 authorRes = parseAuthor(pmXml, dPmid)
 investigatorRes = parseInvestigator(pmXml, dPmid)
+otherRes = parseOther(pmXml, dPmid)
 
 }
 \seealso{

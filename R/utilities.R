@@ -111,7 +111,8 @@ getParseFuncs = function(steps = 'all') {
     comment = parseComment,
     abstract = parseAbstract,
     author = parseAuthor,
-    investigator = parseInvestigator)
+    investigator = parseInvestigator,
+    other = parseOther)
 
   x = if ('all' %in% steps) parseFuncs else
     parseFuncs[names(parseFuncs) %in% steps]

@@ -85,3 +85,8 @@ test_that('parseInvestigator', {
   parsedObs = parseInvestigator(pmXml, dPmid)
   expect_equal(parsedObs, parsedExp$investigator)
 })
+
+test_that('parseOther', {
+  parsedObs = parseOther(pmXml, dPmid)
+  expect_equal(parsedObs, parsedExp$other)
+})
