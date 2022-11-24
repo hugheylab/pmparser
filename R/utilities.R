@@ -35,9 +35,9 @@ download = function(url, destfile, n = 3L) {
 
 
 connect = function(dbtype, dbname, ...) {
-  dbtype = match.arg(dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite',
-                               'bigquery'))
-                               # 'clickhouse', 'bigquery'))
+  dbtype = match.arg(
+    dbtype, c('postgres', 'mariadb', 'mysql', 'sqlite', 'bigquery'))
+
   pkgName = switch(dbtype,
                    postgres = 'RPostgres',
                    mariadb = 'RMariaDB',

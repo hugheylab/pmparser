@@ -10,4 +10,4 @@
 
 ## Changes from current CRAN release
 
-A test was failing because PubMed updated the README.txt file that pmparser downloads and inserts as a one-row table in the database it creates, which meant the resulting table (called readme) was different than the expected table based on the previous README.txt. The solution was to update the test standards based on the new README.txt.
+The package has been updated to parse data for two additional tables. The tests have been updated accordingly and are passing locally, on [R-hub](https://builder.r-hub.io/status/original/pmparser_1.0.13.tar.gz-1462c91674ec449ea007c1398ca069c6), and on [GitHub Actions](https://github.com/hugheylab/pmparser/actions/workflows/check-deploy.yaml).
