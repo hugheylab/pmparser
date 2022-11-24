@@ -80,7 +80,7 @@ getParsingTables = function(tableSuffix, tableNames = NULL) {
       investigator_pos = ai, affiliation_pos = ai, source = ac,
       identifier = ac),
 
-    other_abstract = data.table(text = ac, type = type, language = language),
+    other_abstract = data.table(text = ac, type = ac, language = ac),
 
     other_id = data.table(source = ac, id_value = ac),
 
