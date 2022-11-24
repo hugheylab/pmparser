@@ -80,6 +80,10 @@ getParsingTables = function(tableSuffix, tableNames = NULL) {
       investigator_pos = ai, affiliation_pos = ai, source = ac,
       identifier = ac),
 
+    other_abstract = data.table(text = ac, type = ac, language = ac),
+
+    other_id = data.table(source = ac, id_value = ac),
+
     xml_processed = data.table(
       xml_filename = ac, pmparser_version = ac,
       datetime_processed = as.POSIXct(ac)))

@@ -1,3 +1,6 @@
+# pmparser 1.0.13
+* Added tables from the OtherAbstract and OtherID sections.
+
 # pmparser 1.0.12
 * Fixed issues found by lintr.
 
