@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">pmparser</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.13</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,8 @@
 
 
 
-<script src="data_dictionary_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Data Dictionary</h1>
             
@@ -82,7 +83,16 @@
 
     
     
-<p>Most tables are derived from the MEDLINE XML files, parsed according to the <a href="https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html" class="external-link">MEDLINE®PubMed® XML Element Descriptions and their Attributes</a>. The <code>source</code> column indicates the corresponding element in the MEDLINE XML. All elements other than those for the pmid_status table and the citation table are nested within the PubmedArticle element. “attr” indicates a named attribute in the XML, and “int position” indicates an integer to index each item in a list. The citation table is derived from the <a href="https://nih.figshare.com/collections/iCite_Database_Snapshots_NIH_Open_Citation_Collection_/4586573" class="external-link">NIH Open Citation Collection</a>.</p>
+<p>Most tables are derived from the MEDLINE XML files, parsed according
+to the <a href="https://www.nlm.nih.gov/bsd/licensee/elements_descriptions.html" class="external-link">MEDLINE®PubMed®
+XML Element Descriptions and their Attributes</a>. The
+<code>source</code> column indicates the corresponding element in the
+MEDLINE XML. All elements other than those for the pmid_status table and
+the citation table are nested within the PubmedArticle element. “attr”
+indicates a named attribute in the XML, and “int position” indicates an
+integer to index each item in a list. The citation table is derived from
+the <a href="https://nih.figshare.com/collections/iCite_Database_Snapshots_NIH_Open_Citation_Collection_/4586573" class="external-link">NIH
+Open Citation Collection</a>.</p>
 <table class="table">
 <colgroup>
 <col width="26%">
@@ -223,12 +233,14 @@
 <tr class="even">
 <td align="left">author_affiliation</td>
 <td align="left">affiliation_pos</td>
-<td align="left">AuthorList / Author / AffiliationInfo / Affiliation / int position</td>
+<td align="left">AuthorList / Author / AffiliationInfo / Affiliation /
+int position</td>
 </tr>
 <tr class="odd">
 <td align="left">author_affiliation</td>
 <td align="left">affiliation</td>
-<td align="left">AuthorList / Author / AffiliationInfo / Affiliation</td>
+<td align="left">AuthorList / Author / AffiliationInfo /
+Affiliation</td>
 </tr>
 <tr class="even">
 <td align="left">author_affiliation_identifier</td>
@@ -248,7 +260,8 @@
 <tr class="odd">
 <td align="left">author_affiliation_identifier</td>
 <td align="left">source</td>
-<td align="left">AuthorList / Author / AffiliationInfo / Identifier / attr Source</td>
+<td align="left">AuthorList / Author / AffiliationInfo / Identifier /
+attr Source</td>
 </tr>
 <tr class="even">
 <td align="left">author_affiliation_identifier</td>
@@ -303,7 +316,8 @@
 <tr class="even">
 <td align="left">chemical</td>
 <td align="left">substance_ui</td>
-<td align="left">ChemicalList / Chemical / NameOfSubstance / attr UI</td>
+<td align="left">ChemicalList / Chemical / NameOfSubstance / attr
+UI</td>
 </tr>
 <tr class="odd">
 <td align="left">citation</td>
@@ -338,12 +352,14 @@
 <tr class="odd">
 <td align="left">comment</td>
 <td align="left">ref_type</td>
-<td align="left">CommentsCorrectionsList / CommentsCorrections / attr RefType</td>
+<td align="left">CommentsCorrectionsList / CommentsCorrections / attr
+RefType</td>
 </tr>
 <tr class="even">
 <td align="left">comment</td>
 <td align="left">ref_pmid</td>
-<td align="left">CommentsCorrectionsList / CommentsCorrections / PMID</td>
+<td align="left">CommentsCorrectionsList / CommentsCorrections /
+PMID</td>
 </tr>
 <tr class="odd">
 <td align="left">data_bank</td>
@@ -443,12 +459,14 @@
 <tr class="even">
 <td align="left">investigator_affiliation</td>
 <td align="left">affiliation_pos</td>
-<td align="left">InvestigatorList / Investigator / AffiliationInfo / Affiliation / int position</td>
+<td align="left">InvestigatorList / Investigator / AffiliationInfo /
+Affiliation / int position</td>
 </tr>
 <tr class="odd">
 <td align="left">investigator_affiliation</td>
 <td align="left">affiliation</td>
-<td align="left">InvestigatorList / Investigator / AffiliationInfo / Affiliation</td>
+<td align="left">InvestigatorList / Investigator / AffiliationInfo /
+Affiliation</td>
 </tr>
 <tr class="even">
 <td align="left">investigator_affiliation_identifier</td>
@@ -463,17 +481,20 @@
 <tr class="even">
 <td align="left">investigator_affiliation_identifier</td>
 <td align="left">affiliation_pos</td>
-<td align="left">InvestigatorList / Investigator / Affiliation / int position</td>
+<td align="left">InvestigatorList / Investigator / Affiliation / int
+position</td>
 </tr>
 <tr class="odd">
 <td align="left">investigator_affiliation_identifier</td>
 <td align="left">source</td>
-<td align="left">InvestigatorList / Investigator / AffiliationInfo / Identifier / attr Source</td>
+<td align="left">InvestigatorList / Investigator / AffiliationInfo /
+Identifier / attr Source</td>
 </tr>
 <tr class="even">
 <td align="left">investigator_affiliation_identifier</td>
 <td align="left">identifier</td>
-<td align="left">InvestigatorList / Investigator / AffiliationInfo / Identifier</td>
+<td align="left">InvestigatorList / Investigator / AffiliationInfo /
+Identifier</td>
 </tr>
 <tr class="odd">
 <td align="left">investigator_identifier</td>
@@ -488,7 +509,8 @@
 <tr class="odd">
 <td align="left">investigator_identifier</td>
 <td align="left">source</td>
-<td align="left">InvestigatorList / Investigator / Identifier / attr Source</td>
+<td align="left">InvestigatorList / Investigator / Identifier / attr
+Source</td>
 </tr>
 <tr class="even">
 <td align="left">investigator_identifier</td>
@@ -593,12 +615,14 @@
 <tr class="even">
 <td align="left">mesh_descriptor</td>
 <td align="left">descriptor_ui</td>
-<td align="left">MeshHeadingList / MeshHeading / DescriptorName / attr UI</td>
+<td align="left">MeshHeadingList / MeshHeading / DescriptorName / attr
+UI</td>
 </tr>
 <tr class="odd">
 <td align="left">mesh_descriptor</td>
 <td align="left">descriptor_major_topic</td>
-<td align="left">MeshHeadingList / MeshHeading / DescriptorName / attr MajorTopicYN</td>
+<td align="left">MeshHeadingList / MeshHeading / DescriptorName / attr
+MajorTopicYN</td>
 </tr>
 <tr class="even">
 <td align="left">mesh_list</td>
@@ -628,79 +652,116 @@
 <tr class="odd">
 <td align="left">mesh_qualifier</td>
 <td align="left">qualifier_ui</td>
-<td align="left">MeshHeadingList / MeshHeading / QualifiierName / attr UI</td>
+<td align="left">MeshHeadingList / MeshHeading / QualifiierName / attr
+UI</td>
 </tr>
 <tr class="even">
 <td align="left">mesh_qualifier</td>
 <td align="left">qualifier_major_topic</td>
-<td align="left">MeshHeadingList / MeshHeading / QualifiierName / attr MajorTopicYN</td>
+<td align="left">MeshHeadingList / MeshHeading / QualifiierName / attr
+MajorTopicYN</td>
 </tr>
 <tr class="odd">
-<td align="left">pmid_status</td>
+<td align="left">other_abstract</td>
 <td align="left">pmid</td>
 <td align="left">PMID</td>
 </tr>
 <tr class="even">
+<td align="left">other_abstract</td>
+<td align="left">text</td>
+<td align="left">OtherAbstract / AbstractText</td>
+</tr>
+<tr class="odd">
+<td align="left">other_abstract</td>
+<td align="left">type</td>
+<td align="left">OtherAbstract / attr Type</td>
+</tr>
+<tr class="even">
+<td align="left">other_abstract</td>
+<td align="left">language</td>
+<td align="left">OtherAbstract / attr Language</td>
+</tr>
+<tr class="odd">
+<td align="left">other_id</td>
+<td align="left">pmid</td>
+<td align="left">PMID</td>
+</tr>
+<tr class="even">
+<td align="left">other_id</td>
+<td align="left">source</td>
+<td align="left">OtherId / attr Source</td>
+</tr>
+<tr class="odd">
+<td align="left">other_id</td>
+<td align="left">id_value</td>
+<td align="left">OtherId</td>
+</tr>
+<tr class="even">
+<td align="left">pmid_status</td>
+<td align="left">pmid</td>
+<td align="left">PMID</td>
+</tr>
+<tr class="odd">
 <td align="left">pmid_status</td>
 <td align="left">version</td>
 <td align="left">PMID / attr Version</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">pmid_status</td>
 <td align="left">xml_filename</td>
 <td align="left">-</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pmid_status</td>
 <td align="left">status</td>
 <td align="left">DeleteCitation | (MedlineCitation / attr Status)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">pub_history</td>
 <td align="left">pmid</td>
 <td align="left">PMID</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pub_history</td>
 <td align="left">pub_status</td>
 <td align="left">History / PubMedPubDate / attr PubStatus</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">pub_history</td>
 <td align="left">pub_date</td>
 <td align="left">History / PubMedPubDate / Year-Month-Day</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pub_type</td>
 <td align="left">pmid</td>
 <td align="left">PMID</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">pub_type</td>
 <td align="left">type_name</td>
 <td align="left">PublicationTypeList / PublicationType</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">pub_type</td>
 <td align="left">type_id</td>
 <td align="left">PublicationTypeList / PublicationType / attr UI</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">readme</td>
 <td align="left">text</td>
 <td align="left"><a href="ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt" class="uri">ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">xml_processed</td>
 <td align="left">xml_filename</td>
 <td align="left">-</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">xml_processed</td>
 <td align="left">pmparser_version</td>
 <td align="left">-</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">xml_processed</td>
 <td align="left">datetime_processed</td>
 <td align="left">-</td>

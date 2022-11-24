@@ -18,7 +18,7 @@ modifyPubmedDb()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
     
     <a class="navbar-brand me-2" href="../index.html">pmparser</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.13</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,6 +97,8 @@ These functions should not normally be called directly, as they are called by
 <span><span class="fu">parseComment</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">parseAbstract</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">parseOther</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">parseAuthor</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span>, con <span class="op">=</span> <span class="cn">NULL</span>, tableSuffix <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -223,6 +225,11 @@ first data.table lacks columns for <code>equal_contrib</code> and <code>collecti
 
 
 <p>and the fifth data.table does not exist.</p>
+
+
+<p><code>parseOther()</code>: a list of data.tables parsed from the OtherAbstract and
+OtherID sections. The first has columns <code>text</code>, <code>type</code>, and <code>language</code>. The
+second has columns <code>source</code> and <code>id_value</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -256,6 +263,7 @@ first data.table lacks columns for <code>equal_contrib</code> and <code>collecti
 <span class="r-in"><span><span class="va">abstractRes</span> <span class="op">=</span> <span class="fu">parseAbstract</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">authorRes</span> <span class="op">=</span> <span class="fu">parseAuthor</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">investigatorRes</span> <span class="op">=</span> <span class="fu">parseInvestigator</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">otherRes</span> <span class="op">=</span> <span class="fu">parseOther</span><span class="op">(</span><span class="va">pmXml</span>, <span class="va">dPmid</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
