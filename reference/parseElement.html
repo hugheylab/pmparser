@@ -18,7 +18,7 @@ modifyPubmedDb()."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
     
     <a class="navbar-brand me-2" href="../index.html">pmparser</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.13</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.14</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -155,8 +155,9 @@ parsed from the ArticleIdList section. Only <code>id_type</code>s "doi"
 and "pmc" are retained.</p>
 
 
-<p><code>parseArticle()</code>: a data.table with columns <code>title</code>, <code>pub_date</code>, and
-<code>pub_model</code>, parsed from the Article section.</p>
+<p><code>parseArticle()</code>: a data.table with columns <code>title</code>, <code>language</code>,
+<code>vernacular_title</code>, <code>pub_model</code>, and <code>pub_date</code>, parsed from the Article
+section.</p>
 
 
 <p><code>parsePubHistory()</code>: a data.table with columns <code>pub_status</code> and <code>pub_date</code>,
