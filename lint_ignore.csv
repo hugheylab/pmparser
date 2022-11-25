@@ -1,0 +1,35 @@
+filename,line_number,message,line
+R/get_citation.R,5,Variable and function name style should be camelCase.,published_date = name = NULL
+R/get_parsing_tables.R,2,Variable and function name style should be camelCase.,xml_filename = NULL
+R/get_pubmed_files.R,15,Variable and function name style should be camelCase.,sub_dir = subDir = . = xml_filename = NULL
+R/get_pubmed_files.R,58,Variable and function name style should be camelCase.,md5_match = md5_computed = md5_provided = NULL
+R/get_pubmed_files.R,69,Variable and function name style should be camelCase.,md5_download = xml_download = f = sub_dir = xml_filename = md5_filename =
+R/get_pubmed_files.R,70,Variable and function name style should be camelCase.,md5_match = NULL
+R/get_test_standard.R,19,Variable and function name style should be camelCase.,.N = pmid = N = . = step = NULL
+R/get_test_standard.R,51,Variable and function name style should be camelCase.,sub_dir = .N = sample_base = NULL
+R/get_test_standard.R,99,Variable and function name style should be camelCase.,sub_dir = NULL
+R/get_test_standard.R,106,Variable and function name style should be camelCase.,sub_dir = xml_download = xml_filename = md5_filename = NULL
+R/modify_pubmed_db.R,41,Variable and function name style should be camelCase.,processed = .N = md5_match = xml_filename = . = step = NULL
+R/parse_element.R,155,Variable and function name style should be camelCase.,.N = id_type = NULL
+R/parse_element.R,174,Variable and function name style should be camelCase.,pub_date = y = m = d = title = NULL
+R/parse_element.R,209,Variable and function name style should be camelCase.,.N = pub_date = y = m = d = NULL
+R/parse_element.R,232,Variable and function name style should be camelCase.,medline_date = pub_month_tmp1 = pub_month = pub_day_tmp = pub_day = pub_year =
+R/parse_element.R,233,Variable and function name style should be camelCase.,pub_month_tmp2 = pub_date = date_idx = NULL
+R/parse_element.R,279,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,297,Variable and function name style should be camelCase.,indexing_method = .N = descriptor_pos = pmid = NULL
+R/parse_element.R,354,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,381,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,411,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,432,Variable and function name style should be camelCase.,.N = accession_number = NULL
+R/parse_element.R,458,Variable and function name style should be camelCase.,.N = NULL
+R/parse_element.R,476,Variable and function name style should be camelCase.,.N = abstract_pos = copyright = pmid = NULL
+R/parse_element.R,507,Variable and function name style should be camelCase.,.N = pmid = NULL
+R/parse_person.R,4,Variable and function name style should be camelCase.,. = pmid = .N = equal_contrib = collective_name = person_pos  =
+R/parse_person.R,5,Variable and function name style should be camelCase.,affiliation_pos = affiliation = affil_idx = person_idx = n_affil_ids =
+R/parse_person.R,6,Variable and function name style should be camelCase.,n_person_ids = n_total_ids = id_pos = NULL
+R/parse_pubmed_xml.R,12,Variable and function name style should be camelCase.,status = xml_filename = parseFunc = NULL
+R/parse_pubmed_xml.R,61,Variable and function name style should be camelCase.,xml_filename = filenameNow = NULL
+R/utilities.R,2,Variable and function name style should be camelCase.,status = xml_filename = NULL
+R/utilities.R,9,Variable and function name style should be camelCase.,. = xml_filename = NULL
+R/utilities.R,77,Variable and function name style should be camelCase.,. = xml_filename = step = NULL
+R/utilities.R,129,Variable and function name style should be camelCase.,paste_ = function(...) {
