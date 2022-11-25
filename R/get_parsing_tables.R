@@ -8,7 +8,9 @@ getParsingTables = function(tableSuffix, tableNames = NULL) {
 
     article_id = data.table(id_type = ac, id_value = ac),
 
-    article = data.table(title = ac, pub_date = as.Date(ac), pub_model = ac),
+    article = data.table(
+      title = ac, language = ac, vernacular_title = ac, pub_model = ac,
+      pub_date = as.Date(ac)),
 
     journal = data.table(
       journal_name = ac, journal_iso = ac, pub_date = as.Date(ac),

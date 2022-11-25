@@ -1,3 +1,6 @@
+# pmparser 1.0.14
+* Added columns for `language` and `vernacular_title` to the article table.
+
 # pmparser 1.0.13
 * Added tables from the OtherAbstract and OtherID sections.
 

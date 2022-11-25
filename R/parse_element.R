@@ -30,8 +30,9 @@
 #'   parsed from the ArticleIdList section. Only `id_type`s "doi"
 #'   and "pmc" are retained.
 #'
-#'   `parseArticle()`: a data.table with columns `title`, `pub_date`, and
-#'   `pub_model`, parsed from the Article section.
+#'   `parseArticle()`: a data.table with columns `title`, `language`,
+#'   `vernacular_title`, `pub_model`, and `pub_date`, parsed from the Article
+#'   section.
 #'
 #'   `parsePubHistory()`: a data.table with columns `pub_status` and `pub_date`,
 #'   parsed from the History section.
@@ -170,7 +171,7 @@ parseArticleId = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
 #' @rdname parseElement
 #' @export
 parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
-  pub_date = y = m = d = NULL
+  pub_date = y = m = d = title = NULL
   stopifnot(length(pmXml) == nrow(dPmid))
   x1 = xml_find_first(pmXml, './/Article')
   idx = xml_length(x1) > 0
@@ -178,7 +179,11 @@ parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x2 = data.table(
     dPmid[idx],
     title = xml_text(xml_find_first(pmXml[idx], './/ArticleTitle')),
+    language = xml_text(xml_find_first(pmXml[idx], './/Language')),
+    vernacular_title = xml_text(
+      xml_find_first(pmXml[idx], './/VernacularTitle')),
     pub_model = xml_attr(x1[idx], 'PubModel'))
+  x2[title == '', title := NA_character_]
 
   x3 = xml_find_first(x1, './/ArticleDate')
   idx3 = xml_length(x3) > 0
@@ -190,11 +195,9 @@ parseArticle = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     d = xml_text(xml_find_first(x3[idx3], './/Day')))
 
   x4[, pub_date := as.Date(sprintf('%s-%s-%s', y, m, d))]
-  # x4[, pub_date := as.Date(glue('{y}-{m}-{d}'), .envir = x4)]
   x4[, c('y', 'm', 'd') := NULL]
 
   x5 = merge(x2, x4, by = colnames(dPmid), all.x = TRUE, sort = FALSE)
-  setcolorder(x5, c(colnames(dPmid), 'title', 'pub_date', 'pub_model'))
 
   appendTable(con, paste_('article', tableSuffix), x5)
   return(x5)}

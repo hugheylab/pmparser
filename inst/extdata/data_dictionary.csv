@@ -8,8 +8,10 @@ abstract_copyright,pmid,PMID
 abstract_copyright,copyright,Abstract / CopyrightInformation
 article,pmid,PMID
 article,title,Article / ArticleTitle
-article,pub_date,Article / ArticleDate / Year-Month-Day
+article,language,Article / Language
+article,vernacular_title,Article / VernacularTitle
 article,pub_model,Article / attr PubModel
+article,pub_date,Article / ArticleDate / Year-Month-Day
 article_id,pmid,PMID
 article_id,id_type,ArticleIdList / ArticleId / attr IdType
 article_id,id_value,ArticleIdList / ArticleId

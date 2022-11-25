@@ -83,8 +83,9 @@ columns from \code{dPmid} plus the columns specified.
 parsed from the ArticleIdList section. Only \code{id_type}s "doi"
 and "pmc" are retained.
 
-\code{parseArticle()}: a data.table with columns \code{title}, \code{pub_date}, and
-\code{pub_model}, parsed from the Article section.
+\code{parseArticle()}: a data.table with columns \code{title}, \code{language},
+\code{vernacular_title}, \code{pub_model}, and \code{pub_date}, parsed from the Article
+section.
 
 \code{parsePubHistory()}: a data.table with columns \code{pub_status} and \code{pub_date},
 parsed from the History section.
