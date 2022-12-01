@@ -1,57 +1,9 @@
-on: push
+on:
+  push:
+    branches: [main, master]
 
 name: lint
 
 jobs:
-  lint_package:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-    outputs:
-        style_text: ${{ steps.run_lintr.outputs.style_text }}
-        has_style_issues: ${{ steps.run_lintr.outputs.has_style_issues }}
-    timeout-minutes: 30
-    if: ${{ endswith(github.ref, '/master') || endswith(github.ref, '/main') }}
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-
-      - uses: nelonoel/branch-name@v1
-
-      - id: run_lintr
-        run: |
-          install.packages(c('data.table', 'gh', 'lintr'))
-
-          repository = '${{ github.event.repository.name }}'
-          branch = system("echo ${BRANCH_NAME}", intern = TRUE)
-
-          source('https://raw.githubusercontent.com/hugheylab/actions/main/workflows/custom-lint.R')
-
-          lfDt = getLintDt(lintsFound, repository, branch)
-          issueStr = getFormattedIssueStr(lfDt)
-
-          library('gh')
-          issuesGet = gh(
-            paste0('GET /repos/hugheylab/', repository, '/issues'),
-            labels = 'lint')
-
-          if (length(issuesGet) > 0) {
-            issuesPatch = gh(
-              paste0('PATCH /repos/hugheylab/', repository, '/issues/', issuesGet[[1]]$number),
-              state = 'closed')}
-
-          if (nrow(lfDt) > 0) {
-            issuesPost = gh(
-              endpoint = paste0('POST /repos/hugheylab/', repository, '/issues'),
-              title = "lintr found issues with code",
-              body = issueStr)
-
-            labelsPost = gh(
-              endpoint = paste0('POST /repos/hugheylab/', repository, '/issues/', issuesPost$number, '/labels'),
-              'lint')}
-
-        shell: Rscript {0}
+  lint:
+    uses: hugheylab/actions/.github/workflows/lint.yaml@main
