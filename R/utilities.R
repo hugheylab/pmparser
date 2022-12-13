@@ -172,12 +172,13 @@ names2 = function(x) {
     nms[is.na(nms)] = ''
     nms}}
 
-getOS = function() {
-  return(Sys.info()['sysname'])}
 
-getOSLineDelim = function() {
-  delim = if (getOS() == 'Windows') '\\r\\n' else '\\n'
-  return(delim)}
+getOS = function() Sys.info()['sysname']
+
+
+# getOSLineDelim = function() {
+#   delim = if (getOS() == 'Windows') '\\r\\n' else '\\n'
+#   return(delim)}
 
 
 #' Get Postgres connection parameters

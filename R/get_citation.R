@@ -95,12 +95,10 @@ getCitation = function(
       stop('Supplied and computed MD5 checksums do not match.')}}
   pathTmp = pathTmp = tempfile()
   withr::local_file(pathTmp)
-  pathTmpCsv = file.path(
-    pathTmp, paste0(filenameNoExt, '.csv'),
-    fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
+  fsep = if (os == 'Windows') '\\' else .Platform$file.sep
+  pathTmpCsv = file.path(pathTmp, paste0(filenameNoExt, '.csv'), fsep = fsep)
   pathTmpCsv2 = file.path(
-    pathTmp, paste0(filenameNoExt, '_tmp.csv'),
-    fsep = if (os == 'Windows') '\\' else .Platform$file.sep)
+    pathTmp, paste0(filenameNoExt, '_tmp.csv'), fsep = fsep)
   cmdHead = if (nrows < Inf) {
     if (os != 'Windows') {
       glue('| head -n {nrows + 1L}')
