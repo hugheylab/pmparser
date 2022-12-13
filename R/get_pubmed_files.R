@@ -1,15 +1,16 @@
 getRemoteFilenames = function(url, pattern) {
   raw = RCurl::getURL(url)
   x = strsplit(raw, getOSLineDelim())[[1L]]
-  m = regexpr(glue('{pattern}$'), x)
+  m = regexpr(glue('>{pattern}<'), x)
   filenames = regmatches(x, m)
+  filenames = substr(filenames, 2L, nchar(filenames) - 1L)
   d = data.table(
     xml_filename = filenames, md5_filename = glue('{filenames}.md5'))
   return(d)}
 
 
 getPubmedFileInfo = function(
-  localDir = NULL, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
+  localDir = NULL, remoteDir = 'https://ftp.ncbi.nlm.nih.gov/pubmed/',
   subDirs = c('baseline', 'updatefiles'), tableSuffix = NULL, con = NULL) {
 
   sub_dir = subDir = . = xml_filename = NULL
@@ -63,7 +64,7 @@ checkPubmedFiles = function(xmlFilepaths, md5Filepaths) {
 
 
 getPubmedFiles = function(
-  fileInfo, localDir, remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/',
+  fileInfo, localDir, remoteDir = 'https://ftp.ncbi.nlm.nih.gov/pubmed/',
   downloadMd5 = TRUE) {
 
   md5_download = xml_download = f = sub_dir = xml_filename = md5_filename =

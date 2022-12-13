@@ -10,4 +10,4 @@
 
 ## Changes from current CRAN release
 
-The package has been updated to parse data for two additional tables. The tests have been updated accordingly and are passing locally, on [R-hub](https://builder.r-hub.io/status/original/pmparser_1.0.13.tar.gz-1462c91674ec449ea007c1398ca069c6), and on [GitHub Actions](https://github.com/hugheylab/pmparser/actions/workflows/check-deploy.yaml).
+All ftp URLs have been changed to https. In addition, tests were failing because PubMed updated the XML files, so the generated database tables were different than expected. The internet resources were still available and this was not affecting the functionality of the package itself. The test standards have now been updated accordingly, so the tests are passing locally, on [R-hub](https://builder.r-hub.io/status/original/pmparser_1.0.15.tar.gz-f3c5f8f8258d40f090186665198c4366), and on [GitHub Actions](https://github.com/hugheylab/pmparser/actions/workflows/check-deploy.yaml).

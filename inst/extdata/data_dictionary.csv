@@ -126,7 +126,7 @@ pub_history,pub_date,History / PubMedPubDate / Year-Month-Day
 pub_type,pmid,PMID
 pub_type,type_name,PublicationTypeList / PublicationType
 pub_type,type_id,PublicationTypeList / PublicationType / attr UI
-readme,text,ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt
+readme,text,https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/README.txt
 xml_processed,xml_filename,-
 xml_processed,pmparser_version,-
 xml_processed,datetime_processed,-

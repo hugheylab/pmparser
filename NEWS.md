@@ -1,3 +1,7 @@
+# pmparser 1.0.15
+* Changed ftp URLs to https.
+* Updated test standards based on new PubMed XML files.
+
 # pmparser 1.0.14
 * Added columns for `language` and `vernacular_title` to the article table.
 

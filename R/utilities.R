@@ -152,8 +152,9 @@ getPkgVersion = function(pkgName = 'pmparser') {
   as.character(utils::packageVersion(pkgName))}
 
 
-getReadme = function(remoteDir = 'ftp://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
-                     filename = 'README.txt', con = NULL) {
+getReadme = function(
+    remoteDir = 'https://ftp.ncbi.nlm.nih.gov/pubmed/baseline/',
+    filename = 'README.txt', con = NULL) {
   txt = RCurl::getURL(glue('{remoteDir}/{filename}'))
   dReadme = data.table(text = txt)
   if (!is.null(con)) DBI::dbWriteTable(con, 'readme', dReadme, overwrite = TRUE)

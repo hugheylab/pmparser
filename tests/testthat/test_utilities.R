@@ -23,7 +23,7 @@ test_that('getMissing', {
   dbname = 'pmdb_sample_update.db'
   dbtype = 'sqlite'
   con = connect(dbtype, file.path(refDir, dbname))
-  dFile = data.table(xml_filename = c('pubmed22n1115.xml.gz', 'freedom.xml.gz'))
+  dFile = data.table(xml_filename = c('pubmed23n1167.xml.gz', 'freedom.xml.gz'))
   dFailed = getMissing(con = con, tableSuffix = NULL, dFile = dFile)
   expect_equal(dFailed, dFile[.N])
 })
