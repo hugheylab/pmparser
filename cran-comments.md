@@ -2,12 +2,28 @@
 
 ### Local
 
+`devtools::check()`:
+
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
 ### R-hub
 
+`devtools::check_rhub()`:
+
+  0 errors ✔ | 0 warnings ✔ | 1 note ✖
+  
+  ❯ checking for detritus in the temp directory ... NOTE
+  Found the following files/directories:
+    'lastMiKTeXException'
+
+See results for [Windows](https://builder.r-hub.io/status/pmparser_1.0.16.tar.gz-7c295fe76dd64afdac4541030567c42f), [Ubuntu](https://builder.r-hub.io/status/pmparser_1.0.16.tar.gz-aa5fdb1f25ae49aabe4188b7cffba9ab), and [Fedora](https://builder.r-hub.io/status/pmparser_1.0.16.tar.gz-bf42f4c7ae324c94bcd7a0fb8ca9b8cc).
+
+### GitHub Actions
+
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
+
+See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-All ftp URLs have been changed to https. In addition, tests were failing because PubMed updated the XML files, so the generated database tables were different than expected. The internet resources were still available and this was not affecting the functionality of the package itself. The test standards have now been updated accordingly, so the tests are passing locally, on [R-hub](https://builder.r-hub.io/status/original/pmparser_1.0.15.tar.gz-fc8283366c414a8ba6f0d92ae970ac0c), and on [GitHub Actions](https://github.com/hugheylab/pmparser/actions/workflows/check-deploy.yaml).
+The test standards have been updated to include the latest version of the readme file on PubMed, which was the source of the test failures.
