@@ -1,3 +1,6 @@
+# pmparser 1.0.17
+* Updated parsing of empty investigator fields.
+
 # pmparser 1.0.16
 * Updated readme table in test standards.
 

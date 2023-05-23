@@ -108,8 +108,8 @@ parsePerson = function(pmXml, dPmid, con = NULL, tableSuffix = NULL,
     x10[is.na(n_affil_ids), n_affil_ids := 0]
     x10[, n_person_ids := n_total_ids - n_affil_ids]
 
-    if (nrow(x10) > 0) {
-      x11 = x10[n_person_ids > 0, .(id_pos = 1:n_person_ids), by = cols]
+    if (nrow(x10) > 0 && any(x10$n_person_ids > 0)) {
+      x11 = x10[n_person_ids > 0, .(id_pos = seq_len(n_person_ids)), by = cols]
 
       dAllId[, id_pos := seq_len(.N), by = cols]
       dPersonId = merge(dAllId, x11, by = c(cols, 'id_pos'))

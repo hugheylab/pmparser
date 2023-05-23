@@ -325,7 +325,8 @@ parseMesh = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
   x5 = xml_find_all(x4, './/QualifierName', flatten = FALSE)
   nQualPerDesc = lengths(x5)
 
-  descPos = unlist(lapply(nDescPerPmid[nDescPerPmid > 0], function(n) 1:n))
+  descPos = unlist(lapply(
+    nDescPerPmid[nDescPerPmid > 0], function(n) seq_len(n)))
 
   if (length(nQualPerDesc) > 0 && sum(nQualPerDesc) > 0) {
     x6 = data.table(
