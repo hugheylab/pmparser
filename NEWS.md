@@ -1,3 +1,6 @@
+# pmparser 1.0.18
+* Fixed parsing of CitedMedium within Journal.
+
 # pmparser 1.0.17
 * Updated parsing of empty investigator fields.
 

@@ -91,7 +91,7 @@ journal,pub_day,Journal / Day
 journal,medline_date,Journal / MedlineDate
 journal,volume,Journal / Volume
 journal,issue,Journal / Issue
-journal,cited_medium,Journal / CitedMedium
+journal,cited_medium,Journal / JournalIssue / attr CitedMedium
 keyword_item,pmid,PMID
 keyword_item,keyword_name,KeywordList / Keyword
 keyword_item,major_topic,KeywordList / Keyword / attr MajorTopicYN

@@ -245,7 +245,8 @@ parseJournal = function(pmXml, dPmid, con = NULL, tableSuffix = NULL) {
     medline_date = xml_text(xml_find_first(x1[idx], './/MedlineDate')),
     volume = xml_text(xml_find_first(x1[idx], './/Volume')),
     issue = xml_text(xml_find_first(x1[idx], './/Issue')),
-    cited_medium = xml_attr(xml_find_first(x1[idx], 'CitedMedium')))
+    cited_medium = xml_attr(
+      xml_find_first(x1[idx], './/JournalIssue'), 'CitedMedium'))
 
   x2[is.na(pub_year), date_idx := regexpr('[0-9]{4}', medline_date)]
   x2[is.na(pub_year) & date_idx > 0,
