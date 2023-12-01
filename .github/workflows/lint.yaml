@@ -1,9 +1,0 @@
-on:
-  push:
-    branches: [main, master]
-
-name: lint
-
-jobs:
-  lint:
-    uses: hugheylab/actions/.github/workflows/lint.yaml@main
