@@ -20,14 +20,14 @@
   Found the following files/directories:
     'lastMiKTeXException'
 
-See results for [Windows](https://builder.r-hub.io/status/pmparser_1.0.18.tar.gz-cbd13e2f1d344d8f96f553da3b359393), [Ubuntu](https://builder.r-hub.io/status/pmparser_1.0.18.tar.gz-76519f3b70664ce1ba180286b009e7dd), and [Fedora](https://builder.r-hub.io/status/pmparser_1.0.18.tar.gz-e946f303031a4590a94f56a3dfdeb086).
+See results for [Windows](https://builder.r-hub.io/status/pmparser_1.0.19.tar.gz-da4498bfdbad4e479b5cefc58b318ed9), [Ubuntu](https://builder.r-hub.io/status/pmparser_1.0.19.tar.gz-e3dc23cc69e1479d807cf853cfe1b3af), and [Fedora](https://builder.r-hub.io/status/pmparser_1.0.19.tar.gz-69efe91cf9a94f12bdf7f608674ec198).
 
 ### GitHub Actions
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Ubuntu [here](https://github.com/hugheylab/pmparser/actions/runs/7055886157).
+See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-* Fixed parsing of CitedMedium within Journal, to work with latest xml2.
+* Updated test standards based on the annual update to PubMed XML files.

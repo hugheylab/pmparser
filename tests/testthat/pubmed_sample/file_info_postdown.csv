@@ -1,5 +1,5 @@
 sub_dir,xml_filename,md5_filename,processed,xml_download,md5_download,md5_computed,md5_provided,md5_match
-baseline,pubmed23n1165.xml.gz,pubmed23n1165.xml.gz.md5,,0,0,312c6e844a7f9400b4e7037ed44c5bcd,312c6e844a7f9400b4e7037ed44c5bcd,1
-baseline,pubmed23n1166.xml.gz,pubmed23n1166.xml.gz.md5,,0,0,2af827009093bfc5d27b526ff1d37483,2af827009093bfc5d27b526ff1d37483,1
-updatefiles,pubmed23n1167.xml.gz,pubmed23n1167.xml.gz.md5,,0,0,e4bdd7b9d7760824b7e95c772e2ff1ad,e4bdd7b9d7760824b7e95c772e2ff1ad,1
-updatefiles,pubmed23n1168.xml.gz,pubmed23n1168.xml.gz.md5,,0,0,187bf1823bd2922f4f15919043430773,187bf1823bd2922f4f15919043430773,1
+baseline,pubmed24n1218.xml.gz,pubmed24n1218.xml.gz.md5,,0,0,741afb1afce0c9d30fa96f82d9996707,741afb1afce0c9d30fa96f82d9996707,1
+baseline,pubmed24n1219.xml.gz,pubmed24n1219.xml.gz.md5,,0,0,13ed5d4bc5f0d53fb598567101049c73,13ed5d4bc5f0d53fb598567101049c73,1
+updatefiles,pubmed24n1220.xml.gz,pubmed24n1220.xml.gz.md5,,0,0,6d6ece422cfa3ca16834d4bc6d160368,6d6ece422cfa3ca16834d4bc6d160368,1
+updatefiles,pubmed24n1221.xml.gz,pubmed24n1221.xml.gz.md5,,0,0,940659e90acd019ef82bf80bfc938a27,940659e90acd019ef82bf80bfc938a27,1

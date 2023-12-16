@@ -1,3 +1,6 @@
+# pmparser 1.0.19
+* Updated test standards based on the annual update to PubMed XML files.
+
 # pmparser 1.0.18
 * Fixed parsing of CitedMedium within Journal.
 
