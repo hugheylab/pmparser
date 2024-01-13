@@ -20,7 +20,7 @@
   Found the following files/directories:
     'lastMiKTeXException'
 
-See results for [Windows](https://builder.r-hub.io/status/pmparser_1.0.19.tar.gz-da4498bfdbad4e479b5cefc58b318ed9), [Ubuntu](https://builder.r-hub.io/status/pmparser_1.0.19.tar.gz-e3dc23cc69e1479d807cf853cfe1b3af), and [Fedora](https://builder.r-hub.io/status/pmparser_1.0.19.tar.gz-69efe91cf9a94f12bdf7f608674ec198).
+See results for [Windows](https://builder.r-hub.io/status/pmparser_1.0.20.tar.gz-7e6f8e826eaa4b6eb6080f32db868522), [Ubuntu](https://builder.r-hub.io/status/pmparser_1.0.20.tar.gz-88807a83f1024e20a79db5d5fa559fbb), and [Fedora](https://builder.r-hub.io/status/pmparser_1.0.20.tar.gz-6c2e2a4fbfc14a2c8792df295c01735d).
 
 ### GitHub Actions
 
@@ -30,4 +30,4 @@ See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-* Updated test standards based on the annual update to PubMed XML files.
+* Updated readme table in test standards.

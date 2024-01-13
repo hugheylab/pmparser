@@ -1,7 +1,7 @@
 # before running this script, run "Clean and Install"
 foreach::registerDoSEQ() # to ensure reproducibility, do not parallelize
 
-options(timeout = 3600)
+options(timeout = 60 * 60 * 3)
 localDir = file.path('tests', 'testthat', 'pubmed_sample')
 tmpDir = tempfile()
 
