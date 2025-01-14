@@ -26,7 +26,7 @@ See results for [Windows](https://builder.r-hub.io/status/pmparser_1.0.20.tar.gz
 
   0 errors ✓ | 0 warnings ✓ | 0 notes ✓
 
-See results for Mac, Windows, and Ubuntu [here]().
+See results for Mac, Windows, and Ubuntu [here](https://github.com/hugheylab/pmparser/actions/runs/12768719376).
 
 ## Changes from current CRAN release
 
