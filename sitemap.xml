@@ -1,36 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://pmparser.hugheylab.org/404.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/articles/data_dictionary.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/reference/getCitation.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/reference/getPgParams.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/reference/modifyPubmedDb.html</loc>
-  </url>
-  <url>
-    <loc>https://pmparser.hugheylab.org/reference/parseElement.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://pmparser.hugheylab.org/404.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/articles/data_dictionary.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/articles/index.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/authors.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/index.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/news/index.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/reference/getCitation.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/reference/getPgParams.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/reference/index.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/reference/modifyPubmedDb.html</loc></url>
+<url><loc>https://pmparser.hugheylab.org/reference/parseElement.html</loc></url>
 </urlset>
+
