@@ -1,3 +1,6 @@
+# pmparser 1.0.21
+* Updated test standards based on Jan 2025 update to PubMed XML files.
+
 # pmparser 1.0.20
 * Updated readme table in test standards.
 

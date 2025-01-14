@@ -30,4 +30,4 @@ See results for Mac, Windows, and Ubuntu [here]().
 
 ## Changes from current CRAN release
 
-* Updated readme table in test standards.
+* Updated test standards.
