@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">pmparser</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.21</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.22</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,12 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.21" id="pmparser-1021">pmparser 1.0.21<a class="anchor" aria-label="anchor" href="#pmparser-1021"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.0.22" id="pmparser-1022">pmparser 1.0.22<a class="anchor" aria-label="anchor" href="#pmparser-1022"></a></h2>
+<ul><li>Fixed quoting of indexing method for mesh_list.</li>
+<li>Deduplicated pub_type, at least within an XML file.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.0.21" id="pmparser-1021">pmparser 1.0.21<a class="anchor" aria-label="anchor" href="#pmparser-1021"></a></h2><p class="text-muted">CRAN release: 2025-01-14</p>
 <ul><li>Updated test standards based on Jan 2025 update to PubMed XML files.</li>
 </ul></div>
     <div class="section level2">
@@ -164,7 +169,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.0.9029" id="pmparser-0009029">pmparser 0.0.0.9029<a class="anchor" aria-label="anchor" href="#pmparser-0009029"></a></h2>
 <ul><li>
-<code><a href="../reference/getCitation.html">getCitation()</a></code> now uses <code><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">data.table::fread()</a></code> to write table in chunks, ~3.3x faster.</li>
+<code><a href="../reference/getCitation.html">getCitation()</a></code> now uses <code><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">data.table::fread()</a></code> to write table in chunks, ~3.3x faster.</li>
 <li>Switched from <code>dbAppendTable()</code> to <code>dbWriteTable(..., append = TRUE)</code> for inexplicable speed increase.</li>
 </ul></div>
     <div class="section level2">
@@ -199,7 +204,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>
