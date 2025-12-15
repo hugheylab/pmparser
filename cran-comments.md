@@ -14,5 +14,4 @@ See results for Linux, Mac, and Windows [here](https://github.com/hugheylab/pmpa
 
 ## Changes from current CRAN release
 
-* Fixed quoting of indexing method for mesh_list.
-* Deduplicated pub_type, at least within an XML file.
+* Updated file format for NIH Open Citation Collection.

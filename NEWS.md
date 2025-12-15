@@ -1,3 +1,6 @@
+# pmparser 1.0.23
+* Updated file format for NIH Open Citation Collection.
+
 # pmparser 1.0.22
 * Fixed quoting of indexing method for mesh_list.
 * Deduplicated pub_type, at least within an XML file.

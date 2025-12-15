@@ -6,7 +6,7 @@
 \usage{
 getCitation(
   localDir,
-  filename = "open_citation_collection.zip",
+  filename = "open_citation_collection.csv",
   nrows = Inf,
   tableSuffix = NULL,
   overwrite = FALSE,

@@ -1,5 +1,5 @@
 getCitationInfo = function(
-  filename = 'open_citation_collection.zip', collectionId = 4586573,
+  filename = 'open_citation_collection.csv', collectionId = 4586573,
   baseUrl = 'https://api.figshare.com/v2') {
 
   published_date = name = NULL
@@ -54,7 +54,7 @@ getCitationInfo = function(
 #'
 #' @export
 getCitation = function(
-  localDir, filename = 'open_citation_collection.zip', nrows = Inf,
+  localDir, filename = 'open_citation_collection.csv', nrows = Inf,
   tableSuffix = NULL, overwrite = FALSE, con = NULL, checkMd5 = TRUE) {
 
   os = getOS()

@@ -12,11 +12,10 @@ test_that('getCitationInfo', {
 test_that('getCitation', {
   skip_on_cran()
   refDir = 'pubmed_sample'
-  filename = 'open_citation_collection.zip'
+  filename = 'open_citation_collection.csv'
   nrows = 50L
 
-  dCitationExp = data.table::fread(
-    cmd = glue('unzip -p {file.path(refDir, filename)}'), nrows = nrows)
+  dCitationExp = data.table::fread(file.path(refDir, filename), nrows = nrows)
   setnames(dCitationExp, c('citing_pmid', 'cited_pmid'))
 
   dCitationObs = getCitation(
