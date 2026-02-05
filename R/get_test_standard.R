@@ -125,19 +125,13 @@ getTestStandardCsv = function(localDir, offset) {
 
 
 getTestStandardCitation = function(localDir, tmpDir, nrows) {
-  zipName = formals(getCitation)$filename
-  zipPath = file.path(localDir, zipName)
-  csvPath = glue('{tools::file_path_sans_ext(zipPath)}.csv')
-  withr::local_file(csvPath)
-
+  filename = formals(getCitation)$filename
+  localPath = file.path(localDir, filename)
   dCitation = getCitation(tmpDir, nrows = nrows)
-  dTmp = data.table::fread(
-    cmd = glue('unzip -p {file.path(tmpDir, zipName)} | head -n 2'))
 
+  dTmp = data.table::fread(file.path(tmpDir, filename), nrows = 2L)
   setnames(dCitation, colnames(dTmp))
-  data.table::fwrite(dCitation, csvPath)
-  if (file.exists(zipPath)) unlink(zipPath) # prevent appending to zip file
-  utils::zip(zipPath, csvPath, flags = '-j9X') # ignore directory tree
+  data.table::fwrite(dCitation, localPath)
   invisible()}
 
 

@@ -1,3 +1,6 @@
+# pmparser 1.0.24
+* Updated test standards based on Jan 2026 update to PubMed XML files.
+
 # pmparser 1.0.23
 * Updated file format for NIH Open Citation Collection.
 
