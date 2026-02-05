@@ -1,6 +1,12 @@
 # Changelog
 
+## pmparser 1.0.24
+
+- Updated test standards based on Jan 2026 update to PubMed XML files.
+
 ## pmparser 1.0.23
+
+CRAN release: 2025-12-15
 
 - Updated file format for NIH Open Citation Collection.
 
@@ -169,7 +175,7 @@ CRAN release: 2022-02-17
 
 - [`getCitation()`](https://pmparser.hugheylab.org/reference/getCitation.md)
   now uses
-  [`data.table::fread()`](https://rdatatable.gitlab.io/data.table/reference/fread.html)
+  [`data.table::fread()`](https://rdrr.io/pkg/data.table/man/fread.html)
   to write table in chunks, ~3.3x faster.
 - Switched from `dbAppendTable()` to `dbWriteTable(..., append = TRUE)`
   for inexplicable speed increase.
