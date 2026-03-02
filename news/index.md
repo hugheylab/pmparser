@@ -1,6 +1,12 @@
 # Changelog
 
+## pmparser 1.0.25
+
+- Updated file format again for NIH Open Citation Collection.
+
 ## pmparser 1.0.24
+
+CRAN release: 2026-02-05
 
 - Updated test standards based on Jan 2026 update to PubMed XML files.
 

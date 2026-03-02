@@ -12,7 +12,7 @@ function should not normally be called directly, as it is called by
 ``` r
 getCitation(
   localDir,
-  filename = "open_citation_collection.csv",
+  filename = "open_citation_collection.zip",
   nrows = Inf,
   tableSuffix = NULL,
   overwrite = FALSE,
