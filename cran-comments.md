@@ -8,4 +8,4 @@
 
 ## Changes from current CRAN release
 
-* Updated test standards based on Jan 2026 update to PubMed XML files.
+* Updated file format again for NIH Open Citation Collection.
