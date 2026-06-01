@@ -1,3 +1,6 @@
+# pmparser 1.0.26
+* Deal with inconsistent file name for NIH Open Citation Collection.
+
 # pmparser 1.0.25
 * Updated file format again for NIH Open Citation Collection.
 

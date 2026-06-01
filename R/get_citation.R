@@ -1,19 +1,20 @@
 getCitationInfo = function(
-  filename = 'open_citation_collection.zip', collectionId = 4586573,
-  baseUrl = 'https://api.figshare.com/v2') {
+  collectionId = 4586573, baseUrl = 'https://api.figshare.com/v2') {
 
   published_date = name = NULL
+  # deal with inconsistent file suffix, .csv, .csv.zip, etc.
+  filename_prefix = 'open_citation_collection'
 
-  #getting content from icite collection
+  # getting content from icite collection
   iciteUrl = glue('{baseUrl}/collections/{collectionId}/articles')
   iciteJson = data.table(jsonlite::fromJSON(iciteUrl))
 
-  #extracting content from most recent icite snapshot
+  # extracting content from most recent icite snapshot
   latestId = iciteJson[published_date == max(published_date)]$id
   latestUrl = glue('{baseUrl}/articles/{latestId}/files')
   latestJson = data.table(jsonlite::fromJSON(latestUrl))
 
-  citationInfo = latestJson[name == filename]
+  citationInfo = latestJson[startsWith(name, filename_prefix)]
   return(citationInfo)}
 
 

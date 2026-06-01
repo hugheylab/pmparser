@@ -8,4 +8,4 @@
 
 ## Changes from current CRAN release
 
-* Updated file format again for NIH Open Citation Collection.
+* Deal with inconsistent file name for NIH Open Citation Collection.
