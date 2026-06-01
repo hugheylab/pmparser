@@ -25,6 +25,7 @@ For a detailed description of `pmparser` and PMDB, check out the
 ### Option 1: CRAN
 
 ``` r
+
 install.packages('pmparser')
 ```
 
@@ -34,6 +35,7 @@ install.packages('pmparser')
     [`BiocManager`](https://cran.r-project.org/package=BiocManager).
 
     ``` r
+
     if (!requireNamespace('BiocManager', quietly = TRUE))
       install.packages('BiocManager')
     ```
@@ -48,12 +50,14 @@ install.packages('pmparser')
     package by entering:
 
     ``` r
+
     BiocManager::install('pmparser')
     ```
 
     Alternatively, you can install or update the package by entering:
 
     ``` r
+
     BiocManager::install('pmparser', site_repository = 'https://hugheylab.github.io/drat/')
     ```
 
